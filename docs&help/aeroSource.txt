@@ -1,0 +1,195 @@
+
+( 2023 09 18 )
+
+> aeroaero
+    - DGESV
+        FOLDER
+        files downloaded from internet
+        code that solves A*G=RHS
+    
+    - aeroout_db.f90
+        MODULE
+    - aeroout_sr.f90
+        MODULE
+        subroutines for aerodynamic data output
+        . inter_tp2           Aerodynamic grid in TecPlot output
+        . inter_tp4           Panels' forces data in TecPlot output
+        . inter_aet           "Time for aerodynamic calculations" in root.AT.dat
+    
+    - aero_data.f90
+        SUBROUTINE
+        calls subroutines that read files with aerodynamic data
+        
+    - aero_mods.f90
+        MODULE: StructuresA
+        defines variables and derived data types (from CG original source)
+        subroutines for dump and restart
+        
+        MODULE: ArraysA
+        defines allocatable arrays (from CG original source)
+        subroutines for dump and restart
+        
+        MODULE: Constants
+        defines some constants (from CG original source)
+        
+    - Convect.f90
+        3 SUBROUTINES for wake convection
+        
+    - GenUse.f90
+        many SUBROUTINES for general use
+        . cross_product
+        . unit_vector
+        . connect_plate
+        . R1, R1t, R2, R2t, R3, R3t
+        
+    - GenUseNR.f90
+        MODULE
+        Routines from Numerical Recipes in Fortran 90
+            B2 Solution of Linear Algebraic Equations   - p. 1014
+            B3 Interpolation and Extrapolation          - p. 1043
+        . tridag_ser
+        . tridag_par
+        . spline
+        . splintMM
+        . locate
+        . hunt
+        
+    - nr.f90
+        MODULE
+        Numerical Recipies copied file
+        
+    - nrtype.f90
+        MODULE
+        definitions for a number of named constants (that is, PARAMETERs), and
+        a couple of elementary derived data types used by the sparse matrix routines in NR
+        
+    - nrutil.f90
+        MODULE
+        Numerical Recipies copied file
+        
+    - input_extras.f90
+        SUBROUTINE
+        reads extras.dat
+        
+    - input_geometry.f90
+        SUBROUTINE
+        reads
+            Blade_Aerodynamical_Data.dat  
+            Hub_Aerodynamical_Data.dat    
+            Nacelle_Aerodynamical_Data.dat
+            Tower_Aerodynamical_Data.dat  
+        
+    - input_simulation.f90
+        SUBROUTINE
+        reads simulation.dat
+        
+    - Kinematics.f90
+        6 SUBROUTINES
+        nodes' coordinates for each turbine part (3 blades, hub, nacelle and tower as rigid bodies)
+        
+    - Loads.f90
+        SUBROUTINE
+        non-dimensional normal force for each panel (and other related information)
+        
+    - NLUVLM.f90
+        11 SUBROUTINES including
+        . Alloc (mainly allocating variables definde in StructuresA)
+        . A_matrix
+        . RHS1_vector & RHS2_vector
+        
+    - NLUVLM_Calc.f90
+        SUBROUTINE
+        Non-Linear Unsteady Vortex Latice Method
+    
+    - wind_db.f90
+        MODULE
+    - wind_sr.f90
+        MODULE
+        . rdwind: reads wind.dat
+        . instantWV: Instantaneous Wind Velocity (vfs, Alphadeg, Alpha and Vinf) when read as a function of time
+        . DtCalc: vref & Deltat & numnest & dtime
+        . WSpeed: earth boundary layer
+
+
+
+> aerogenr
+    - genr_db.f90
+        MODULE
+    - genr_sr.f90
+        MODULE
+        . gener_inp: reads generator.dat
+        . include_damp:   Calculates damp coefficient "alpha" for the rotor and adds it
+        . update_damp: Re-Calculates damp coefficient "alpha" for the rotor and adds it
+    
+    
+    
+> aerointr
+    - blas.f90
+        4 MODULES
+        F95 interface for BLAS routines
+        
+    - input_bed.f90
+        SUBROUTINE
+        reads bed.dat (NBST elements)
+        
+    - inter_db.f90
+        MODULE
+        defines 2 derived data types
+        . pair
+        . bed
+        includes subroutines
+        . to deal with pairs
+        . to deal with BED
+        . for restart files managing
+    - inter_sr.f90
+        MODULE
+        . inter_ini: INTERaction_INItial computations
+        . inter_kin: INTERaction_KINematic
+        . inter_loa: INTERaction_LOAds
+        
+    - introut_db.f90
+        MODULE
+    - introut_sr.f90
+        MODULE
+        Subroutines for output
+        . introut_mng         MANAGE
+        . projProbl           print messages
+        . inter_tp1           OPEN
+        . inter_tp3           CLOSE some
+        . inter_tp5 (Tecplot) Layout files        - opened, written and closed in one shot
+        . inter_fam           "Blades Forces and Effective Moment" in root.FM.dat
+                              (and "Generator Registry" in root.GE.dat)-NOT NOW
+        . inter_fam_debug     Blade 2 fce. and mom. in aero. grid and stru. mesh
+        . inter_reg           "Aeroelastic Registry" in root.AR.dat
+        
+    - mastrnods_db.f90
+        MODULE
+    - mastrnods_sr.f90
+        MODULE
+        contains subroutines
+        . mngMstrs:             manage master nodes determination
+        . robMstrs:             RIGID or BEAM elements structural model
+            . proj_ele08:         determine projection BEAM element
+        . nbstMstrs:            NBST elements structural model
+            . nbstConnects:       elements' connectivities
+            . nbstMidpoints:      subset midpoints
+            . nbstIntersect:      intersection point of a line and an element plane
+            . nbstLCoords:        local coordinates of a point laying in the plane of an NBST element
+            . nbstIrrDep2:        irregular dependency (for aero nodes out of structural mesh) - algorithm 2
+            . nbstMstrsTecplot:   debug masters determination
+        . distancies:           dists. between target point and set of points
+    
+    - FcsTecplotCurves.lay
+    - nbstMstrsTecplot.lay
+    - nbstOmTecplot.plt.lay
+    - nbstOmTecplot.tec.lay
+    
+    
+    
+> aerostru
+    - struout_db.f90
+        MODULE
+    - struout_sr.f90
+        MODULE
+        . inter_tp6           Structural mesh in TecPlot output
+    

@@ -1,0 +1,202 @@
+
+Archivo                                 Designación         Designación
+y detalles                              original            nueva
+---------------------------------------------------------------------------------------------------------------------------------
+Entrada de datos
+****************
+simulation.dat                           11                 211
+Blade_Aerodynamical_Data.dat             12                 212
+Hub_Aerodynamical_Data.dat               13                 213
+Nacelle_Aerodynamical_Data.dat           14                 214
+Tower_Aerodynamical_Data.dat             15                 215
+extras.dat                                                  216
+    Input_geometry, en NLUVLM_IO.f90
+    OPEN( UNIT = 11 , FILE = 'simulation.dat'                     , STATUS = 'old'     , FORM = 'formatted' , ACCESS = 'sequential' )
+    OPEN( UNIT = 12 , FILE = 'Blade_Aerodynamical_Data.dat'       , STATUS = 'old'     , FORM = 'formatted' , ACCESS = 'sequential' )
+    OPEN( UNIT = 13 , FILE = 'Hub_Aerodynamical_Data.dat'         , STATUS = 'old'     , FORM = 'formatted' , ACCESS = 'sequential' )
+    OPEN( UNIT = 14 , FILE = 'Nacelle_Aerodynamical_Data.dat'     , STATUS = 'old'     , FORM = 'formatted' , ACCESS = 'sequential' )
+    OPEN( UNIT = 15 , FILE = 'Tower_Aerodynamical_Data.dat'       , STATUS = 'old'     , FORM = 'formatted' , ACCESS = 'sequential' )
+    OPEN( UNIT = 216, FILE = 'extras.dat'                         , STATUS = 'old'     , FORM = 'formatted' , ACCESS = 'sequential' )
+    CLOSE( UNIT = 11 ), CLOSE( UNIT = 12 ), CLOSE( UNIT = 13 )    , CLOSE( UNIT = 14 ), CLOSE( UNIT = 15 ), CLOSE( UNIT = 216 )
+
+generator.dat                                               217
+    gener_inp, en gener_db.f90
+    OPEN( UNIT = 217 , FILE = 'generator.dat'                     , STATUS = 'old'     , FORM = 'formatted' , ACCESS = 'sequential' )
+    CLOSE( UNIT = 217 )
+    
+wind.dat                                                    218
+    rdwind, en wind.f90
+    OPEN( UNIT = 218, FILE = 'wind.dat'                           , STATUS = 'old'     , FORM = 'formatted', ACCESS = 'sequential', IOSTAT = j )
+    CLOSE( UNIT = 218 )
+
+control.dat                                                 219
+    rdctrl, control_sr.f90
+    OPEN( UNIT = 219, FILE = 'control.dat'                        , STATUS = 'old'     , FORM = 'formatted', ACCESS = 'sequential', IOSTAT = j )
+    CLOSE( UNIT = 219 )
+
+*.* (c_P vs. lambda curve)                                  220
+    rdctrl, control_sr.f90
+    OPEN( UNIT = 220, FILE = TRIM(fileName)                       , STATUS = 'old'     , FORM = 'formatted', ACCESS = 'sequential', IOSTAT = j )
+    CLOSE( UNIT = 220 )
+
+bed.dat                                                     221
+    input_bed.f90
+    OPEN( UNIT = 221, FILE = 'bed.dat'                            , STATUS = 'old'     , FORM = 'formatted', ACCESS = 'sequential', IOSTAT = j )
+    CLOSE( UNIT = 221 )
+        
+dofs.dat (versión aero independiente)                       250
+    read_dofs, en new_subroutines.f90
+    OPEN( UNIT = 250 , FILE = 'dofs.dat'                          , STATUS = 'old'     , FORM = 'formatted' , ACCESS = 'sequential' )
+    CLOSE( UNIT = 250 )
+
+Salida
+***************************************************************
+nCN.dat                                 300                 200
+    NLUVLM_Prog, en NLUVLM_Prog.f90
+    OPEN( UNIT = 300 , FILE = 'nCN.dat'                           , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    CLOSE( UNIT = 300 )
+    DESCRIPCÓN
+
+ls&wk.tec                                31                 231
+    Output_print, en NLUVLM_IO.f90
+    OPEN( UNIT = 31 , FILE = 'ls&wk.tec'                          , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    CLOSE( UNIT = 31 )
+
+root_Aero.@i.tec (i = #de estrategia)                       232
+    inter_tp1, en inter_db.f90
+    fileName = TRIM(output)//TRIM('_Aero.@')//TRIM(inttoch(nstra,0))//TRIM('.tec')
+    OPEN( UNIT = 232 , FILE = TRIM(fileName)                    , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    inter_tp3, en inter_db.f90
+    CLOSE( UNIT = 232 )
+
+root_FM.dat                                                 233
+    inter_fam, en inter_db.f90
+    fileName = TRIM(output)//TRIM('_FM.dat')
+    OPEN( UNIT = 233 , FILE = TRIM(fileName)                    , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    inter_out, en inter_db.f90
+    CLOSE( UNIT = 233 )
+
+root_AT.dat                                                 234
+    inter_aet, en inter_db.f90
+    fileName = TRIM(output)//TRIM('_AT.dat')
+    OPEN( UNIT = 234 , FILE = TRIM(fileName)                    , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    inter_out, en inter_db.f90
+    CLOSE( UNIT = 234 )
+
+root_PF.@i.tec (i = #de estrategia)                         235
+    inter_tp1, en inter_db.f90
+    fileName = TRIM(output)//TRIM('_PF.@')//TRIM(inttoch(nstra,0))//TRIM('.tec')
+    OPEN( UNIT = 235 , FILE = TRIM(fileName)                    , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    inter_tp3, en inter_db.f90
+    CLOSE( UNIT = 235 )
+
+root_TP.lay                                                 236
+    inter_tp5, en inter_db.f90
+    CHARACTER(len=4), INTENT(IN) :: ext %! files' extension
+    fileName = TRIM(output)//TRIM('_TP')//TRIM(ext)//TRIM('.lay')
+    OPEN( UNIT = 236 , FILE = TRIM(fileName)                    , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    inter_tp5, en inter_db.f90
+    CLOSE( UNIT = 236 )
+
+root_Stru.@i.tec (i = #de estrategia)                       237
+    inter_tp1, en inter_db.f90
+    fileName = TRIM(output)//TRIM('_Stru.@')//TRIM(inttoch(nstra,0))//TRIM('.tec')
+    OPEN( UNIT = 237 , FILE = TRIM(fileName)                    , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    inter_tp3, en inter_db.f90
+    CLOSE( UNIT = 237 )
+
+root_AR.dat                                                 238
+    inter_tp1, en inter_db.f90
+    fileName = outputRoot(1:outputRootLen)//'.AR.dat'
+    OPEN( UNIT = 238 , FILE = TRIM(fileName)                    , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    inter_out, en inter_db.f90
+    CLOSE( UNIT = 238 )
+
+root_GE.dat                                                 239
+    gener_out, en aeout_db.f90
+    OPEN( UNIT = 239 , FILE = 'root_GE.dat'                     , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    inter_tp1, en inter_db.f90
+    CLOSE( UNIT = 239 )
+
+root_AA.dat                                                 240
+    inter_aoa, en aeout_db_sub.f90
+    OPEN( UNIT = 240 , FILE = 'root_AA.dat'                     , STATUS = 'unknown' , FORM = 'formatted' , ACCESS = 'sequential' )
+    inter_tp1, en inter_db.f90
+    CLOSE( UNIT = 240 )
+
+aeroprobls.dat                                              241
+    projProbl, en introut_sr.f90
+    OPEN( UNIT = 241, FILE='aeroprobls.dat'                     , STATUS = 'old'     , POSITION = 'append', ACTION= 'write' )
+    OPEN( UNIT = 241, FILE='aeroprobls.dat'                     , STATUS = 'new'     , ACTION = 'write' )
+    CLOSE( UNIT = 241 )
+
+nbstMstrsTecplot.tec                                        242
+    nbstMstrsTecplot, en mastrnods_sr.f90
+    OPEN( UNIT = 242, FILE='nbstMstrsTecplot.tec '              , STATUS = 'new'     , ACTION = 'write' )
+    CLOSE( UNIT = 242 )
+
+nbstOmDebug1.dat                                            243
+    nbstOmDebug1, en inter_sr.f90
+    OPEN( UNIT = 243, FILE='nbstOmDebug1.dat'                    , STATUS = 'old'     , POSITION = 'append', ACTION= 'write' )
+    OPEN( UNIT = 243, FILE='nbstOmDebug1.dat'                    , STATUS = 'new'     , ACTION = 'write' )
+    CLOSE( UNIT = 243 )
+
+nbstOmTecplot.tec                                           244
+    nbstOmTecplot, en inter_sr.f90
+    OPEN( UNIT = 244, FILE='nbstOmTecplot.tec '                  , STATUS = 'old'     , POSITION = 'append', ACTION= 'write' )
+    OPEN( UNIT = 244, FILE='nbstOmTecplot.tec '                  , STATUS = 'new'     , ACTION = 'write' )
+    CLOSE( UNIT = 244 )
+
+nbstFcsTecplot.tec                                          245
+    nbstFcsTecplot, en inter_sr.f90
+    OPEN( UNIT = 245, FILE='nbstFcsTecplot.tec '                 , STATUS = 'old'     , POSITION = 'append', ACTION= 'write' )
+    OPEN( UNIT = 245, FILE='nbstFcsTecplot.tec '                 , STATUS = 'new'     , ACTION = 'write' )
+    CLOSE( UNIT = 245 )
+
+nbstOmDebug2.dat                                            246
+    nbstOmDebug2, en inter_sr.f90
+    OPEN( UNIT = 246, FILE='nbstOmDebug2.dat'                    , STATUS = 'old'     , POSITION = 'append', ACTION= 'write' )
+    OPEN( UNIT = 246, FILE='nbstOmDebug2.dat'                    , STATUS = 'new'     , ACTION = 'write' )
+    CLOSE( UNIT = 246 )
+
+nbstFcsTecplotC.tec                                         247
+    nbstFcsTecplot, en inter_sr.f90
+    OPEN( UNIT = 247, FILE='nbstFcsTecplotC.tec '                , STATUS = 'old'     , POSITION = 'append', ACTION= 'write' )
+    OPEN( UNIT = 247, FILE='nbstFcsTecplotC.tec '                , STATUS = 'new'     , ACTION = 'write' )
+    CLOSE( UNIT = 247 )
+
+CPsVelsText.txt                                             248
+    CPsVelsText, en inter_sr.f90
+    OPEN(UNIT = 248, FILE='CPsVelsText.txt'                      , STATUS='old'       , POSITION='append', ACTION='write')
+    OPEN(UNIT = 248, FILE='CPsVelsText.txt'                      , STATUS='new'       , ACTION='write')
+    CLOSE(UNIT = 248)
+
+ringsGsText.txt                                             249
+    ringsGsText, en NLUVLM_Calc.f90
+    OPEN(UNIT = 249, FILE='ringsGsText.txt'                      , STATUS='old'       , POSITION='append', ACTION='write')
+    OPEN(UNIT = 249, FILE='ringsGsText.txt'                      , STATUS='new'       , ACTION='write')
+    CLOSE(UNIT = 249)
+
+AMatLab.m                                                   250
+    AMatLab, en A_matix, en NLUVLM.f90
+    OPEN(UNIT = 250, FILE='AMatLab.m'                            , STATUS='old'       , POSITION='append', ACTION='write')
+    OPEN(UNIT = 250, FILE='AMatLab.m'                            , STATUS='new'       , ACTION='write')
+    CLOSE(UNIT = 250)
+
+Rhs1MatLab.m                                                251
+    Rhs1MatLab, en RHS1_vector, en NLUVLM.f90
+    OPEN(UNIT = 251, FILE='Rhs1MatLab.m'                         , STATUS='old'       , POSITION='append', ACTION='write')
+    OPEN(UNIT = 251, FILE='Rhs1MatLab.m'                         , STATUS='new'       , ACTION='write')
+    CLOSE(UNIT = 251)
+
+AeroFcsOnStruc.dat                                          252
+    AeroFcsOnStruc, en inter_sr.f90
+    OPEN( UNIT = 252, FILE='AeroFcsOnStruc.dat '                 , STATUS = 'old'     , POSITION = 'append', ACTION= 'write' )
+    OPEN( UNIT = 252, FILE='AeroFcsOnStruc.dat '                 , STATUS = 'new'     , ACTION = 'write' )
+    CLOSE( UNIT = 252 )
+    
+
+
+
+
+
