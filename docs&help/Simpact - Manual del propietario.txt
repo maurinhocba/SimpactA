@@ -1,0 +1,1054 @@
+
+| Uso de sets |
+| ----------- | #i
+#i En Stampack, los elementos se agrupan en 'sets', que son conjuntos de elementos idénticos entre
+  sí en su forma (mismo tipo de elementos, con la misma cantidad de nodos y cantidad de puntos de
+  integración, y algunas otras características que desconozco). Luego, existirá una cantidad
+  determinada de sets de cada tipo de elemento presente en el problema, cada set con un nombre y
+  otras características que dependen del tipo de elementos que compongan el set. Cada tipo de
+  elemento se denomina por un número. Hay en total 25 tipos de elementos. Por ejemplo, a los
+  elementos de viga que usamos acá les corresponde el número 08, y a los de cuerpo rígido el 10.
+  
+  La idea es trabajar sobre los sets utilizando una rutina que, irónicamente, se llama 'elemnt'
+  (..\mainp\elemnt.f90); ésta a su vez llama a otras que se denominan 'elemt?' (para los tipos de
+  elementos designados con un número menor que 10) o 'elem??' (para los tipos a los que les
+  corresponde un número mayor o igual que 10). Estas subrutinas se encuentran en los directorios
+  correspondientes a cada tipo de elemento. Por ejemplo, elem10.f90 se encentra en ..\rigid.
+  El llamado de 'elemnt' se hace indicando 'obligatoriamente' la 'TAREA' que se desea realizar y,
+  opcionalmente, entre otros argumentos, se pasa el nombre del set con el que se quiere trabajar.
+  Las tareas tienen nombres prefijados y son tales que algunos tipos de lementos soportan algunas de
+  ellas y otros no.
+  
+  'elemnt' busca entre TODOS los sets, el que tiene el nombre buscado y trata de hacer la tarea
+  pedida. En general se puede decir que la tarea pedida es extraer información de un set y guardarla
+  en arreglos que luego son utilizados para hacer cálculos.
+  
+  Para apoyar todo esto, entre otras cosas, hay un módulo esets_db (..\mainp\esets_db.f90), en el
+  que se guardan algunos datos importantes sobre los sets, como:
+  % msets=25 			(entero, cte)	        máximo número de tipos de elemntos
+  % nelms(msets):		(arreglo enteros)		cantidad de elementos de cada tipo de elemento
+  %												(a cada tipo corresponde un casillero fijo)
+  %												(el orden de los tipos está abajo en ELTY)
+  % esets:				(entero)				cantidad de tipos de elementos usados en la corrida
+  % eset(msets):		(arreglo enteros)		ocupa sólo los primeros 'esets' casilleros, poniendo
+  %                                             en cada uno un númeo que identifica el tipo de
+  %                                             elemento presente
+  % rot_free:			(lógica)				.TRUE. si hay elementos 'rotation-free'
+  % ELTY(msets):		(arreglo palabras)		nombre de los tipos de elementos, a saber:
+  %													(/ &
+  %													'SPOT ','TRUSS','QUAD4','TETRA','SOLID',  &
+  %													'SHELQ','SHELT','BEAM ','SHREV','RIGID',  &
+  %													'BEAM2','BST  ','NBST ','LBST ','RBST ',  &
+  %													'PRISM','QUADL','SOLAG','TTR2D','TR2D ',  &
+  %													'HEAT2','HEAT3','NONE ','TLBST','BSQ  ' /)
+  !ejemplo!: si hay 2 sets de 10 elementos 'TRUSS' y 4 sets de 8 elementos 'NBST', las variables
+  de arriba toman los valores:
+  (lugares)	:	01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+  nelms 	= [  0 20  0  0  0  0  0  0  0  0  0  0 32  0  0  0  0  0  0  0  0  0  0  0  0 ]
+  esets		=    2
+  eset		= [  2 13  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 ]
+  #e
+#i | SUBRUTINA elemnt (..\mainp\elemnt.f90) |
+I/O (entre otras cosas):
+	TASK	obligatoria		string con la tarea a realizar sobre set
+	name	opcional		nobre del set sobre el que realizar TASK
+	flag1	opcional		--
+	flag2	opcional		.TRUE. si encuentra el set que busca
+
+----------------------------------------------------------------------------------------------------
+! Resumen del diagrama de flujo !
+DO iset=1,esets	% 'esets' es la cantidad de tipos de sets
+
+  SELECT CASE (eset(iset))	% en 'eset' están los números que identifican cada tipo de elemento usado
+    % según el CASE llama a la subrutina correspondiente al tipo de elemento, es decir a las 'elemt?'
+	% o las 'elem??'
+	
+	% la llamada para el elemento de viga es	
+    CASE (8)
+      CALL elemt8(TASK, nelms, name, deltc, ttime, istop, &
+                  ivect, flag1, flag2)
+				  
+	% la llamada para el elemento de rigido es	
+    CASE (10)
+      CALL elem10(TASK, nelms, name, deltc, ttime, istop, &
+                  ivect, flag1, flag2)
+				  
+  END SELECT
+  
+  IF (flag2) THEN
+    exit
+  END IF
+
+END DO
+----------------------------------------------------------------------------------------------------
+#e
+#i | SUBRUTINA elemt8 (..\beame\elemt8.f90) |
+
+I/O (entre otras cosas):
+	TASK	obligatoria		string con la tarea a realizar sobre set
+	elsnam	opcional		nombre del set sobre el que se quiere realizar TASK
+	flag1	opcional		--
+	flag2	opcional		.TRUE. si encentra el set que busca
+
+----------------------------------------------------------------------------------------------------
+! Resumen del diagrama de flujo !
+IF ( .NOT.ASSOCIATED (head) ) RETURN	% se asegura que haya una lista de elementos de este tipo
+
+DO	% recorre toda la lista de sets de este tipo de elemento (viga)
+  
+  CALL commv8	% extrae algunos datos del set actual (uno de la lista)
+				% nelem, nnode, ngaus, axesc, nreqs, narch, sname, elset
+				% en 'sname' está el nombre del set actual
+				% 'elset' es un puntero al set actual
+				
+  SELECT CASE (TRIM(task))	% llama a una subrutina según la tarea a realizar
+  
+    % para el caso que nos interesa, que es encontrar la superficie de contacto, ya que para el caso
+	% de una línea es lo mismo que encontrar las conectividades, tenemos:
+	CASE ('SURFAC')	% TASK correspondiente
+     IF (flag2 ) EXIT	% salir del DO-LOOP si anteriormente se encontró el set buscado
+     flag2 = TRIM(elsnam) == TRIM(sname)	% si este es el set buscado, cambiar bandera ...
+     IF (flag2) THEN						% ... y hacer:
+       CALL surf08 (elset%head,elset%nelem)	% obtener superficie de contacto (para eso llama a
+	   % 'surf08' y le pasa el primer elemento del set y el número de elementos del set. 'surf08' 
+	   % toma 'surfa', sea lo que sea que tenga adentro, elimina la lista linkeada de segmentos que
+	   % tenga 'surfa' y pone la nueva lista que da las conectividades del set 'elset' (pero sin
+	   % modificar el nombre de la superficie ni el puntero a la próxima superficie);
+       EXIT									% y salir del DO-LOOP
+     END IF
+	
+  END SELECT
+  
+  IF (flag2) THEN
+    exit
+  END IF
+
+END DO
+----------------------------------------------------------------------------------------------------
+#e
+#i | RESUMEN |
+Arranca con una tarea TASK y tal vez un nombre de set y hace:
+	LOOP sobre los tipos de elementos presentes en el problema (elemnt)
+		LOOP sobre cada set del tipo (elemt? y elem??)
+			trata de aplicar la tarea (y eventualmente encontrar el set dado)
+			si puede, cambia bandera falg2 y sale del loop sobre los sets
+		ENDLOOP
+		si flag2 es .TRUE. sale del loop sobre los tipos de elementos
+	ENDLOOP
+#e
+#i | SUBRUTINAS srch_eleXX y srch_eleXXe | Info. de !elementos! y !sets!
+de !VIGA! se guarda de la siguiente manera:
+> Todo está en el módulo ele08_db (..\beame\ele08_db.f90)
+> Los 'sets' se guardan en variables sin nombre de tipo 'ele08_set' y lo que nos interesa es:
+	%sname: (caracter) 			nombre del set
+	%nelem: (entero) 			número de elementos
+	%nnode:	(entero) 			número de nodos por elemento
+	%head:	(puntero-ele08)		primer elemento del set
+	%tail:	(puntero-ele08)		último elemento del set - NO ESTOY SEGURO QUE NOS INTERESE
+	%next:	(puntero-ele08_set)	próximo set en la lista
+  Además crea dos variables para la lista de sets:
+	% head:	(puntero-ele08_set)	primer set de la lista de sets del problema
+	% tail:	(puntero-ele08_set)	último set de la lista de sets del problema
+> Los 'elementos' que usamos se guardan en variables sin nombre de tipo 'ele08' y lo que nos
+  interesa es:
+	%numel: 		(entero) 			el número identificador - etiqueta externa (no existe interna)
+	%next:			(puntero-ele08)		el próximo elemento del 'set'
+	%lnods(nnode): 	(arreglo enteros) 	conectividades
+> Las 'subrutinas' que hay son:
+  % srch_ele08 (head, anter, posic, name, found)
+  busca un 'set' llamado 'name' en la lista de sets cuyo primer elemento ('set') es 'head'
+  la salida	'posic' es un puntero que apunta al set que se busca
+  			'anter' es un puntero que señala al set anterior al buscado
+  			'found' es una variable lógica, .TRUE. si encontró el set
+  % srch_ele08e (head, anter, posic, kelem, found)
+  busca un 'elemento' designado por 'kelem' en un 'set' cuyo primer elemento es 'head'
+  
+CUIDADO: Notar la diferencia entre el 'head' en 'srch_ele08' (que es un puntero a un set) y el
+de 'srch_ele08e' (que es un puntero a un elemento).
+#e
+#i Las !coordenadas nodales! y todo lo realtivo se guardan en el módulo npo_db (..\mainp\npo_db.f90).
+> Al parecer los nodos no se guardan con un tipo 'nodos' ni nada parecido, sino que los datos de todos
+  los nodos se guardan en arreglos, un arreglo para cada característica (más parecido a como
+  programé yo el nunca bien ponderado PlacaPlana...)
+> Los arreglos que nos interesan son:
+	% label(npoin):			(puntero-arreglo enteros)	node labels
+	% coord(ndime,npoin):	(puntero-arreglo reales)	coordenadas originales
+    % coorc(ndime,npoin):	(puntero-arreglo reales)	coordenadas en el paso previo	
+	% coora(ndime,npoin):	(puntero-arreglo reales)	coordenadas actuales
+	% eule0(1-3  ,npoin): 	(puntero-arreglo reales)	local coordinate system (initial)
+	% euler(neulr,npoin): 	(puntero-arreglo reales)	local coordinate system (actual)
+	% velnp(ndofn,npoin): 	(puntero-arreglo reales)	nodal velocities (assigned at outdyn)
+#e
+#e
+
+| Uso de superficies de contacto |
+| ------------------------------ | #i
+#i Todo lo referente a superficies de contacto se encuentra en el módulo
+'surf_db' (..\mainp\surf_db.f90), excepto algunas rutinas específicas de cada
+tipo de elemento, las que están en los directorios correspondientes a esos
+tipos de elementos.
+
+Una superficie de contacto se define como una lista linkeada de 'segmentos'
+de tipo 'srf_seg' que poseen:
+	%nodes(4):	(arreglo enteros)	conectividades
+	%frees:		(lógica)			.TRUE. si está en un costado
+	%next:		(puntero-srf_seg)	próximo segmento en la lista
+
+La lista se identifica con una superficie guardando sus careacterísticas en un tipo 'cont_srf' que
+posee:
+	%sname:		(palabra)			nombre de la superficie
+	%nelem:		(entero)			cantidad de segmentos que forman la superficie (cantidad de segmentos en la lista)
+	%head,tail:	(punteros-srf_seg)	punteros a la cabeza y la cola de la lista de segmentos que define la superficie
+	%next:		(puntero-cont_srf)	puntero a la superficie que sigue en la lista
+#e
+#i | SUBRUTINA new_srf(surf) (..\mainp\surf_db.f90) |
+Aloca memoria para una nueva superficie con:
+	sin nombre
+	0 elementos
+	iwrit = 0 (no se imprime en la salida, por defecto)
+	los punteros puestos a cero
+y hace que el argumento de entrada 'surf' apunte hacia ella.
+#e
+#i | SUBRUTINA store_segs (..\mainp\surf_db.f90) |
+Llamada: store_segs(head,lnods,nnode,nelem) donde son:
+	head:				in			cabeza de la lista de segmentos que definen la superficie de contacto
+	lnods(nnode,nelem):	out			arreglo de conectividades
+	nnode:				in			cant. de nodos x segmento
+	nelem:				optional	cant. de segmentos
+Toma la lista encabezada por 'head' y guarda las conectividades en el arreglo de enteros 'lnods'.
+#e
+#i | ¿Cómo obtener CONECTIVIDADES de elemntos de viga y NODOS MAESTROS para cuerpos rígidos? |
+Para las !conectividades! lo que hacemos es buscar la superficie de contacto, ya que para una línea,
+es equivalente.
+Para eso usamos 'elemnt'. Como a la larga, 'elemnt' llama a 'elemt8' que a su vez llama a 'surf08',
+la cual escribe sobre 'surfa', borrando lo que tenga adentro, y poniendo en ella la lista linkeada
+de segmentos que da la superficie de contacto, necesitamos hacer dos cosas extra.
+> antes de llamar a 'elemnt' debemos alocar memoria para 'surfa' (con 'new_srf'); y
+> después de llamarla debemos extraer las conectividades y guardarlas como un arreglo (con
+'store_segs').
+(en algún lado ponemos un aviso de error para el caso de que no encuentre el set específico)
+Así, la llamada completa quedaría:
+	CALL new_srf(surfa)
+	CALL elemnt ('SURFAC',name=sname,flag2=found)
+	IF (.NOT.found) CALL runend('RDSURF:ELEMENT SET NOT FOUND       ')
+	CALL store_segs(surfa%head,lcseg,nnseg,nsegm)
+donde son:
+	sname:	el nombre del set del cual queremos la superficie de contacto
+	lcseg:	el arreglo en el que queremos las conectividades
+	nnseg:	cant. de nodos x segmento
+	nsegm:	cant. de segmentos	<----- este es OPCIONAL
+
+Para los !nodos maestros! hacemos algo parecido, pero con trampa. Como las rutinas no están
+preparadas para hacer esto, usamos la de obtener la supericie de contacto haciendo:
+> usamos la bandera 'falg1' para indicar que estamos buscando el master node y no la supericie de
+contacto;
+> usamos 'surfa%nelem' (que es donde va el número de elementos de la lista que define al superficie
+de contacto) para guardar la etiqueta 'interna' del master node.
+Así, la llamada completa quedaría:
+	CALL new_srf(surfa)
+	CALL elemnt ('SURFAC',name=sname,flag2=found,flag1=.TRUE.)  % llamada especial para 'rígidos'
+	IF (.NOT.found) CALL runend('RDSURF:ELEMENT SET NOT FOUND       ')
+	% en surfa%nelem tenemos la etiqueta interna del master node
+donde es:
+	sname:	el nombre del set del cual queremos la superficie de contacto
+
+CUIDADO: Como la llamada debe ser una sola, para no tener que descernir de qué tipo de elemento se
+trata el set puntual, hay que pasar en todas las llamadas flag1=.TRUE., que no es necesario para los
+sets de elementos de viga, pero qe no afecta el uso de 'elemnt8' con TASK=SURFAC.
+¿Qué hago con la llamada a ¿store_segments'?
+#e
+#e
+
+| Uso de cuerpos rígidos |
+| ---------------------- | #i
+| Archivo de datos |
+  Se definen dentro de SET_DEFINITION con tres renglones obligatorios:
+    . los dos primeros con datos del cuerpo rígido; y
+	. el último cerrando la definición.
+  Entre el segundo y el tercero va una lista de números cuyo formato depnde de los datos en los dos
+  primeros renglones. La forma es:
+  
+    ELS_NAME name	ELM_TYPE: RIGID		NELEM = 1
+    N_NODE  4      	R_B_NODE = 5		N_TYPE  2		TMASS = 100
+	$ ELM	SEC			NODES <--- ejemplo de línea comentada
+      1     NumSec		1  2  3  4
+    END_ELEMENT_DEFINITION
+  
+  Donde son:
+  % Primer renglón
+    ELS_NAME: el nombre del set que define el cuerpo rígido
+	ELM_TYPE: siempre RIGID
+	NELEM: es la cantidad exacta de elementos a leer
+  % Segundo renglón
+    N_NODE: cantidad de nudos por elemento
+	R_B_NODE: nudo maestro
+			  si es distinto de 0 debe existir en la definicón general de nudos
+	N_TYPE: toma valores entre 0~6 según el tipo de elemento que forma el cuerpo
+	TMASS: masa total asociada al cuerpo
+		   la distribución de la masa (y en consecuencia las inercias rotacionales) se calcula
+		   según el valor de N_TYPE
+  % Renglones intermedios
+    Va un renglón por cada elemento que conforma el cuerpo rígido.
+	  Primero va el número que identifica al elemento
+	  Después el material que le corresponde
+	  Luego las conectividades
+	Para un cuerpo rígido formado por partículas va un solo renglón.
+	  Van las conectividades; o
+	  Va el nombre del set de puntos definido en GEOMETRY_DEFINITION, precedido de la palabra SET
+	  (SET NOMBRE_DEL_SET)
+	
+  Las posibilidades para la definición se pueden clasificar:
+  > Según las 'entidades' con las que se define el cuerpo rígido:
+      + Como conjunto de nodos --> N_TYPE = 0
+        N_NODE es la cantidad de partículas, pero no es necesario ponerlo
+      + Como conjunto de elementos --> N_TYPE = 1~6
+        N_NODE puede ser 2,3,4 u 8
+  > Según si poseen nodo maestro:
+	  + R_B_NODE = 0 (se asume que los puntos que pertenecen al cuerpo rígido tienen una velocidad
+	    impuesta)
+      + R_B_NODE = número de 'id' de algún nodo definido en GEOMETRY_DEFINITION
+	    A su vez estos casos pueden dividirse según los GLs del master node:
+		  - R_B_NODE tiene velocidad impuesta !¿Qué pasa si hay alguna velocidad impuesta y las otras coordenadas son GLs?!
+		  - R_B_NODE no tiene prescripto el movimiento y por lo tanto es necesario asignar masa al
+		    cuerpo rígido. La asignación de masa puede hacerse de tres maneras:
+			  * densidad del material: en el renglón intermedio se indica el tipo de sección
+			    correspondiente al cuerpo rígido, que es definida en SECTION_DEFINITION, a esa
+				sección corresponde un material, definido en MATERIAL_PROPERTIES. Esa es la
+				densisdad que se utiliza.
+			      TMASS: no se usa
+				  coordenadas: las fija el programa en el centro de masas del cuerpo rígido
+			  * TMASS: masa total asociada al cuerpo
+			      NumSec se lee pero no se usa, por lo que no importa el valor
+				  coordenadas: las fija el programa en el centro de masas del cuerpo rígido
+				  NO ENTIENDO: 'se esume que el cuerpo rígido no comparte nodos con otros cuerpos
+				  flexibles que aporten masa'.
+			  * CONCENTRATED_MASS: una opción a parte en que se imponen la masa puntual y las
+			    inercias rotacionales
+				  NumSec se lee pero no se usa, por lo que no importa el valor
+				  coordenadas: se utilizan las dadas en la definición del nodo maestro en
+				  GEOMETRY_DEFINITION
+
+% La determinación de las masas concentradas se hace como:
+% CONCENTRATED_MASS
+% 	$ NodoMaestro	M_x		M_y		M_z		In_x	In_y	In_z
+% 		5 			100		100		100		400		500		500
+% END_CONCENTRATED_MASS
+#e
+
+| Input files |
+| ----------- | #i
+#i Índice
+1. Heading & Control parameters 					(always)
+3. Geometry definition or nodal coordinates 		(always)
+4. Material data 									(always)
+5. Element data - definition of sets of elements	(always)
+   At least one element set must exist.
+6. Kinematic conditions								(always)
+	A. Displacement constraint boundary condition data, type I   for linear relationship between displacements	- NESCV_NODES -	Un GL de un nodo se pone como comb. lin. de algunos GLs de algunos nodos
+	B. Displacement constraint boundary condition data, type II  for rigid connections							- NDEPD_NODES - Unión rígida entre un master y un slave, con cinemática de cuerpo rígido
+	C. Displacement constraint boundary condition data, type III for fixing a node on a side					- NARIS_NODES - Un slave que se mantiene entre dos master, con el plano (x_l,y_l) normal a la línea qune los dos masters
+	D. Displacement boundary condition data
+	E. Prescribed velocities
+8. Concentrated masses (only if necessary)
+9. Nodal time history data (only if necessary)
+	A. Nodes selected for displacements history output
+	B. Nodes selected for velocities history output
+	C. Nodes selected for accelerations history output
+	D. Nodes selected for internal forces history output
+	E. Nodes and surfaces selected for contact forces history output
+10. Initial conditions (only if necessary)
+	A. Initial displacements (only if necessary)
+	A. Initial local systems (only if necessary)
+	B. Initial velocities (only if necessary)
+11. Damping data (only if necessary)
+12. Load data (only if necessary)
+	A. Global load data sets
+		1 Control data for global load input (always)
+		2 Gravitational data (only if IGRAV 6= 0)
+		3 Concentrated nodal forces (optional)
+		4 Edge loads (optional)
+		5 Surface loads (optional)
+		6 Follower load data (optional)
+	B. Nodal temperatures (optional)
+	C. Previous load and stress state data (optional)
+#e
+| 3.Geometry definition or nodal coordinates | #i
+Ángulos de Euler
+----------------
+Los ángulos que se dan para cada nodo definen la orientación del sistema coordenado de ese nodo al
+inicio de la simulación. A lo largo de la simulación esos sistemas coordenados rotan en función de
+la solución calculada.
+Necesidad de uso: un nodo puede formar parte de muchos elementos y es necesario tener una referencia
+para combinarlos.
+Importancia: los momentos aplicados a un nodo y las velocidades de rotación se dan en referencia a
+esos ejes, no a los globales. Además se usan para determinar la distancia inical para nudos esclavs.
+Y pueden ser utilizados por el programa para definir la orienteacón de losejes de un elemento, en
+que en la definición de elementos se utilice la opción AXES_CO=0 (valor por omisión).
+#e
+| 4.Material data | #i
+Definición de materiales anisótropos para elementos BEAME
+---------------------------------------------------------
+Los datos son !de la sección! y tienen la siguiente forma
+
+  DEFINITION:  SECNO = 1   SECTYP = BEAM
+               NUMAT = 1   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD = 1112.64  TORDEN = 0d0        INERT2 = 138.004448  INERT3 =  13.388768                                           /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA = 9591884000.0 CNTY =          0.0 CNTZ  =          0.0 CNMX  =         0.0 CNMY  =          0.0 CNMZ  =          0.0 / 
+                                 GAY  = 3074321795.0 CTYTZ =          0.0 CTYMX =         0.0 CTYMY =          0.0 CTYMZ =          0.0 /
+                                                     GAZ   = 3074321795.0 CTZMX =         0.0 CTZMY =          0.0 CTZMZ =          0.0 /  
+                                                                          GJ    = 501975262.7 CMXMY =          0.0 CMXMZ =          0.0 /  
+                                                                                              EIY   = 1189713345.0 CMYMZ =          0.0 /
+                                                                                                                   EIZ   =  115422337.5
+La palabra (key-word) NON_HOMomogeneous indica que vas a entrar los datos en
+forma detallada.
+El material NUMAT debe existir pero no se usa para nada
+
+Datos de inercia
+1-Axial density es la densidad por unidad de longitud de la viga
+2-Inert2 e inert3 son los momentos de inercia de area multiplicadas por la
+  densidad, con lo cual son efectivamente momentos de inercia de masa (por
+  unidad de longitud de viga).
+3-Torden es la inercia polar (incluyendo la masa) por unidad de longitud, no
+  es obligatoria, porque sino la das (poner 0 es lo mismo que no darlo) lo
+  calcula como la suma de las dos anteriores (es más, nunca puede ser menor
+  que las dos anteriores)
+
+Rigideces:
+Las seis primeras son los valores de la diagonal (EA, GAY, GAZ, GJ, EIY, EYZ)
+son todas obligatorias, y hay 15 opcionales que son los acoplamientos.
+#e
+| 5.Element data - definition of sets of elements | #i
+Ángulos de Euler para elementos BEAME
+-------------------------------------
+Cada elemento de viga debe tener asociado a cada nodo un sistema local de coordenadas que se utiliza
+para definir la felxión (en 2 sentidos) y la torsión del elemento (que inicialmente puede ser /=0).
+El eje x1 de cada nodo da la dirección del eje elástico de la viga, y los otros 2 !creo! que están
+asociados a las direcciones principales de inercia de la sección. !Todo ésto es espcialmente confuso
+si se tiene en cuenta que la sección no es necesariamente normal al eje de la viga, lo que genera
+una incertidumbre extra sobre la definición de los ejes en cada punto: ¿se definen relativos al eje
+o la sección?!
+Esta definición de las coordenadas de los nodos como componenetes del elemento de viga es
+independiente de la definición hecha para los nodos durante la determinación de sus coordenadas (en
+3.Geometry definition), siendo la relación entre ellas una matriz de rotación, por lo que la
+existencia de unas no anula la de las otras.
+Hay muchas maneras de hacer estas definiciones, la cual se determina utilizando la palabra AXES_CO.
+Si AXES_CO no está presente se utilizan los sistems de ejes definidos para los nodos en la def. de
+la geometría, mientras que si está presente, los datos extras, necesarios deben consignarse en un
+apartado extra que empieza con la palabra clave LOCAL_Systems y termina con END_LOCAL_Systems, y que
+debe incluirse inmediatamente después de terminada la la determinación de conectividades. Por
+ejemplo:
+ELS_NAME = UNION    ELM_TYPE: BEAM  NELEM = 1
+                    NREQS = 0       NNODE = 2   NGAUS = 1   AXES_CO = 1
+  % Elemnt  Sec#    Node 1    Node 2
+    1       22      100       101
+END_ELEMENT_DEFINITION
+LOCAL_SYSTEMS % SET = UNION - Pues AXES_CO /= 0
+  IELEM = 1   % Info para definir los ejes en los nodos del elemento # IELEM (en este caso, como AXES_CO = 1 necesito los ángulos de Euler, una sola terna (igual) para los dos nodos
+% psi(z)    theta(x)    phi(z)
+  90        90          90
+END_LOCAL_SYSTEMS
+
+Notar que el valor elegido para AXES_COde es único para todo el set de elementos.
+El valor dado a AXES_COde establece diferentes maneras de indicar los sistemas coordenados para los
+nodos de los elementos. hay opciones que permiten definir una sola orientación pra todos los nodos y
+otras que permiten definir individualmente orientaciones para cada nodo por separado.
+#e
+| 6.Kinematic conditions | #i
+IMPONER DESPLAZAMIENTOS
+Se hace EXACTAMENTE igual que para imponer velocidades, PERO en la línea que
+dice VEL_SET se agrega la palabra clave DISPLA
+Se debe usar el tipo de línea 3 (definida por puntos)
+Y, eventualmente, INCREM, SIMPLE o LINEAR que decide cómo se hace la
+aceleración dentro de cada intervalo de tiempo.
+Más información en constraints.pdf, págs. 6 y 26.
+#e
+| 11.Damping data | #i
+Ver Help.txt en
+D:\Maestria\Estructuras\Código FF - Original\docs\amortiguamiento
+#e
+| Condiciones iniciales no nulas | #i
+Se especifican al final de todo (luego de las cargas).
+Ejemplo de código
+
+INITIAL_CONDITIONS
+  
+  DISPLACEMENT
+    % nodo      u_x         u_y         u_z         (<-- locales)
+    !NECECITA DEFINICIÓN DE ÁNGULOS DE EULER (LOCAL_SYSTEMS)!
+  END_DISPLACEMENT
+  LOCAL_SYSTEMS
+    % nodo      phi_1       phi_2       phi_3       (<-- grados!!)
+  END_LOCAL_SYSTEMS
+  
+  VELOCITIES
+    % nodo      v_x         v_y         v_z         om_1       om_2       om_3       (<-- rad/s!!)
+    !se pueden definir independientemente de las otras!
+  END_VELOCITIES
+
+END_INITIAL_CONDITIONS
+#e
+#e
+
+| Cambio de sistemas de referencia |
+| -------------------------------- | #i
+| Rotación entre sistema global y sistema local de un nodo |
+Cómo obtener la matriz de rotación
+----------------------------------
+Haciendo:
+lambda = RESHAPE( euler( 1:9 , i ) , (/3,3/) )
+se obtiene la matriz de transformación/rotación que me permite ir de coordenadas locales del nodo i
+a las coordenadas globales haciendo:
+\mathbf{v}_g = \Lambda \mathbf{v}_l
+En donde:
+\Lambda = \left[ \mathbf{t}_{1-g} \, \mathbf{t}_{2-g} \, \mathbf{t}_{3-g} \right]
+es una matriz cuyas columnas son los versores que definen el sistema de coordenadas local del nodo,
+cada uno expresado en coordenadas globales <-- cuidado con eso
+
+Cómo utilizar la matriz de rotación
+-----------------------------------
+Hay que hacer un producto matricial.
+Claramente si quiero ir de locales a globales (L-->G) debo hacer:
+\mathbf{v}_g = \Lambda \mathbf{v}_l
+y si deseo hacer G-->L debo usar la transpuesta:
+\mathbf{v}_l = \Lambda^T \mathbf{v}_g
+En estas expresiones esos vectores tienen dimensión:
+\dim \left( \mathbf{v} \right) = 3 \times 1
+
+En FORTRAN usamos MATMUL. MATMUL tiene la propiedad especial cuando multiplica vectores por matrices
+de que no le asigna 'forma' a los vectores, en el sentido de que para MATMUL las dimensiones de
+$ \mathbf{v} $ son $3 \times 1$ o $1 \times 3$, según si se pre- o posmultiplica por \Lambda
+respectivamente.
+Por lo tanto, siendo:
+vg: vector en coords. globales
+vl: vector en coords. locales
+lambda = RESHAPE( euler( 1:9 , i ) , (/3,3/) )
+lambdaT = TRANSPOSE( lambda )
+se puede hacer:
+> para L-->G:
+  1. usando 'lambda'
+        vg = MATMUL( lambda , vl )
+  2. o transponiendo toda la expresión para usar 'lambdaT'
+        vg = MATMUL( vl , lambdaT )
+
+> para G-->L:
+  1. usando 'lambda'
+        vl = MATMUL( lambdaT , vg )
+  2. o transponiendo toda la expresión para usar 'lambda'
+        vl = MATMUL( vg , lambda )
+#e
+
+| Uso de 'time(k)' |
+| ---------------- | #i
+#i | Durante el proceso de cálculo de la solución |
+!tiempos acumulados!                                     !tiempo final!
+time(  1 )   :Initial computations                       time(  1 + 20 ) = time( 21 )
+time(  2 )   :Restart input-output                       time(  2 + 20 ) = time( 22 )
+time(  4 )   :Contact data input                         time(  4 + 20 ) = time( 24 )
+time(  5 )   :Gaussian variables intializat              time(  5 + 20 ) = time( 25 )
+time(  6 )   :Data input                                 time(  6 + 20 ) = time( 26 )
+time(  7 )   :Initial conditions                         time(  7 + 20 ) = time( 27 )
+time(  8 )   :Initial stress state                       time(  8 + 20 ) = time( 28 )
+time(  9 )   :Nodal load vector comput                   time(  9 + 20 ) = time( 29 )
+time( 10 )   :Lumped mass computation                    time( 10 + 20 ) = time( 30 )
+time( 11 )   :Mesh refinament evaluation                 time( 11 + 20 ) = time( 31 )
+time( 12 )   :Dumping of springback data                 time( 12 + 20 ) = time( 32 )
+time( 13 )   :Time integration                           time( 13 + 20 ) = time( 33 )
+time( 14 )   :Residual forces computation                time( 14 + 20 ) = time( 34 )
+time( 15 )   :Results output                             time( 15 + 20 ) = time( 35 )
+time( 16 )   :Contact computations                       time( 16 + 20 ) = time( 36 )
+time( 17 )   :Time increment evaluation                  time( 17 + 20 ) = time( 37 )
+time( 18 )   :File closing                               time( 18 + 20 ) = time( 38 )
+time( 19 )   :Total process time                         time( 19 + 20 ) = time( 39 )
+time( 20 )   :Aerodynamic and interaction calculations   time( 20 + 20 ) = time( 40 )
+% timeo   :DYNAMIC ANALYSIS - no se usa en realidad, se calcula en 'byebye'
+#e
+#i | En 'byebye' |
+% calcula:
+%   > timeo            = time(19)           - time(1)              - time(12)                   - time(18)     - time(20)
+%   > DYNAMIC ANALYSIS = Total process time - Initial computations - Dumping of springback data - File closing - Aero.
+!porcentaje respecto a 'time(  1 )'!    !porcentaje respecto a 'time( 19 )'!
+time(  2 + 20 ) = time( 22 )            time( 11 + 20 ) = time( 31 )
+time(  4 + 20 ) = time( 24 )            time( 12 + 20 ) = time( 32 )
+time(  5 + 20 ) = time( 25 )            time( 13 + 20 ) = time( 33 )
+time(  6 + 20 ) = time( 26 )            time( 14 + 20 ) = time( 34 )
+time(  7 + 20 ) = time( 27 )            time( 15 + 20 ) = time( 35 )
+time(  8 + 20 ) = time( 28 )            time( 16 + 20 ) = time( 36 )
+time(  9 + 20 ) = time( 29 )            time( 17 + 20 ) = time( 37 )
+time( 10 + 20 ) = time( 30 )            ----------------------------
+                                        time(  1 + 20 ) = time( 21 )
+                                        time( 12 + 20 ) = time( 32 ) % lo hace 2 veces
+                                        time( 18 + 20 ) = time( 38 ) % podría incluirlo en el DO en el que hace los otros
+                                        timeop
+                                        time( 20 + 20 ) = time( 40 )
+#e
+#e
+
+| VELOCIDADES: arreglos, suavizado, otros |
+| --------------------------------------- | #i
+#i | Arreglos |
+Existen dos arregos donde se guardan las velocidades:
+> veloc(neq)            vector que contiene las velocidades crudas, como
+                        salen del proceso de integración numérica y sólo para
+                        los GLs activos en la estrategia
+> velnp(ndofn,npoin)    matriz que contiene las velocidades suavizadas para
+                        todos los GLs de la malla
+#e
+#i | Suavizado |
+Justificación
+-------------
+En el proceso de integración numérica, las velocidades se calculan como:
+v^{t+\Delta t} = v^t + a \Delta t
+Como las aceleraciones se calculan dividiendo las fuerzas residuales por la
+inercia correspondiente, tienen un comportamiento oscilatorio alrededor de un
+valor medio, y esas oscilaciones son heredadas, al menos en parte, por las
+velocidades. => si se va a trabajar con las velocidades conviene suavizarlas.
+
+Procedimiento en Simpact
+------------------------
+Las velocidades se calculan utilizando en el proceso de integración siempre
+los valores de veloc(neq) (en explit (..\mainp\explit.f90), línea 176) como
+veloc(ieq) = veloc(ieq) + acelr(ieq)*dt2.
+
+Sin embargo, al guardarlas en velnp(ndofn,npoin), se las modifica haciendo
+\bar{v}^{t+\Delta t} = \frac{ v^{t+\Delta t} + \bar{v}^t v_{fac} }{1+v_{fac}}
+(en velnpo (..\mainp\velnpo.f90), línea 31) como
+velnp(idofn,ipoin) = (veloc(ieq) + velnp(idofn,ipoin) * vefac )/vf1.
+#e
+#i | NODAL TIME HISTORY DATA |
+En el código original se imprimen las velocidades sin suavizar, aunque tengo
+intención de modificarlo para imrimir las suavizadas, pues son las que quiero
+usar para la interacción.
+
+La salida la hace outdyn (..\mainp\outdyn.f90) en línea 193.
+#e
+#i | Input |
+Las velocidades guardadas en velnp(idofn,ipoin) son siempre suavizadas.
+El valor por defecto del factor v_{fac} (vefac) es 0, con lo que el suavizado
+no tine ningún efecto.
+
+Si se desea hacer efectivo el suavizado se debe dar un valor a v_{fac}
+utilizando la palabra clave VEFAC en los parámetros de control de tiempo como
+%  TIME: /
+%        VELFAC  = #e.#e ! factor para el suavizado de velocidades
+#e
+#e
+
+| Amortiguamiento |
+| --------------- | #i
+El amortiguamiento en Simpact puede ser 'viscoso' o 'no viscoso'. !En lo que
+sigue me refiero sólo al 'viscoso'!
+#i | Teoría vs. Práctica |
+En el manual de Stampack dice que el amortiguamiento entra en el sistema de
+ecuaciones de movimiento como una fuerza viscosa en los GLs que tienen amort.
+F_{visc}^i = 2 \alpha^i m^i v^i
+siendo m^i la inercia en la diagonal de la matriz de masa, asociada al GL y
+v^i la velocidad traslacional o de giro y \alpha^i es un factor que se
+calcula en función de los datos de entrada AMPLI y FREQ.
+
+En la práctica esto no se hace así, sino modificando las velocidades
+calculadas por integración de las aceleraciones (vector 'veloc', sin
+suavizar) como
+veloc(ieq) = veloc(ieq) * [1-2*damp(ieq)*dtime].
+
+La equivalencia entre estas dos cosas se explica fácilmente.
+Supongamos que el algoritmo de integración no calcula velocidades en tiempos
+diferentes a aquellos en los que determina aceleraciones y desplazamientos,
+sino en los mismos.
+Digamos que la aceleración en la iteración n es
+    \ddot{u}^n = frac{1}{m}( F_0^n - F_{visc}^n )
+               = \ddot{u}_0^n + \Delta \ddot{u}{visc}^n
+siendo
+    \Delta \ddot{u}_{visc}^n = - \frac{F_{visc}^n}{m}
+                             = - \frac{2 \alpha m \dot{u}^n}{m}
+                             = - 2 \alpha \dot{u}^n
+Luego, la velocidad en la misma iteración será
+    \dot{u}^n = \dot{u}^{n-1} + \ddot{u}^n \Delta t
+              = \dot{u}^{n-1} + \ddot{u}_0^n \Delta t - 2 \alpha \dot{u}^n \Delta t
+Llamando \dot{u}_0^n = \dot{u}^{n-1} + \ddot{u}_0^n \Delta t y despejando
+\dot{u}^n se tiene
+    \dot{u}^n = \frac{\dot{u}_0^n}{1+2 \alpha \Delta t}
+que puede escribirse como
+    \dot{u}^n = \frac{\dot{u}_0^n (1 - 2 \alpha \Delta t)}{(1 + 2 \alpha \Delta t) (1 - 2 \alpha \Delta t)}
+              = \frac{\dot{u}_0^n (1 - 2 \alpha \Delta t)}{1^2 - (2 \alpha \Delta t)^2}
+Si \Delta t es muy peuqeño, como sucede generalmente en la integración
+explícita, el denominador resulta aproximadamente 1, por lo tanto
+    \dot{u}^n \aprox \dot{u}_0^n (1 - 2 \alpha \Delta t)
+#e
+#i | Rutinas |
+mainpg(179) --> dynamic(107) --> explit(108) --> dampin
+'dampin' modifica las velocidades en 'veloc' (las que salen de integrar las
+aceleraciones, sin suavizar) por un factor que depende del coeficiente \alpha
+    factor = 1d0 - 2d0*damp(ieq)*dtime
+    veloc(ieq) = factor*veloc(ieq)
+con variables:
+neq: cantidad de ecs. activas
+damp: vector con coeficientes \alpha (que son calculados a partir de los
+      datos de entrada AMPLI y FREQ) - el de cada GL resulta de superponer
+      los \alpha del nodo correspondiente, como perteneciente a diferentes
+      SETs de amortiguamiento (esto se hace en 'gres_damp' y
+      'add_node_to_array' (..\mainp\damp_db.f90).
+      Tiene tantos lugares como GLs activos haya.
+      Es allocado sólo si ndamp (!!number of damping data sets) es >1
+
+Simpact (..\mainp\mainpg.f90 - 152) --> initial_comp(21) --> eqnums(327) --> gres_damp(241,253) --> add_node_to_array
+
+TAMBIÉN include_damp (..\aero\gener_db.f90) MODIFICA A damp PARA AGREGAR EL AMORTIGUAMIENTO DEL ROTOR
+mainpg(152) --> initial_comp(60) --> include_damp
+
+1.- Lectura de datos y cálculo del valor de "alpha" para cada DAMP_SET
+Simpact (..\mainp\mainpg.f90 - 132) --> data_inp (..\mainp\data_inp.f90 - 38) --> rddamp(..\mainp\damp_db.f90 - 100) --> rd_damps (..\mainp\damp_db.f90)  % read a new set - for standard (viscous) damp, reads AMPLI and FREQ parameters (and calculates its corresponding "alpha" value, stored in "ds%xitat(1)") and stores set's nodes' labels
+2.- Cálculo del valor definitivo de "alpha" para cada nodo
+Simpact (..\mainp\mainpg.f90 - 152) --> initial_comp (..\mainp\initial_comp.f90 - 23) --> eqnums (..\mainp\eqnums.f90 - 327) --> gres_damp (..\mainp\damp_db.f90 - 241,253) --> add_node_to_array (..\mainp\damp_db.f90) % acumulates for each node its "alpha" values as it belongs to many DAMP_SETs
+Simpact (..\mainp\mainpg.f90 - 152) --> initial_comp (..\mainp\initial_comp.f90 - 66) --> include_damp (..\aero\inter_db.f90) % Calculates damp coefficient "alpha" for the rotor and adds it
+3.- Actualización de "force" y "ymass" (y consecuentemente la componente de "damp" que simula el generador)
+Simpact (..\mainp\mainpg.f90 - 179) --> dynamic(..\mainp\dynamic.f90 - 107) --> explit(..\mainp\explit.f90 -  65) --> update_dump (..\aero\inter_db.f90)
+4.- Aplicación del amortiguamiento por disminución de velocidades
+Simpact (..\mainp\mainpg.f90 - 179) --> dynamic(..\mainp\dynamic.f90 - 107) --> explit(..\mainp\explit.f90 - 108) --> dampin (..\mainp\dampin.f90) % includes damping diminishing the velocities
+
+LO MISMO, PERO EN FORMATO FORTRAN
+Simpact --> DO % endless over STRATEGIES
+              
+              SELECT CASE (ptype)
+              CASE ("EXPLCT") %EXPLiCiT time integration
+                SELECT CASE (actio)
+                CASE ('NEW','NSTRA0','NSTRA2')
+                  CALL data_inp --> CALL rddamp --> CALL rd_damps % for standard (viscous) damp, reads AMPLI and FREQ parameters (and calculates its corresponding "alpha" value, stored in "ds%xitat(1)") and stores set's nodes' labels
+                                    CALL aero_data -->  CALL gener_inp % read damp coeff. to simulate generator power extraction
+                ENDSELECT
+              ENDSELECT
+              
+              %=======  Initial calculations  ===================================
+              IF (actio/='RESTAR') % it means NEW or NSTRA0
+                CALL initial_comp -->   CALL eqnums --> CALL gres_damp -->  CALL add_node_to_array % accumulates for each node its "alpha" values as it may belong to many DAMP_SETs
+                                        IF (aero)
+                                          CALL include_damp % writes damp coeff. in "damp" to simulate generator power extraction
+                                  	    ENDIF
+              ENDIF
+              
+              %=======  Step-by-step solution  =================================
+              IF (static) % pseudo STATIC analysis - not used in aerod. version
+              ELSE        % standard DYNAMIC analysis
+                CALL dynamic -->    DO  % endless over time steps
+                                      CALL explit -->   CALL update_damp % updates rotor damping because of change in DoFs' inertia 
+                                                        CALL dampin % includes damping diminishing the velocities
+                                    ENDDO
+              ENDIF
+              
+            ENDDO % end loop over strategies
+#e
+#e
+
+| Masa/Inercia |
+| ------------ | #i
+Hay dos arreglos:
+emass(ndofn,npoin): nodal mass
+ymass(neq): equivalent DOF mass (ensamblada, considerando dependencias nodales)
+            cambia en explit.f90 (62) porque a veces las relaciones maestro-esclavo cambian
+
+Para calcular aceleraciones usa ymass.
+Es el que hay que usar para incluir al amortiguamiento.
+
+#i | Inercia rotacional en vigas |
+Generalmente es un problema. Estos elementos suelen condicionar el Dt_crít,
+por lo que se usan, eventualmente, unas correcciones (Hughes) y se multiplican por 4.
+Yo, para no tener problemas con eso durante la validación, saqué todo lo relacionado
+a la inercia torsional e hice una versión especial para eso (v720bHF).
+
+Todo esto se hace en ..\beame\LUMAS8.fi. (para v710)
+                o en ..\beame\MASMT8.fi. (para v720)
+
+El tipo de elemento se define en ..\beame\ele08_db.f90.
+Para decidir si hace modificaciones usa
+> ele08%jac(1) (jac es el jacobiano en el punto de Gauss) que para los lementos de vigas de dos nodos es proporcional a su longitud
+> aux1 = [A/I2/2]^1/2 (algo así como la mitad de los radios de giro de la sección)
+> aux3 = [A/I3/2]^1/2 (algo así como la mitad de los radios de giro de la sección)
+y modifica los valores de iner(1:3) que son
+> iner(1) = sec%rprop(2)
+> iner(2) = sec%rprop(3)
+> iner(3) = sec%rprop(4)
+SEC es de tipo SECTION, definida en mat_dba.f90 y RPROP es un arreglo de propiedades cuyo contenido depende del tipo de sección (SECTION%SECTY)
+En el caso de BEAME las secciones se tratan en sc_beam.fi.
+Es SECTION%SECTY=42
+
+
+¿CÓMO ESLA HISTORIA DE CÁLCULO?
+Las llamadas a rutinas son así:
+mainpg -> data_inp -> inpdat -> mat_inp -> sc_beam y este finalmente lee los datos y los guarda según el tipo de material:
+
+  MATERIAL ISÓTROPO
+    sec%rprop( 2) = sec%rprop( 8)*dens
+    sec%rprop( 3) = sec%rprop( 9)*dens
+    sec%rprop( 4) = sec%rprop(10)*dens
+    sec%rprop( 8) = 'TORINE - Torsional inertia                   (propiedad de la sección, por lo tanto es por unidad de longitud)
+    sec%rprop( 9) = 'INERT2 - Moment of inertia about local 2 ax  (propiedad de la sección, por lo tanto es por unidad de longitud)
+    sec%rprop(10) = 'INERT3 - Moment of inertia about local 3 ax  (propiedad de la sección, por lo tanto es por unidad de longitud)
+    sec%rprop(19) = dens
+  % aquí los valores sec%rprop(8:10) son propiedades de área, solamente y los valores sec%rprop(2:4) son inercias rotacionales (para la matriz de masa directamente)
+
+  MATERIAL NO-HOMOGÉNEO
+  ELSE  !non-homogeneous material
+   ! for mass matrix only
+   sec%rprop( 1)=getrea('AXIALD',0D0,'!Axial density ....................')
+   sec%rprop( 2)=getrea('TORDEN',0D0,'!Torsional density ................')
+   sec%rprop( 3)=getrea('INERT2',0D0,'!Moment of inertia about local 2 ax')
+   sec%rprop( 4)=getrea('INERT3',0D0,'!Moment of inertia about local 3 ax')
+   IF(sec%rprop(2) == 0d0)sec%rprop(2) =sec%rprop(3)+sec%rprop(4) 
+   !
+   sec%rprop( 5)=getrea('EA    ',0D0,'!Axial stiffness ..................')
+   sec%rprop( 6)=getrea('GAY   ',0D0,'!Shear Y Stiffness ................')
+   sec%rprop( 7)=getrea('GAZ   ',0D0,'!Shear Z Stiffness ................')
+   sec%rprop( 8)=getrea('GJ    ',0D0,'!Torsional stiffness ..............')
+   sec%rprop( 9)=getrea('EIY   ',0D0,'!Bending Y Stiffness ..............')
+   sec%rprop(10)=getrea('EIZ   ',0D0,'!Bending Z Stiffness...............')
+   sec%rprop(11)=getrea('CNTY  ',0D0,' Coupling N-TY.....................')
+   sec%rprop(12)=getrea('CNTZ  ',0D0,' Coupling N-TZ.....................')
+   sec%rprop(13)=getrea('CNMX  ',0D0,' Coupling N-MX.....................')
+   sec%rprop(14)=getrea('CNMY  ',0D0,' Coupling N-MY.....................')
+   sec%rprop(15)=getrea('CNMZ  ',0D0,' Coupling N-MZ.....................')
+   sec%rprop(16)=getrea('CTYTZ ',0D0,' Coupling TY-TZ....................')
+   sec%rprop(17)=getrea('CTYTZ ',0D0,' Coupling TY-TZ....................')
+   sec%rprop(18)=getrea('CTYMX ',0D0,' Coupling TY-MX....................')
+   sec%rprop(19)=getrea('CTYMY ',0D0,' Coupling TY-MY....................')
+   sec%rprop(20)=getrea('CTZMX ',0D0,' Coupling TZ-MX....................')
+   sec%rprop(21)=getrea('CTZMY ',0D0,' Coupling TZ-MY....................')
+   sec%rprop(22)=getrea('CTZMZ ',0D0,' Coupling TZ-MZ....................')
+   sec%rprop(23)=getrea('CMXMY ',0D0,' Coupling MX-MY....................')
+   sec%rprop(24)=getrea('CMXMZ ',0D0,' Coupling MX-MZ....................')
+   sec%rprop(25)=getrea('CMYMZ ',0D0,' Coupling MY-MZ....................')
+   IF (visco )THEN
+     e = sec%mtbas%prope(1)  !young modulus
+     g = sec%mtbas%prope(3)  !shear modulus
+     sec%rprop(26) = sec%rprop( 5)*mu/e
+     sec%rprop(27) = sec%rprop( 6)*mu/g
+     sec%rprop(28) = sec%rprop( 7)*mu/g
+     sec%rprop(29) = sec%rprop( 8)*mu/g
+     sec%rprop(30) = sec%rprop( 9)*mu/e
+     sec%rprop(31) = sec%rprop(10)*mu/e
+     sec%rprop(32) = mu/e
+   END IF
+  END IF
+
+vuelve a mainpg y hace
+mainpg -> initial_comp -> masmtx -> elemnt ('LUMASS') -> elemt8 -> masmt8 y ahí corrige por Hughes usando las variables
+> iner(1) = sec%rprop(2) ! torsion - Torsional inertia                   DEL ELEMENTO DE VIGA (con longitud no unitaria)
+> iner(2) = sec%rprop(3) ! flex    - Moment of inertia about local 2 ax  DEL ELEMENTO DE VIGA (con longitud no unitaria)
+> iner(3) = sec%rprop(4) ! flex    - Moment of inertia about local 3 ax  DEL ELEMENTO DE VIGA (con longitud no unitaria)
+y luego usa esos valores corregidos para rotarlos y sumarlos sobre la diagonal de la matriz de masa
+#e
+#e
+
+| Materiales |
+| ---------- | #i
+| Materiales isótropos: lectura y cálculo de matriz constitutiva | #i
+Los datos se leen con ...\matdb\mat_ela.fi. Aquí se calculan algunas consts.,
+Por ejemplo, si se dan E y nu, se calculan K y G.
+
+K es el módulo de compresibilidad o bulk modulus. Mide la resistencia a la
+compresión uniforme y, por tanto, indica el aumento de presión requerido para
+causar una disminución unitaria de volumen. Se mide en Pa.
+K(E,nu) = E  / [3(1 -2nu)]
+ (E,G ) = EG / [3(3G-E  )]      
+La relación entre E, G y nu es
+G = E / [2(1+nu)]
+es decir que G es un poco menos que la mitad de E.
+(más relacs. en https://es.wikipedia.org/wiki/M%C3%B3dulo_de_compresibilidad)
+
+La matriz constitutiva para estado plano de tensión se determina en
+...\matdb\minp_01.fi a partir del vector
+              1 2  3 4  5    6    7   8   9   10
+mat%prope = [ E nu G K rho alpha C11 C12 C22 C33 ]
+(siendo alpha el coeficiente de dilatación térmica)
+como
+    [ C11 C12  0  ]     E    [ 1    nu       0   ]
+C = [     C22  0  ] = ------ [ nu   1        0   ]
+    [ sim.    C33 ]   1-nu^2 [ 0    0   (1-nu)/2 ]
+
+Notar lo siguiente:
+Si  nu=0,5  =>  K = Inf
+Si  nu>0,5  =>  K < 1   lo que implica expansión asociada a compresión uniforme
+Si  nu=1    =>  Cij=Inf
+Si  nu>1    =>  Cij<1   lo que implica deformaciones negativas asociadas a tensiones positivas en la misma dirección
+En cualquier caso, no hay problemas con G, sólo que se obtienen valores muy
+chicos respecto a los E asociados.
+#e
+#e
+
+| Tiempo crítico |
+| -------------- | #i
+#i | Cálculo para vigas |
+En elementos 'lineales' la forma más conservativa de hacerlo sería calcular
+todas las frecuencias naturales de cada elemento (serían unas 12 por elemento
+si se consideran 2 nudos de 6 GL cada uno) y, tomando la frecuencia más alta,
+calcular el período correspondiente.
+
+En la mayoría de los códigos lo que se hace es asumir que la frec. más alta
+va a estar asocada a la vibración axial, por lo que se calcula cuánto tarda
+una onda en atravesar el elemento.
+Para ello se obtiene primero la velocidad de la onda, como
+v = \sqrt{\frac{E}{\rho}}
+y luego el tiempo crítico de ese elemento es t = \frac{L}{v}, donde L es la
+longitud del mismo.
+Esto se repite para todos los elementos y se toma el menor.
+#e
+#i | Posible problema |
+Fernando cree que esto no está del todo bien para algunos casos especiales.
+Por ejemplo, si el elemento es muy corto, el alto y ancho de la viga comienzn
+a ser comparables con (o mayores que) la longitud del elemento.
+Esto tien como consecuencia que un giro de las secciones extremas del elmento
+produzca velocidades importantes de los puntos más alejados del eje neutro.
+
+Puede que este efecto deba ser tenido en centa para calcular el dt_crit (de
+hecho, lo considera en el caso de elementos de placa triangulares, por ej.).
+
+Fernando no tiene claro cómo debería ser esa dependencia del dt_crit en func.
+de la relación de aspecto del elemento.
+
+Por lo qu entendí, cree que algo de todo eso puede subsanarse utilizando masa
+consistente (como es el caso de v720, ejecutables que tengo en la carpeta de
+Estructuras de la maestría).
+#e
+#e
+
+| restart |
+| ------- | #i
+#i Hay que decirle al código al llamarlo (línea de comandos o command.dat):
+    'v720b RES INP=inputFile.dat RSF=restartFile.rsf FRQ=minsFordump'
+(mirar al final de ..\mainp\beginp.f90, todo bien explicado)
+
+El archivo de restart lo escribe (organiza la escritura) dumpin
+(..\mainp\dumpin.f90) llamado en dynamic (..\mainp\dynamic.f90, línea 162) y
+lo lee (organiza la lectura) restar (..\mainp\restar.f90) llamado en mainpg
+(..\mainp\mainpg.f90, línea 86).
+
+El archivo lo crea openfi (..\input\c_input.f90, línea 787) con UNIT=50 con
+nombre TRIM(output)//TRIM(rest) donde:
+- output es la raíz dada en la línea de comandos o en el archivo command.dat
+  para el nombre del archivo de salida (por defecto es la raíz del archivo de
+  entrada); y
+- rest es un número entre 001 y 999.
+El archivo guardado es binario.
+Para el restart al archivo es abierto también por openfi
+(..\input\c_input.f90, línea 864) con UNIT=51.
+
+NOTAR que los archivos con las bases de datos tienen extensión .###, pero
+para dar el comando de restart hay que usar un nombre de archivo .rsf (que
+también son generados por Simpact, pero son diferentes de los otros).
+En general habrá uno o dos por cada estrategia y uno sin .@#. en caso de que
+la corrida haya concluido. Cualquiera puede usarse para el reinicio, según
+el utilizado se hará en el tiempo correspondiente.
+#e
+#i La idea general es escribir TODAS las variables que hacen falta para
+continuar la corrida desde el momento en que se llama a dumpin
+(línea 162 de dynamic (..\mainp\dynamic.f90), al final).
+
+!De las variables sólo se guarda el contenido en un orden específico, sin
+etiquetar!, por lo que el archivo de restart debe ser leído exactamente en el
+mismo orden en que fue escrito, considerando los tamaños de arreglos, etc.
+
+Para arreglos grandes, las sentencias de escritura con do-loops deben darse
+en forma explícita porque si no, FORTRAN no imprime todos los datos (por un
+problema de stackoverflow).
+Como ejemplos ver dump_npo y rest_npo (..\mainp\npo_db.f90).
+
+Los datos que hay que guardar y leer son:
+- todos los arreglos y las variables declarados en StructuresA y ArraysA
+  (..\aero\aero_mods.f90);
+- todos los arreglos y las variables declarados en inter_db
+  (..\aero\inter_db.f90)
+  incluyendo las correspondientes a la db del generador;
+- todos los arreglos y las variables declarados en aeout_db
+  (..\aero\aeout_db.f90)
+
+VARIABLES CON TYPE DEFINIDOS POR EL USUARIO
+(un ejemplo en los archivos ele08_db.f90, dumpi8.fi y resta8.fi)
+Al parecer hay que ir guardando cada parte de la variable, digamos:
+- recorrer el arreglo de elementos type
+- para cada uno, guardar cada subparte, aunque sea un arreglo
+y así metiéndose cada vez más adentro en las subsubpartes.
+
+PUNTEROS: no se guardan, se rehacen al leer el archivo, por ejemplo, con las
+listas linkeadas, no guarda el puntero al próximo elemento de la lista.
+Lo que hace es rearmar la lista cuando va leyendo el archivo (al reiniciar),
+utilizando la misma subrutina que usó para armar la lista originalmente
+(por ejempo add_pair (..\aero\inter_db.f90)).
+#e
+#e
+
+| Integración Temporal |
+| -------------------- | #i
+Se usa el método de diferencias centrales.
+Con Omar Ortiz vimos la fórmula de diferencias finitas llamada "diferencias
+centrales" para aproximar derivadas primeras con orden h^2.
+D_0 f_j = \frac{1}{2h} ( f_{j+1} - f_{j-1} )
+siendo h el paso de la grilla.
+
+El métod de integración en Simpact usa esa fórmula, pero hace tres cambios:
+1.- despeja f_{j+1} en función de f_{j-1} y de la derivada en j (D_0 f_j)
+2.- usa \Delta t = 2h, de tal manera que h=\frac{\Delta t}{2}
+3.- deja variar el paso de cálculo
+
+Así aproxima las velocidades medio paso adelante con las velocidades medio
+paso atrás y las aceleraciones en el paso actual.
+Luego aplica la misma idea para calcular los desplazamientos.
+#e
+
+| Condiciones iniciales no-nulas |
+| ------------------------------ |#i
+Para ver cómo se dan como dato, buscar en | Input files |.
+
+Arreglos y cálculos
+Lectura: se leen en
+           mainp --> data_inp --> intime
+         eso pone los datos en los arreglos de npo_db
+           coorc <-- desplazaientos
+           euler <-- ángulos (sistemas locales)
+           velnp <-- velocidades
+Cálculo: en el caso de los despls., para iniciar la corrida se hace
+           coora = coora + coorc
+         en
+           initial_comp --> wrtpos --> actcd
+Interacción: es un quilombín
+             + para los desplazamientos no hay drama, porque en inter_ini uso
+               coord (coords. originales de definición del problema), que son
+               independientes de coora y coorc
+             + para los sistemas locales sí hay problemas, porque al leer las
+               conds. iniciales, las guarda derecho en el arreglo de trabajo
+               y no hay una copia de las orientaciones usadas en la
+               definición, por lo que en inter_ini se conecta la GA sin
+               deformar con la ME con los giros de las condiciones iniciales,
+               y eso es cualquiera
+               ** para arreglarlo haría falta guardar los sistemas locales en
+                  otro arreglo y que queden ahí **
+             !notar que, en general, si hay desplazamientos compatibles con
+             deformaciones elásticas, habrá giros, aunque estos sean muy
+             pequeños!
+             + para las velocidades supongo que no hay drama, ya que estas no
+               intervienen en la definición de los vectores posición relativa
+               inicial - por supuesto, van a ser cualquier cosa si, además de
+               vel. inics., hay giros iniciales no-nulos, porque para
+               transferirlas se usan los vectores posición relativa inicial,
+               que dependen de los giros
+#e
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

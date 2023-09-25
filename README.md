@@ -2,6 +2,5 @@
 
 ## Tareas
 
-* buscar en "\desarrollo hta\Aerodinamica\Info código AeroM\" lo que deba ir con las fuentes
-* desactivar el uso de subrutinas de debbug
+* resolver el tema de las llamadas a "vecasi" y "gaussq" con escalares (de manera inteligente, fortran conforming y eficiente computacionalmente (y repensar los cambios hechos en "sc_shel2.fi") - [revisar si la versión que compilaba Fer tiene alguna directiva o similar que ignore estos problemas]
 * ...

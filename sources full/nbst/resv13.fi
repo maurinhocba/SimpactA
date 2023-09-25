@@ -1,0 +1,481 @@
+ SUBROUTINE resv13( nele0,head0, iffix, coora, resid, logst, ierr, ttime, &
+                    bottom, top, coorb, coort, ifact, nbs, bhead, stint, &
+                    shearc,moments,factors,ninv,velnp)
+ !-------------------------------------------------------------------
+ !
+ !          EVALUATION OF INTERNAL FORCES ELEMENT TL BBST++
+ !
+ !-------------------------------------------------------------------
+ !$ USE omp_lib
+ USE gvar_db, ONLY : updiv,newiv,elastic
+ USE kinc_db, ONLY : ndepd
+ IMPLICIT NONE
+
+ ! dummy arguments
+ LOGICAL, INTENT(IN) :: logst       !flags for small or large strain analysis
+ LOGICAL, INTENT(IN) :: bottom,top  !flags for top and bottom surface computation
+ INTEGER (kind=4), INTENT(IN) :: nele0,     & !number of elements in the set
+                                 iffix(:), &  !nodal fixities
+                                 nbs          !number of branching sides
+ INTEGER (kind=4), INTENT(OUT) :: ierr,     & !flag for error detection
+                               ifact(:)       !weigths for surface computation
+ REAL(kind=8),INTENT (IN) :: coora(:,:),    & !present coordinates
+                             velnp(:,:),    & !present velocities
+                                  ttime       !present total time
+ REAL(kind=8),INTENT (IN OUT) :: resid(:,:),& !internal nodal forces
+                                 coorb(:,:),& !bottom surface coordinates
+                                 coort(:,:)   !top surface coordinates
+ TYPE (ele13), POINTER  :: head0              !pointer to first element
+ TYPE (sideb), POINTER  :: bhead              !pointer to first element
+ REAL(kind=8), POINTER :: stint(:,:)       !moments and shear
+ INTEGER(kind=4), INTENT (IN) :: shearc        !/=0 if shear are to be computed
+ REAL(kind=8), POINTER :: moments(:,:),factors(:)
+ INTEGER(kind=4), POINTER :: ninv(:)
+
+ ! local variables
+ REAL (kind=8), PARAMETER :: fac(4) = (/ -1d0, 1d0, 1d0, -1d0 /)
+
+ TYPE (ele13), POINTER :: e       !pointer to an element data
+ TYPE (ele13), POINTER  :: heade  !pointer to first element
+ TYPE (sideb), POINTER  :: si     !pointer to branching side
+
+ LOGICAL :: isidf(3),&! TRUE if side is clamped or symmetry line
+            branch,  &! TRUE if a branching side exists at the element
+            mti  ! TRUE if more than one solid side
+
+ INTEGER (kind=4) sides(3),&! 1 if side element exist
+                  nbn,nbo,lnb(18),lna(4) !nodal connectivities for branching element
+ INTEGER (kind=4)  :: iel,i3,jj,nelem,iel0  !element order
+
+ REAL (kind=8) stra1(6),  & !first and second fundamental forms
+               bmat(3,6,6),& !membrane and bending B matrix
+               x(3,6),    & !nodal coordinates of the patch
+               v(3,6),    & !nodal velocities of the patch
+               t(3,15),   & !Local triad + local in-plane vector at side elms
+               rl(3,6),   & !nodal internal equivalent forces
+               lh,sh(4),tt(3)
+
+
+ REAL (kind=8), ALLOCATABLE :: bb(:,:,:),rb(:,:)                     !branching sides
+
+ INCLUDE '../lbst/resv_p0.fpp'           !common definition
+
+ !Auxiliar variables for parallel code
+ !$ INTEGER(kind=4), PARAMETER :: maxel=34816,minel=32768  !8 threads
+ !!$ INTEGER(kind=4), PARAMETER :: maxel=18432,minel=16384  !4 threads
+ !!$ INTEGER(kind=4), PARAMETER :: maxel=10240,minel= 8192    !2 threads
+ !$ INTEGER(kind=4):: nloop,iloop,irest    !
+ INTEGER(kind=4):: lim_inf,  & ! first element for each processor
+                   lim_sup,  & ! last element for each processor
+                   num_chk     ! number of elements chunks
+
+ !$ INTEGER(kind=4),PARAMETER:: MAXLOCK=2048              !number of keys
+ !$ INTEGER(kind=OMP_lock_kind),SAVE :: lock1(0:MAXLOCK-1) !keys
+ !$ LOGICAL,SAVE             :: inilock=.FALSE.           !initialization flag
+
+ heade => head0
+ nelem = nele0
+ iel0 = 0
+
+ !***  compute data associated to branching sides  only if branching sides exists
+ IF( nbs > 0 )   CALL bran13(nbs,bhead,coora)         !compute angles and B matrices
+
+ !Initialize exclusion variables for parallel code (only first time)
+ !$ IF (.NOT.inilock) THEN                   !first time only
+ !$   DO i=0,MAXLOCK-1                     !for each key
+ !$     CALL omp_init_lock(lock1(i))          !unlock
+ !$   END DO
+ !$   inilock = .TRUE.                         !change flag
+ !$ END IF
+ !  check maximum number of elements to be processed
+ !$ IF( nelem > maxel )THEN
+ !$   nloop = nelem/minel
+ !$   irest = MOD(nelem,minel)
+ !$  IF( irest >= maxlock ) nloop = nloop + 1
+ !$  nelem = minel
+ !$ ELSE
+ !$  nloop = 1
+ !$ END IF
+ !$ DO iloop=1,nloop
+
+ !initialize variables
+ num_chk =  1    !only one processor or thread
+ lim_inf =  1    !first element
+ lim_sup = nelem !last element
+
+ !$OMP  PARALLEL                                                                           &
+ !$OMP& SHARED (num_chk, lock1, psecs, pmats, ndepd,                                       &
+ !$OMP&         updiv, logst, bottom, top, coort, coorb, iffix, coora, velnp, ttime,       &
+ !$OMP&         shearc, moments, ninv, factors,                                            &
+ !$OMP&         heade, ierr, newiv, resid, stint,                                          &
+ !$OMP&         nbs, letra, iel0                 )                                         &
+ !$OMP& PRIVATE(lim_inf, lim_sup, e, si, isidf, branch, mti, sides, nbn, nbo, lnb, lna,    &
+ !$OMP&         iel, i3, jj, stra1, bmat, x, v, t, rl, lh, sh, tt,                         &
+ !$OMP&         bb, rb,                                                                    &
+ !$OMP&         large, ttti, pflag,                                                        &
+ !$OMP&         newmt,  natst, elast, shell, plast, shear, visco, coupled,                 &
+ !$OMP&         ielem, i, j, k, n, l, ilv, jlv, error,                                     &
+ !$OMP&         isec, nl, nlayr, mtype, secty, oldm, mate, numpt, osec, nvar,       &
+ !$OMP&         stres, sigma, stran, stral, strel, stine, r1,r2, lb, lc, thnew, zk,        &
+ !$OMP&         aux, area1, s1, s2, efpst, strpl, dstpl, eql,                              &
+ !$OMP&         thick, poiss, db, c, gh, dm, alpha, propi, chi, chib, chid,        &
+ !$OMP&         deatht, minstr, min_tr, max_tr,                                            &
+ !$OMP&         thf, wei, shf,                                                             &
+ !$OMP&         thickl, zposl, rr, lvari, val, varin,                     &
+ !$OMP&         sec, mat, matsl)
+ !$ IF( omp_get_num_threads() > 1 )THEN
+   !$ num_chk = (nelem+omp_get_num_threads()-1)/omp_get_num_threads()
+   !$ lim_inf = MIN(nelem,1+omp_get_thread_num()*num_chk) + iel0    !Find the first element in the list
+   !$ lim_sup = MIN(nelem,num_chk*(1+omp_get_thread_num())) + iel0  !Find the last element in the list
+ !$ END IF
+
+ IF( nbs > 0 ) THEN                     !only if branching sides exists
+   nbo = 6                              !initializes
+   ALLOCATE( bb(3,nbo,6),rb(3,nbo) )    !get memory for auxiliar matrices
+ ELSE
+  nbo = 0
+ END IF
+
+ e => heade                          !point to head of the list
+ DO iel=iel0+1,lim_inf-1             !Loop over the list to find the first element in the list
+   e => e%next                       !Point the first element of the list
+ END DO
+
+ !***  Computes nodal internal forces, integrating through the thickness
+
+ osec = -1                           !no previous material
+ error = 0
+
+ ELEMS: DO iel=lim_inf,lim_sup    !loop over the elements ()
+   IF (ierr == 1) CYCLE ELEMS       ! if there is an error CYCLE TO END (RETURN or EXIT are not allowed in parallel)
+   ielem = e%numel                   !element number
+   isec = e%matno                    !associated material
+   newmt = osec /= isec              !same material than previous ?
+   IF(newmt)THEN                     !if new material, get properties
+     INCLUDE '../lbst/resv_p1.fpp'           !get material constant
+   END IF
+
+   !*** computes actual configuration
+
+   branch = ANY(e%lnods < 0 )  !a branching exists for this element
+   IF( branch )THEN
+     nbn = 3                   !first three nodes of the main triangle
+     lnb(1:3) = e%lnods(1:3)
+   END IF
+   isidf = .FALSE.                  !initializes
+   x(:,1:3) = coora(:,e%lnods(1:3)) ! get coordinates of the main triangle
+   IF( visco)THEN
+     v(:,1:3) = velnp(:,e%lnods(1:3)) ! get velocities of the main triangle
+     v(:,4:6) = 0d0                 ! initializes extra node velocities
+   END IF
+   DO i =1,3                        ! for each extra-node in the patch
+     i3= i + 3                      ! position of extra node
+     n = e%lnods(i3)                ! node number
+     IF(n > 0) THEN               ! adjacent element exist ?
+       sides(i) = 1                 ! side element exist
+       x(:,i3) = coora(:,n)         ! get coordinates of the side node
+       IF( visco) v(:,i3) = velnp(:,n) ! get velocities of the extra node
+       IF(branch)THEN               ! if a branch exist
+         nbn = nbn + 1              ! update number of nodes
+         lnb(nbn) = n               ! keep node
+       END IF
+     ELSE IF( n == 0 )THEN        ! boundary node
+       j = e%lnods(hh(3,i))         ! first node of the side
+       k = e%lnods(hh(2,i))         ! second node of the side
+       IF( iffix(j) < 0 .AND. iffix(k) < 0 )THEN !node on a side?
+         l = -iffix(j)  !compute position of the i+1 node
+         lna(1:2) = nndpd(2:3,l)    ! add first two nodes of the solid quadrilateral
+         l = -iffix(k)              ! compute position of the i+2 node
+         lna(3:4) = (/ nndpd(3,l), nndpd(2,l) /)  ! add third and fourth nodes of the solid quadrilateral
+         t(:,1:4) =  coora(:,lna(:))  ! quadrilateral coordinates
+         t(:,5) = -t(:,1)+t(:,2)+t(:,3)-t(:,4) !phi,xita derivative
+         t(:,6) = x(:,hh(2,i))-x(:,hh(3,i))    !side vector
+         CALL vecpro(t(1,5),t(1,6),x(1,i3))  !outward normal vector
+         CALL vecuni(3,x(1,i3),aux)          !unit normal to the quadrilateral
+         sides(i) = 2               ! (2) ==> side element is solid
+       ELSE
+         x(1:3,i3) = 0d0            ! null values (unnecessary perhaps)
+         sides(i) = 0               ! (0) ==> side does NOT exists
+       END IF
+       isidf(i) = ( iffix(j) /= 0 .AND. iffix(k) /= 0 )  !clamped side ?
+     ELSE !IF( n == -1 )THEN ! branching side
+       sides(i) = -1   !(-1) => side element is a branching side
+       si => e%si(i)%p !point SI to the corresponding branching side
+       ! assign present distorsion at side
+       j = -n          !position
+       IF( si%lnods(j) > 0 )THEN       !if order
+         e%gamma(i) = si%gamma(j)      !(+)
+       ELSE                            !reversed order
+         e%gamma(i) = -si%gamma(j)     !(-)
+       END IF
+       ! generate connectivities for enlarged B matrix
+       k = nbn + 1                     !next position
+       nbn = nbn + si%nn-1             !update number of nodes
+       lnb(k:nbn) = (/ ABS(si%lnods(1:j-1)), ABS(si%lnods(j+1:si%nn)) /) !+/-
+     END IF
+   END DO
+   ! compute first and second fundamental forms
+   CALL stra13(e%a,e%b,e%c,e%cd,e%ci,e%a0,e%area1,t,e%lb,x,sides,isidf, &
+               e%mems,.FALSE.,stra1,e%gamma)
+
+   !INCLUDE '../lbst/resv_p2.fpp'            !check thickness ratio
+
+   e%stra1 = stra1         ! keep Mid Surface fundamental forms
+   ! consider thermal strains
+   !IF( alpha > 0 )THEN     ! compute
+   !  t0 = 1d0+alpha*SUM(tempe(e%lnods(1:3),1))
+   !  e%lb = e%lb*t0        ! modify thickness ratio
+   !END IF
+
+   thnew = thick*e%lb                  !thickness at new configuration
+
+   !IF( alpha > 0 )t1 = alpha*SUM(tempe(e%lnods(1:3),2))*2d0/thnew
+
+   IF( bottom .OR. top) THEN      !bottom or top surfaces required
+     ! determine element normal to compute top-bottom surfaces
+     IF( ALL(.NOT.isidf))THEN     !no clamped sides
+       tt = t(:,3)                !element normal
+     ELSE                         !one or more clamped sides
+       n = 0                      !initializes number of clamped sides
+       DO i=1,3                   !loop over each side
+         IF( isidf(i) )THEN       !if side clamped
+           n = n+1                !increase number of clamped sides
+           rl(:,n) = e%c(:,i,2)/2d0  !normal to plane of symmetry
+         END IF
+       END DO
+       IF( n == 1)THEN            !for one clamped side (or symmetry plane)
+         CALL vecuni(3,rl(1,1),aux)
+         aux = DOT_PRODUCT(rl(:,1),t(:,3))    !proyect normal over plane
+         tt(:) = t(:,3) - aux*rl(:,1)       !proyect normal over plane
+       ELSE                       !mfor two clamped side (or symmetry planes)
+         CALL vecpro(rl(1,1),rl(1,2),tt) !normal to both planes
+       END IF
+       CALL vecuni(3,tt,aux)             !unit vector
+     END IF
+     tt = tt*thnew          !
+   END IF
+   area1 = e%area1
+
+   ! compute shear forces based on Moments at previous step
+   stine(7:8) = 0d0                    !initializes shear
+   IF( shearc < 0 )THEN       ! compute shear forces from smoothed moments
+     DO i=1,3
+       j = ninv(e%lnods(i))                 ! element node
+       IF(factors(j) > 0d0) THEN                ! inner or boundary node
+         stine(7) = stine(7) - moments(1,j)*e%b(i) + moments(3,j)*e%a(i)
+         stine(8) = stine(8) - moments(3,j)*e%b(i) + moments(2,j)*e%a(i)
+       ELSE !node on branching side
+         ! Here it should be modified
+         stine(7) = stine(7) - stint(4,iel)*e%b(i) + stint(6,iel)*e%a(i)
+         stine(8) = stine(8) - stint(6,iel)*e%b(i) + stint(5,iel)*e%a(i)
+       END IF
+     END DO
+   ELSE IF( shearc > 0 )THEN  ! compute shear forces from Gauss-points moments
+     DO i=1,3
+       n = e%lside(i)                 ! element side
+       IF(n > 0) THEN                 ! element exist ?
+         stres(1:3) = stint(4:6,n)*e%ci(i) + stint(4:6,iel)*(1-e%ci(i))
+       ELSE
+         stres(1:3) = stint(4:6,iel)
+       END IF
+       stine(7) = stine(7) + stres(1) * e%b(i) - stres(3) * e%a(i)
+       stine(8) = stine(8) + stres(3) * e%b(i) - stres(2) * e%a(i)
+     END DO
+     stine(7:8) = 2d0*stine(7:8)
+   END IF
+
+   INCLUDE '../lbst/resv_p3.fpp'                !through the thickness integration
+
+  !       average configuration B Matrices
+   CALL bmem13(e%a,e%b,e%cd,e%a0,e%gamma,bmat(:,:,1:3),t,e%mems)
+   IF(shell) CALL bfle13(e%a,e%b,e%c,e%ci,sides,isidf,bmat(:,:,4:6),t(:,1:9))
+
+   IF( visco )THEN
+     CALL proma1(stran(1),v(1,1),bmat(1,1,1),1,3,18)
+     stine(1:3) = r1*stran + stine(1:3)
+     IF(shell) THEN
+       CALL proma1(stran(1),v(1,1),bmat(1,1,4),1,3,18)
+       stine(4:6) = r2*stran + stine(4:6)
+     END IF
+   END IF
+
+   stint(1:10,iel) = stine                      !store N, M, Q & vMS  for post-processing
+
+   stine(1:3) = stine(1:3)*area1/3d0  ! /3 to use with average matrix
+   stine(4:6) = stine(4:6)*area1      !
+
+   IF ( branch ) THEN
+     IF( nbn /= nbo )THEN
+       DEALLOCATE( bb,rb )
+       ALLOCATE( bb(3,nbn,6),rb(3,nbn) )
+       nbo = nbn
+     END IF
+     CALL bbra13(bmat,e%lb,sides,nbn,e%si,bb,e%lnods(4:6))
+     CALL proma3(rb(1,1),bb(1,1,1),stine(1),3*nbn,6,.TRUE.) !membrane + bending contributions
+
+     mti = .FALSE.
+     DO i=3,1,-1
+       IF( sides(i) == 2 )THEN
+         j = hh(3,i)         ! first node of the side
+         k = hh(2,i)         ! second node of the side
+         jj = 3+2*i          ! position of normal vector t at the side
+         t(:,10) = x(:,k)-x(:,j)         !side J-K
+         CALL vecuni(3,t(1,10),lh)       !unit side vector
+         lh = e%a(i)**2+e%b(i)**2        !(ls/2A)^2 = (1/h)^2
+         ! bending moment times original side length / 2 / present thickness
+         aux = -(stine(4)*e%b(i)**2+stine(5)*e%a(i)**2-2d0*stine(6)*e%b(i)*e%a(i)) &
+               /SQRT(lh)/thnew     !times the side length, divided by the thickness /2
+         stres = x(:,i+3)*aux            !forces normal to the face
+         ! torsor moment  = forces applied on nodes J and K
+         aux = ((stine(4)-stine(5))*e%a(i)*e%b(i) + stine(6)*(e%b(i)**2-e%a(i)**2))/lh/area1
+         lc = aux*t(:,3)                 !point loads leading to torsor moment
+         rl(:,j) = rl(:,j) - lc          !modify node J forces
+         rl(:,k) = rl(:,k) + lc          !modify node K forces
+         !"S" forces = torsor moment * original length / 2 / present thickness
+         aux = aux*SQRT(lh)*area1/thnew
+         stres = stres + aux*t(:,10)     !add to node forces
+         ! update shell element external nodes
+         IF( mti )THEN !recompute LNA
+           n = -iffix(e%lnods(j))  !compute position of the i+1 node
+           lna(1:2) = nndpd(2:3,n)
+           n = -iffix(e%lnods(k))  !compute position of the i+2 node
+           lna(3:4) = (/ nndpd(3,n),nndpd(2,n) /)
+         END IF
+         t(:,1:4) = coora(:,lna(:))            !master node positions
+         t(:,11) = t(:,jj)*thnew/2d0           !distance along normal
+         t(:,12)  = x(:,j) - t(:,11)  !under j == 1
+         t(:,13)  = x(:,j) + t(:,11)  !above j == 2
+         t(:,14)  = x(:,k) + t(:,11)  !above k == 3
+         t(:,15)  = x(:,k) - t(:,11)  !under k == 4
+         DO n=1,4
+           ! recompute proyections
+           CALL projq4(t(1,n+11),t(1,1),e%cd(n,1,i),e%cd(n,2,i),sh(1),.FALSE.)
+           lb = fac(n)*stres     !equivalent force
+           DO j=1,4
+             i3 = lna(j)          !node
+             !$ CALL omp_set_lock(lock1(MOD(i3,MAXLOCK)))    !Start blocking acess in shared variables
+             resid(:,i3) = resid(:,i3) + sh(j)*lb
+             !$ CALL omp_unset_lock(lock1(MOD(i3,MAXLOCK)))  !End blocking acess in shared variables
+           END DO
+         END DO
+       END IF
+       mti = .TRUE.
+     END DO
+
+     DO i=1,nbn            !for each node in the patch
+       n = lnb(i)          !node
+       !$ CALL omp_set_lock(lock1(MOD(n,MAXLOCK)))    !Start blocking acess in shared variables
+       resid(1:3,n) = resid(1:3,n)+rb(1:3,i) !sum internal force
+       IF( i < 4 )THEN
+         IF( bottom .OR. top )THEN
+           IF(bottom) coorb(:,n) = coorb(:,n) - tt !bottom surface
+           IF(top   ) coort(:,n) = coort(:,n) + tt !top surface
+           ifact(n) = ifact(n) + 2  !increase weigthing factor
+         END IF
+       END IF
+       !$ CALL omp_unset_lock(lock1(MOD(n,MAXLOCK)))  !End blocking acess in shared variables
+     END DO
+   ELSE
+     CALL proma3(rl(1,1),bmat(1,1,1),stine(1),18,3,.TRUE.)  !membrane contributions
+     ! compute bending B matrix
+     IF(shell) CALL proma3(rl(1,1),bmat(1,1,4),stine(4),18,3,.FALSE.) !bending contributions
+     mti = .FALSE.
+     DO i=3,1,-1
+       IF( sides(i) == 2 )THEN
+         j = hh(3,i)         ! first node of the side
+         k = hh(2,i)         ! second node of the side
+         jj = 3+2*i          ! position of normal vector t at the side
+         t(:,10) = x(:,k)-x(:,j)         !side J-K
+         CALL vecuni(3,t(1,10),lh)       !unit side vector
+         lh = e%a(i)**2+e%b(i)**2        !(ls/2A)^2 = (1/h)^2
+         ! bending moment times original side length / 2 / present thickness
+         aux = -(stine(4)*e%b(i)**2+stine(5)*e%a(i)**2-2d0*stine(6)*e%b(i)*e%a(i)) &
+               /SQRT(lh)/thnew     !times the side length, divided by the thickness /2
+         stres = x(:,i+3)*aux            !forces normal to the face
+      !   ! torsor moment  = forces applied on nodes J and K
+      !   aux = ((stine(4)-stine(5))*e%a(i)*e%b(i) + stine(6)*(e%b(i)**2-e%a(i)**2))/lh/area1
+      !   lc = aux*t(:,3)                 !point loads leading to torsor moment
+      !   rl(:,j) = rl(:,j) - lc          !modify node J forces
+      !   rl(:,k) = rl(:,k) + lc          !modify node K forces
+      !   !"S" forces = torsor moment * original length / 2 / present thickness
+      !   aux = aux*SQRT(lh)*area1/thnew
+      !   stres = stres + aux*t(:,10)     !add to node forces
+         ! update shell element external nodes
+         IF( mti )THEN !recompute LNA and Y
+           n = -iffix(e%lnods(j))  !compute position of the i+1 node
+           lna(1:2) = nndpd(2:3,n)
+           n = -iffix(e%lnods(k))  !compute position of the i+2 node
+           lna(3:4) = (/ nndpd(3,n),nndpd(2,n) /)
+         END IF
+         t(:,1:4) = coora(:,lna(:))            !master node positions
+         t(:,11) = t(:,jj)*thnew/2d0           !distance along normal
+         t(:,12)  = x(:,j) - t(:,11)  !under j == 1
+         t(:,13)  = x(:,j) + t(:,11)  !above j == 2
+         t(:,14)  = x(:,k) + t(:,11)  !above k == 3
+         t(:,15)  = x(:,k) - t(:,11)  !under k == 4
+         DO n=1,4
+           ! recompute proyections
+           CALL projq4(t(1,n+11),t(1,1),e%cd(n,1,i),e%cd(n,2,i),stra1(1),.FALSE.)
+           lb = fac(n)*stres     !equivalent force
+           DO j=1,4
+             i3 = lna(j)          !node
+             !$ CALL omp_set_lock(lock1(MOD(i3,MAXLOCK)))    !Start blocking acess in shared variables
+             resid(:,i3) = resid(:,i3) + stra1(j)*lb
+             !$ CALL omp_unset_lock(lock1(MOD(i3,MAXLOCK)))  !End blocking acess in shared variables
+           END DO
+         END DO
+       END IF
+       mti = .TRUE.
+     END DO
+     DO i=1,6             !for each node in the patch
+       n = e%lnods(i)     !node
+       IF(n > 0) THEN
+         !$ CALL omp_set_lock(lock1(MOD(n,MAXLOCK)))    !Start blocking acess in shared variables
+         resid(1:3,n) = resid(1:3,n)+rl(1:3,i) !sum internal force
+         IF( i < 4 )THEN
+           IF( bottom .OR. top )THEN
+             IF(bottom) coorb(:,n) = coorb(:,n) - tt !bottom surface
+             IF(top   ) coort(:,n) = coort(:,n) + tt !top surface
+             ifact(n) = ifact(n) + 2  !increase weigthing factor
+           END IF
+         END IF
+         !$ CALL omp_unset_lock(lock1(MOD(n,MAXLOCK)))  !End blocking acess in shared variables
+       END IF
+     END DO
+   END IF
+   e => e%next          !point to next node in the list
+ END DO ELEMS
+ IF( nbs > 0 ) DEALLOCATE( bb,rb )
+ !$OMP END PARALLEL
+ !$ iel0 = iel0 + nelem
+ !$ IF( iloop < nloop )THEN
+ !$   DO i=1,nelem
+ !$     heade => heade%next
+ !$   END DO
+ !$   IF( iloop + 1 == nloop ) THEN
+ !$     IF( irest < maxlock)THEN
+ !$       nelem = nelem + irest
+ !$     ELSE
+ !$       nelem = irest
+ !$     END IF
+ !$   END IF
+ !$ END IF
+ !$ END DO
+ IF( shearc < 0 ) THEN
+   ! compute smoothed moments
+   moments = 0d0
+   e => heade
+   iel = 1
+   DO
+     DO i=1,3
+       j = ninv(e%lnods(i))
+       moments(:,j) = moments(:,j) + stint(4:6,iel)/e%area1*factors(j)
+     END DO
+     e => e%next
+     IF( .NOT.ASSOCIATED(e) )EXIT
+     iel = iel+1
+   END DO
+ END IF
+ RETURN
+ 9999 CALL runen2('')
+ END SUBROUTINE resv13

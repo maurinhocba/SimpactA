@@ -1,0 +1,29 @@
+PARTES  MÓDULOS     FIN
+
+stru    v720        programa de Fernando con cambios mínimos necesarios para incluir las demás cosas (será el contenedor de lo demás en vez de ser una parte de un programa superior)
+                    archivos de entrada hechos con MALLAg2
+
+        struout     salida p/TecPlot asociada a aeroout
+
+
+aero    AeroM       el código de Cristian con cambios y reorganizado
+                    archivos de entrada hechos con MALLAg2
+
+        aeroout     salida p/TecPlot asociada a struout (2 archivos: grilla aerodinámica y fuerzas en paneles)
+        
+        wind        "corriente libre" con capa límite terrestre - QUITAR SPLINES
+
+
+intr    intr        determinar nodos maestros (sólo gestión)
+                    pasar cinemática
+                    pasar cargas
+                    interacción temporal
+
+        mastrnods   determinar nodos maestros según tipo de elemento finito
+
+        introut     salida mixta
+                    layouts p/TecPlot asociado a aeroout y struout
+
+genr    genr        datos del generador para simularlo
+
+CADA MODULO DE A PARES (_db Y _sr) Y CON SUS SUBRUTINAS PARA RESTART (_db)

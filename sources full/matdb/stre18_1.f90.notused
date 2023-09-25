@@ -1,0 +1,191 @@
+ SUBROUTINE stre18_1(stran,str, efpst,gm,props,b, &
+                     ierr,flag,is,newm,plast,hyper)
+ !-------------------------------------------------------------------
+ !
+ !     transversal Anisotropy for 3-D Solid element (TLF)
+ !
+ !-------------------------------------------------------------------
+ USE lispa0
+ IMPLICIT NONE
+
+ REAL (kind=8),INTENT(IN) :: props(:),  & !yield and hardening properties
+                             gm,        & !elasticity shear modulus
+                             b(:)         !flow rule matrix
+ REAL (kind=8),INTENT(IN OUT) :: stran(6) !(IN) elastic strains trial
+                                !(OUT) elastic strains or inc. in plastic strains
+ REAL (kind=8),INTENT(IN OUT) :: str(6) !trial and corrected stresses
+ REAL (kind=8),INTENT(IN OUT) :: efpst    !effective plastic strain
+                                          !(IN) present   (OUT) increment
+ INTEGER (kind=4), INTENT(IN) :: is       !isotropic hardening model
+ INTEGER (kind=4), INTENT(OUT) :: ierr    !error flag (0: O.K., 1:error)
+ LOGICAL, INTENT(OUT) :: flag             !.TRUE. if plastic  .FALSE. if elastic
+ LOGICAL, INTENT(IN OUT) :: newm          !new material
+ LOGICAL, INTENT(IN) :: plast,hyper       !models
+ !local variables
+
+  REAL (kind=8), SAVE :: c0,expn,hard,aprim,e0,rfs
+  REAL (kind=8) :: s11,s22,s33,s12,s13,s23,yield,epbar,fi,f0,   &
+                   a1,a2,a3,a4,a5,a6,ap,dl,aux,ep(6)
+
+  REAL (kind=8), PARAMETER :: toler=1d-4, toler1=1d-6
+  INTEGER (kind=4), PARAMETER :: miter=5
+
+  INTEGER (kind=4) k
+!  INTEGER (kind=4), SAVE :: kk(miter) = 0
+
+ !------------ begin
+
+ IF( hyper )THEN
+   str = gm*stran                         !Trial elastic shear stresses
+ ELSE
+   str = gm*stran + str                   !Trial elastic shear stresses
+ END IF
+
+ IF( .NOT.plast )RETURN
+
+ IF( newm )THEN
+   newm = .FALSE.
+   SELECT CASE (is)
+   CASE (1)
+     c0    = props(1)     !Initial yield
+     aprim = 0d0          !hardening modulus
+   CASE (2)  !linear hardening
+     c0    = props(1)     !Initial yield
+     aprim = props(2)     !hardening modulus
+   CASE (3)
+     c0   = props(1)     !c0 constant
+     e0   = props(2)     !offset value
+     expn = props(3)     !exponent for non-linear hardening
+   CASE (4)
+     c0   = props(1)     !c0 constant
+     hard = props(2)     !linear hardening
+     expn = props(3)     !exponent for non-linear hardening
+     rfs  = props(4)     !residual flow stress
+   END SELECT
+ END IF
+
+ !     setup initial yield FUNCTION radius
+
+  SELECT CASE (is)
+  CASE (1)
+    yield = c0           !Initial yield
+  CASE (2)
+    yield = c0 + aprim*efpst     !linear hardening
+  CASE (3)
+    yield = c0*(e0+efpst)**expn            !non-linear (exponential) hardening
+    aprim = expn*c0/(e0+efpst)**(1d0-expn) !derivative
+  CASE (4)
+    yield = c0+hard*efpst+(rfs-c0)*(1d0-1d0/EXP(expn*efpst)) !linear + saturation law hardening
+    aprim = hard + (rfs-c0)*expn/EXP(expn*efpst)               !derivative
+  END SELECT
+
+  !     calculate initial effective stress
+  s11 = str(1)
+  s22 = str(2)
+  s33 = str(3)
+  s12 = str(4)
+  s13 = str(5)
+  s23 = str(6)
+  a1 =  b(1)*s11 + b(2)*s22 + b(3)*s33
+  a2 =  b(2)*s11 + b(4)*s22 + b(5)*s33
+  a3 =  b(3)*s11 + b(5)*s22 + b(6)*s33
+  a4 =  b(7)*s12
+  a5 =  b(8)*s13
+  a6 =  b(9)*s23
+  fi = SQRT( a1*s11 + a2*s22 + a3*s33 + a4*s12 + a5*s13 + a6*s23 )
+
+  !     check initial yield FUNCTION
+
+
+  f0 = fi-yield
+  IF( f0/yield < toler) THEN
+
+     !   IF the point is elastic
+
+    flag = .FALSE.
+
+  ELSE
+    !  initial flow rule
+
+    epbar = efpst
+    DO k = 1,miter
+      ! compute flow rule
+      a1 = a1/fi
+      a2 = a2/fi
+      a3 = a3/fi
+      a4 = a4/fi
+      a5 = a5/fi
+      a6 = a6/fi
+      ap = gm*(2d0*(a1*a1+a2*a2+a3*a3)+a4*a4+a5*a5+a6*a6)+aprim
+      dl = f0/ap
+      ! new stres
+      aux = dl*gm
+      s11 = s11 - aux*a1*2d0
+      s22 = s22 - aux*a2*2d0
+      s33 = s33 - aux*a3*2d0
+      s12 = s12 - aux*a4
+      s13 = s13 - aux*a5
+      s23 = s23 - aux*a6
+      !   calculate the effective plastic strain
+      epbar = epbar + dl
+      !   update the radius of the yield surface
+      SELECT CASE (is)
+      CASE (2)
+        yield = c0 + aprim*epbar     !linear hardening
+      CASE (3)
+        yield = c0*(e0+epbar)**expn            !non-linear (exponential) hardening
+        aprim = expn*c0/(e0+epbar)**(1d0-expn) !derivative
+      CASE (4)
+        yield = c0+hard*epbar+(rfs-c0)*(1d0-1d0/EXP(expn*epbar)) !linear + saturation law hardening
+        aprim = hard + (rfs-c0)*expn/EXP(expn*epbar)               !derivative
+      END SELECT
+
+      !   calculate the effective stress
+      a1 =  b(1)*s11 + b(2)*s22 + b(3)*s33
+      a2 =  b(2)*s11 + b(4)*s22 + b(5)*s33
+      a3 =  b(3)*s11 + b(5)*s22 + b(6)*s33
+      a4 =  b(7)*s12
+      a5 =  b(8)*s13
+      a6 =  b(9)*s23
+      fi = SQRT( a1*s11 + a2*s22 + a3*s33 + a4*s12 + a5*s13 + a6*s23 )
+      f0 = fi-yield     !yield function
+      !  IF consistency condition is satisfied exit loop
+      IF( ABS(f0/yield) <= toler1 )EXIT
+    END DO
+
+    IF( k <= miter )THEN
+      flag = .TRUE.                      !plastic step
+      IF( hyper )THEN
+        !  increment in plastic strains  (twice de deviatoric tensor)
+        ep(1) = (str(1) - s11)/gm
+        ep(2) = (str(2) - s22)/gm
+        ep(3) = (str(3) - s33)/gm
+        ep(4) = (str(4) - s12)/gm
+        ep(5) = (str(5) - s13)/gm
+        ep(6) = (str(6) - s23)/gm
+      ELSE  ! elastic strains
+        stran(1) =  s11/gm
+        stran(2) =  s22/gm
+        stran(3) =  s33/gm
+        stran(4) =  s12/gm
+        stran(5) =  s13/gm
+        stran(6) =  s23/gm
+      END IF
+        efpst = epbar - efpst              !increment in effective plastic strain
+      !  assign corrected stresses
+      str(1) = s11
+      str(2) = s22
+      str(3) = s33
+      str(4) = s12
+      str(5) = s13
+      str(6) = s23
+    ELSE
+      !        IF the iterations are greater than maximum STOP
+      WRITE(*,*)' NO convergence in constitutive equation * STOP *'
+      ierr=1                    !set flag to error in plastic integration
+    END IF
+  END IF
+
+  RETURN
+
+ END SUBROUTINE stre18_1

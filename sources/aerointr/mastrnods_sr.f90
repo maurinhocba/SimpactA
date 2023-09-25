@@ -237,7 +237,7 @@ CONTAINS !===================================================================
         INTEGER,          ALLOCATABLE   ::  proele(:), mnods(:,:)
         INTEGER                         ::  i, j, befor, after, loc, npoints
         
-        REAL,             ALLOCATABLE   ::  xita(:,:), dists(:,:)
+        REAL(kind = 8),   ALLOCATABLE   ::  xita(:,:), dists(:,:)
         REAL(kind = 8),   POINTER       ::  midpoints(:,:)
         REAL(kind = 8),   ALLOCATABLE   ::  delta_aux(:), xyz(:,:)
         REAL(kind = 8)                  ::  length, xita1, &
@@ -1314,13 +1314,13 @@ CONTAINS !===================================================================
     
     
     ! dummy args
-    REAL,   INTENT(out)  :: dists(:)
-    REAL,   INTENT(in)   :: pointSet(:,:)
-    REAL,   INTENT(in)   :: targt(3)
+    REAL(8),   INTENT(out)  :: dists(:)
+    REAL(8),   INTENT(in)   :: pointSet(:,:)
+    REAL(8),   INTENT(in)   :: targt(3)
     
     ! internal vars
-    INTEGER                             ::  i
-    REAL, ALLOCATABLE, DIMENSION(:,:)   ::  relPoss
+    INTEGER                                ::  i
+    REAL(8), ALLOCATABLE, DIMENSION(:,:)   ::  relPoss
     
     
     ALLOCATE( relPoss(3,SIZE(pointSet,DIM=2)) )

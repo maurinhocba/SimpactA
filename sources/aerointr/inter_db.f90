@@ -38,7 +38,7 @@ MODULE inter_db
     ! Aerodynamic nodes data ----------------------------------------------------------------------
     TYPE(tnode),        POINTER     :: nodsaer(:)   ! (nan) Aero. nodes information array
     INTEGER                         :: nan          ! Num. of aero. nodes.
-    REAL,               ALLOCATABLE :: xita(:,:)    ! Projection coordinate of each aero. node
+    REAL(8),            ALLOCATABLE :: xita(:,:)    ! Projection coordinate of each aero. node
                                                     !        not necessary for 'RIGID' elements
                                                     !        (nan)    for 'BEAM ' elements
                                                     !        (6,nan)  for 'NBST ' elements
@@ -48,7 +48,7 @@ MODULE inter_db
                                                     !        (2,nan)  for 'BEAM ' elements
                                                     !        (6,nan)  for 'NBST ' elements
                                                     !                   3 nodes for 1 elem. in each surface - upper first
-    REAL,               ALLOCATABLE :: dists(:,:)   ! Initial distance vectors from master nodes to aero. node
+    REAL(8),            ALLOCATABLE :: dists(:,:)   ! Initial distance vectors from master nodes to aero. node
                                                     !        (3,nan)  for 'RIGID' elements
                                                     !        (6,nan)  for 'BEAM ' elements
                                                     !        (2,nan)  for 'NBST ' elements
@@ -59,7 +59,7 @@ MODULE inter_db
     TYPE(tpanel),       POINTER     :: panel(:)     ! (np) Panels information array
     TYPE(tsection),     POINTER     :: section(:)   ! (nsec) Used only for blade pairs
     INTEGER                         :: np           ! Num. of panels/Control Points
-    REAL,               ALLOCATABLE :: cpxita(:,:)  ! Projection coordinate of each aero. node
+    REAL(8),            ALLOCATABLE :: cpxita(:,:)  ! Projection coordinate of each aero. node
                                                     !        not necessary for 'RIGID' elements
                                                     !        (np)    for 'BEAM ' elements
                                                     !        (6,np)  for 'NBST ' elements
@@ -68,7 +68,7 @@ MODULE inter_db
                                                     !        (1,1)   for 'RIGID' elements
                                                     !        (2,np)  for 'BEAM ' elements
                                                     !        (6,np)  for 'NBST ' elements
-    REAL,               ALLOCATABLE :: cpdists(:,:) ! Initial distance vectors from master nodes to Control Point
+    REAL(8),            ALLOCATABLE :: cpdists(:,:) ! Initial distance vectors from master nodes to Control Point
                                                     !        (3,np)  for 'RIGID' elements
                                                     !        (6,np)  for 'BEAM ' elements
                                                     !        (2,np)  for 'NBST ' elements

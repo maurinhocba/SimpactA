@@ -1,0 +1,231 @@
+
+Recorrido por v720 - ¿dónde se hacen cálculos aero. en una simulación?
+----------------------------------------------------------------------
+
+% actio
+%   assigned in beginp:
+%   NEW     - new problem
+%   RESTAR  - restart an old problem (no changes or minor)
+%   NSTRA0  - restart an old problem with a new strategy
+%             (could be also in the same execution of Simpact)
+    
+%   can be changed later to:
+%   NSTRA1  - a new strategy will involve change of boundary conditions without changing nodes
+%   NSTRA2  - a new strategy will involve change of both boundary conditions and nodes
+%   STOP    - stop the program
+%   MESHMO  - mesh modifications in step
+
+% by now, aeroelastic version only uses: NEW, RESTAR, NSTRA0 or STOP
+
+Simpact --> IF (actio='NEW')
+              nada
+            ELSE % it means RESTAR or NSTRA0
+              CALL restar -->   IF (aero)
+                                  CALL restar_structuresa
+                                  CALL restar_arraysa
+                                  CALL restar_aeroout
+                                  CALL restar_win
+                                  %CALL restar_gen
+                                  CALL restar_inter
+                                  CALL restar_introut
+                                  %CALL restar_mastrnods
+                                  CALL restar_struout
+                                  CALL inter_out('openFiles') -->   IF (actio=='NEW' .OR. actio=='RESTAR')
+                                                                      outputRoot, outputRootLen
+                                                                    ENDIF
+                                                                    open files -->  IF (actio=='NEW')
+                                                                                      write headers
+                                                                                    ENDIF
+                                ENDIF
+            ENDIF
+            
+            DO % endless over strategies
+              
+              %  IF (actio/='NEW' .AND. actio/='RESTAR' ) % no NEW and no RESTAR gives NSTRA0 or MESHMO
+              %    CALL newstr % Check beginning of a new strategy ==> ACTIO & PTYPE
+              %  ENDIF
+              
+              SELECT CASE (ptype)
+              CASE ("EXPLCT") %EXPLiCiT time integration
+                SELECT CASE (actio)
+                CASE ('NEW','NSTRA0','NSTRA2')
+                  CALL data_inp --> CALL contol(actio) %lee variable lógica de control AERO
+                                    IF (aero .AND. actio=='NEW')
+                                      CALL aero_data -->    CALL Input_simulation
+                                                            CALL Input_extras
+                                                            CALL Input_geometry --> CALL Alloc % ALLOC uses info from INPUT_SIMULATION
+                                                            IF (bEType=='NBST') THEN % shell model for blades
+                                                              CALL Input_bed
+                                                            ENDIF
+                                                            %CALL rdwind              NOT IN USE, IN ORDER TO AVOID INCLUDING ERRORS
+                                                              windFlag=.FALSE. % esto luego debería ser reemplazado por la llamada a rdwind
+                                                            %CALL rdctrl              NOT IN USE, IN ORDER TO AVOID INCLUDING ERRORS
+                                                            %CALL gener_inp           NOT IN USE, IN ORDER TO AVOID INCLUDING ERRORS
+                                    ENDIF
+                ENDSELECT
+              ENDSELECT
+              
+              %=======  Initial calculations  ===================================
+              IF (actio/='RESTAR') % it means NEW or NSTRA0
+                CALL initial_comp -->   IF (aero)
+                                          IF (actio=='NEW')
+                                            CALL inter_ini -->  CALL Geo_references         % length and area
+                                                                CALL Copy_blades            % Local coordinates for blades 2 and 3
+                                                                CALL part_Kinematics        % global coordinates of aero nodes
+                                                                CALL CP_coords              % Global coordinates for Control Points
+                                                                DO % Loop over pairs
+                                                                  define some data on TYPE(pair) variables
+                                                                  (eventually) CALL findBed % more data on TYPE(pair) variables
+                                                                  CALL mngMstrs             % master nodes
+                                                                ENDDO
+                                                                CALL DtCalc(.FALSE.)        % aero. time step
+                                            CALL introut_mng('initial') -->   zonesPerIter, tMaxTecPlot, others
+                                          ENDIF
+                                          CALL introut_mng('openFiles') -->   IF (actio/='NEW' .OR. actio/='RESTAR') % then, actio==NSTRA0
+                                                                                CALL inter_tp3 % Closes some output files
+                                                                              ENDIF
+                                                                              % open files
+                                                                              CALL inter_tp1(actio)   -->  IF (actio=='NEW')
+                                                                                                             create files and write headers
+                                                                                                             CALL inter_reg('init') % aero. registry first part
+                                                                                                           ENDIF
+              % >>> AL FINAL               CALL include_damp % writes damp coeff. in "damp" to simulate generator power extraction
+                                        ENDIF
+              ENDIF
+              
+              %=======  Step-by-step solution  =================================
+              IF (static) % pseudo STATIC analysis - not used in aerod. version
+              ELSE        % standard DYNAMIC analysis
+                CALL dynamic -->    DO  % endless over time steps
+                                      IF (aero)
+                                        IF (nest==numnest) % a new aerodyn. step needs to be done
+                                          nest = 0
+                                          CALL inter_kin
+                                          CALL NLUVLM_Calc -->  CALL CP_normal      % Normal versors at control points
+                                                                CALL RHS1_vector    % Free stream velocity RHS
+                                                                IF (n/=0)
+                                                                  CALL FixConvect   % Updates coordinates of wake nodes that are on the trailing edge
+                                                                  CALL RHS2_vector  % Wake RHS
+                                                                ENDIF
+                                                                CALL introut_mng('gridAndMesh') --> CALL inter_tp2 % Prints aerodynamic grid in TecPlot output
+                                                                                                    CALL inter_tp6 % Prints structural mesh  in TecPlot output
+                                                                CALL A_matrix
+                                                                CALL DGESV              % solves the problem A*G=RHS
+                                                                CALL Segment_properties % Segments' voticity
+                                                                CALL Loads
+                                                                CALL DtCalc(.TRUE.) --> DeltaT
+                                                                                        CALL incdlt % determine dtime (less than critical time step), no longer calculated until a new aerodyn. step is done
+                                                                                        numnest
+                                                                                        dtime (adjust)
+                                                                                        CALL introut_mng('dtime') --> CALL inter_reg('dtime') % aero. registry final table in root.AR.dat
+                                                                CALL Convect
+                                                                n = n + 1
+                                          CALL inter_loa
+                                          CALL introut_mng('panelForces') -->   CALL inter_tp4 % Prints panels' forces data in TecPlot output
+                                          CALL introut_mng('frcesMomets') -->   CALL inter_fam % Calculates total forces over each blade in aerodynamic discretization,
+                                                                                               % total effective moment over rotor and writes them down in root.FM.dat
+                                                                                               % NOT NOW - also prints Generator Registry in root.GE.dat
+                                          CALL introut_mng('aerodynTime') -->   CALL inter_aet % Prints time for aerodynamic calculations in root.AT.dat
+                                        ENDIF
+                                        nest = nest + 1
+                                      ELSEIF (ncdlt > 0) % not aero and time for recalculating dtime
+                                        CALL incdlt % determine dtime (less than critical time step)
+                                      ENDIF
+                                      istep = istep + 1
+                                      %           Nonconservative loading
+                                      IF (aero)
+                                        resid = resid - loa
+                                      ENDIF
+              % >>> AL FINAL           %           Time integration
+              %                        CALL explit -->   IF ((dependant nodes exists) .AND. (is time)) % update lumped mass matrix and force vector when dependant nodes exists
+              %                                            % update "force"
+              %                                            % update "ymass"
+              %                                            IF (aero)
+              %                                              CALL update_damp % updates "rotorAlp" as to keep "rotorDam" constant although there is a change in "ymass"
+              %                                            ENDDO
+              %                                          ENDIF
+                                      ttime = ttime + dtime
+                                      determines endst criteria
+                                      %           Restart file dumping
+                                      IF (actrst .OR. endst .OR. (istop == -1))
+                                        CALL dumpin --> IF (aero)
+                                                          CALL dumpin_structuresa
+                                                          CALL dumpin_arraysa
+                                                          CALL dumpin_aeroout
+                                                          CALL dumpin_win
+                                                          %CALL dumpin_gen
+                                                          CALL dumpin_inter
+                                                          CALL dumpin_introut
+                                                          %CALL dumpin_mastrnods
+                                                          CALL dumpin_struout
+                                                        ENDIF
+                                      ENDIF
+                                      actio = 'NSTRA0' !if EXIT in next line, new strategy has to be done or execution ended!
+                                      IF (istop /= 0 .OR.  endst)
+                                        EXIT
+                                      ENDIF
+                                      
+                                    ENDDO
+              ENDIF
+              
+              IF (istop /= 0)
+                EXIT
+              ENDIF
+              
+            ENDDO % end loop over strategies
+
+%  ******   ENDING EXECUTION
+
+            IF (aero)
+              CALL introut_mng('end') -->  CALL inter_tp3      % Closes "last strategy's TecPlot output file"
+                                           CLOSE( UNIT = 233 ) %    and "total forces and moments aplied over each blade"
+                                           CLOSE( UNIT = 234 ) %    and "time for aerodynamic calculations"
+                                           CLOSE( UNIT = 238 ) %    and "aeroelastic registry"
+                                           CLOSE( UNIT = 239 ) %    and "generator registry"
+                                           CALL inter_tp5('tec') % Generates Tecplot .lay file
+                                           CALL inter_tp5('plt') % Generates Tecplot .lay file
+            ENDIF
+
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+
+
+
+
+
+
+
+
+
+2023 09 25  no compila (más de 3mil errores)
+            
+            hice cambios a las fuentes:
+                eliminé subcarpetas que tenían versiones viejas del código, que, de lo contrario, se cargaban a la solución y molestaban
+                
+                modifiqué algunas declaraciones de variables (de REAL a REAL(8)) en pedacitos de código que había escrito yo
+                
+                error #8209: If type specification is omitted, each element in an array-constructor must have the same type and kind type parameters.
+                le agregué "D0" a varios números hardcoded en una matriz en "..\shelt\comp_angl7.fi"
+            
+            error #8284: If the actual argument is scalar, the dummy argument shall be scalar unless the actual argument is of type character or is an element of an array that is not assumed shape, pointer, or polymorphic
+            un caso que analicé:
+                mat_dba.f90 no complila porque hay un problema en las llamadas a gaussq dentro de sc_shel2.fi (y otras)
+                    Compiling with Intel® Fortran Compiler 2023.2.0 [Intel(R) 64]...
+                    mat_dba.f90
+                    D:\GitHub\SimpactA\sources\matdb\sc_shel2.fi(155): error #8284: If the actual argument is scalar, the dummy argument shall be scalar unless the actual argument is of type character or is an element of an array that is not assumed shape, pointer, or polymorphic.   [WEIGP]
+                    D:\GitHub\SimpactA\sources\matdb\sc_shel3.fi(185): error #8284: If the actual argument is scalar, the dummy argument shall be scalar unless the actual argument is of type character or is an element of an array that is not assumed shape, pointer, or polymorphic.   [V2]
+                    D:\GitHub\SimpactA\sources\matdb\sc_shel5.fi(312): error #8284: If the actual argument is scalar, the dummy argument shall be scalar unless the actual argument is of type character or is an element of an array that is not assumed shape, pointer, or polymorphic.   [V2]
+                    D:\GitHub\SimpactA\sources\matdb\sc_solid.fi(194): error #8284: If the actual argument is scalar, the dummy argument shall be scalar unless the actual argument is of type character or is an element of an array that is not assumed shape, pointer, or polymorphic.   [V2]
+                    D:\GitHub\SimpactA\sources\matdb\sc_solsh.fi(369): error #8284: If the actual argument is scalar, the dummy argument shall be scalar unless the actual argument is of type character or is an element of an array that is not assumed shape, pointer, or polymorphic.   [V2]
+                    D:\GitHub\SimpactA\sources\matdb\sc_solsh.fi(371): error #8284: If the actual argument is scalar, the dummy argument shall be scalar unless the actual argument is of type character or is an element of an array that is not assumed shape, pointer, or polymorphic.   [V2]
+                    D:\GitHub\SimpactA\sources\matdb\sc_solsh.fi(373): error #8284: If the actual argument is scalar, the dummy argument shall be scalar unless the actual argument is of type character or is an element of an array that is not assumed shape, pointer, or polymorphic.   [V2]
+                    compilation aborted for D:\GitHub\SimpactA\sources\matdb\mat_dba.f90 (code 1)
+
+                    Build log written to  "file://D:/GitHub/SimpactA/vs/spa/x64/Debug/BuildLog.htm"
+                    spa - 8 error(s), 0 warning(s)
+
+
+                    ---------------------- Done ----------------------
+                algo encontré en "fortran - Passing scalars and array elements to a procedure expecting an array - Stack Overflow"
+                el último argumento de la llamada no puede ser un elemento de un arreglo que sea puntero
+                probé creando un arreglo (no puntero) de dos elementos, guardando en uno de ellos el valor a pasar y pasando eso... funciona... no es muy elegante
+                seteando la opcón de compilación en
+                    Proyecto -> Propiesdas -> Propiedades de config -> Fortran -> Diagnostics -> Check routine interfaces -> No
+                    
+            error #5102: Cannot open include file 'actrot.h'
+            esto se solucionó agregando en
+                Proyecto -> Propiesdas -> Propiedades de config -> Fortran -> General -> Additional Include Directories
+            las rutas
+                D:\GitHub\SimpactA\sources\inclu
+                D:\GitHub\SimpactA\sources\mainp
+            
+            error de interdependencia de módulos
+            seguí la recomendación indicada en la línea 37 de "..\aerointr\inter_sr.f90"
+            
+            
+
