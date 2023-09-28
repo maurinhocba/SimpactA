@@ -46,11 +46,16 @@
             esto se solucionó agregando en
                 Proyecto -> Propiesdas -> Propiedades de config -> Fortran -> General -> Additional Include Directories
             las rutas
-                D:\GitHub\SimpactA\sources\inclu
-                D:\GitHub\SimpactA\sources\mainp
+                ..\sources\inclu
+                ..\sources\mainp
+            
+            error de linkeo por el uso de "DNRM2" en mastrnods_sr y en inter_sr
+            se solucionó con
+                Proyecto -> Propiesdas -> Propiedades de config -> Fortran -> Libraries -> Use Intel Math Kernel Library -> Sequential
             
             error de interdependencia de módulos
             seguí la recomendación indicada en la línea 37 de "..\aerointr\inter_sr.f90"
+            (esto la verdad no sé si hacía falta - lo hice sin que el VS acusara ese problema)
             
             
 

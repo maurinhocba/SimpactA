@@ -17,7 +17,7 @@
 			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
 		<Configuration Name="Debug|x64" UseCompiler="ifxCompiler">
-			<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" AdditionalIncludeDirectories="D:\GitHub\SimpactA\sources\inclu;D:\GitHub\SimpactA\sources\mainp" Traceback="true" BoundsCheck="true" StackFrameCheck="true" RuntimeLibrary="rtMultiThreadedDebugDLL"/>
+			<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" AdditionalIncludeDirectories="D:\GitHub\SimpactA\sources\inclu;D:\GitHub\SimpactA\sources\mainp" Traceback="true" BoundsCheck="true" StackFrameCheck="true" RuntimeLibrary="rtMultiThreadedDebugDLL" UseMkl="mklSequential"/>
 			<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
 			<Tool Name="VFResourceCompilerTool"/>
 			<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
@@ -470,7 +470,6 @@
 		<File RelativePath="..\..\sources\mainp\elem24.h"/>
 		<File RelativePath="..\..\sources\bsq\elem25.f90"/>
 		<File RelativePath="..\..\sources\mainp\elem25.h"/>
-		<File RelativePath="..\..\sources\mainp\elemnt - original.f90"/>
 		<File RelativePath="..\..\sources\mainp\elemnt.f90"/>
 		<File RelativePath="..\..\sources\inclu\elemnt.h"/>
 		<File RelativePath="..\..\sources\spot\elemt1.f90"/>
@@ -821,7 +820,6 @@
 		<File RelativePath="..\..\sources\solag\masm18.fi"/>
 		<File RelativePath="..\..\sources\beame\masmt8.fi"/>
 		<File RelativePath="..\..\sources\mainp\masmtx.f90"/>
-		<File RelativePath="..\..\sources\solve\masmtx.f90"/>
 		<File RelativePath="..\..\sources\cont2\mastd2.fi"/>
 		<File RelativePath="..\..\sources\cont3\mastd3.fi"/>
 		<File RelativePath="..\..\sources\cont3\mastda.fi"/>
