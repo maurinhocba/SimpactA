@@ -38,8 +38,8 @@
 			<Tool Name="VFPostBuildEventTool"/>
 			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
 		</Configuration>
-		<Configuration Name="Release|x64">
-			<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" RuntimeLibrary="rtMultiThreadedDLL"/>
+		<Configuration Name="Release|x64" UseCompiler="ifxCompiler">
+			<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" AdditionalIncludeDirectories="D:\GitHub\SimpactA\sources\inclu;D:\GitHub\SimpactA\sources\mainp" UseMkl="mklSequential"/>
 			<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" SubSystem="subSystemConsole"/>
 			<Tool Name="VFResourceCompilerTool"/>
 			<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
@@ -58,7 +58,6 @@
 		<File RelativePath="..\..\sources\mainp\actrot.f90"/>
 		<File RelativePath="..\..\sources\inclu\actrot.h"/>
 		<File RelativePath="..\..\sources\ssolag\acvd04.fi"/>
-		<File RelativePath="..\..\sources\tetra\acvd04.fi"/>
 		<File RelativePath="..\..\sources\sprism\acvd05.fi"/>
 		<File RelativePath="..\..\sources\rigid\acvd10.fi"/>
 		<File RelativePath="..\..\sources\beam2\acvd11.fi"/>
@@ -99,7 +98,6 @@
 		<File RelativePath="..\..\sources\mainp\arisin.f90"/>
 		<File RelativePath="..\..\sources\shelq\asstr6.fi"/>
 		<File RelativePath="..\..\sources\shelt\asstr7.fi"/>
-		<File RelativePath="..\..\sources\tetra\axep04.fi"/>
 		<File RelativePath="..\..\sources\shelt\Axep07.fi"/>
 		<File RelativePath="..\..\sources\nbst\axep13.fi"/>
 		<File RelativePath="..\..\sources\lbst\axep14.fi"/>
@@ -120,9 +118,10 @@
 		<File RelativePath="..\..\sources\rbst\bfle15.fi"/>
 		<File RelativePath="..\..\sources\tlbst\bfle24.fi"/>
 		<File RelativePath="..\..\sources\bsq\bfle25.fi"/>
-		<File RelativePath="..\..\sources\aerointr\blas.f90"/>
+		<File RelativePath="..\..\sources\aerointr\blas.f90">
+			<FileConfiguration Name="Debug|x64">
+			<Tool Name="VFFortranCompilerTool" WarnInterfaces="true"/></FileConfiguration></File>
 		<File RelativePath="..\..\sources\ssolag\bmat04.fi"/>
-		<File RelativePath="..\..\sources\tetra\bmat04.fi"/>
 		<File RelativePath="..\..\sources\ssolag\bmat04q.fi"/>
 		<File RelativePath="..\..\sources\sprism\bmat05.fi"/>
 		<File RelativePath="..\..\sources\sprism\bmat05q.fi"/>
@@ -206,7 +205,6 @@
 		<File RelativePath="..\..\sources\solve\colsol.f90"/>
 		<File RelativePath="..\..\sources\inclu\colsol.h"/>
 		<File RelativePath="..\..\sources\ssolag\comm04.fi"/>
-		<File RelativePath="..\..\sources\tetra\comm04.fi"/>
 		<File RelativePath="..\..\sources\sprism\comm05.fi"/>
 		<File RelativePath="..\..\sources\rigid\comm10.fi"/>
 		<File RelativePath="..\..\sources\beam2\comm11.fi"/>
@@ -343,7 +341,6 @@
 		<File RelativePath="..\..\sources\remesh\deloln.f90"/>
 		<File RelativePath="..\..\sources\remesh\deloln.h"/>
 		<File RelativePath="..\..\sources\ssolag\delt04.fi"/>
-		<File RelativePath="..\..\sources\tetra\delt04.fi"/>
 		<File RelativePath="..\..\sources\sprism\delt05.fi"/>
 		<File RelativePath="..\..\sources\beam2\delt11.fi"/>
 		<File RelativePath="..\..\sources\nbst\delt13.fi"/>
@@ -388,7 +385,6 @@
 		<File RelativePath="..\..\sources\aeroaero\DGESV\dswap.f"/>
 		<File RelativePath="..\..\sources\aeroaero\DGESV\dtrsm.f"/>
 		<File RelativePath="..\..\sources\ssolag\dump04.fi"/>
-		<File RelativePath="..\..\sources\tetra\dump04.fi"/>
 		<File RelativePath="..\..\sources\sprism\dump05.fi"/>
 		<File RelativePath="..\..\sources\shelq\dump06.fi"/>
 		<File RelativePath="..\..\sources\shelt\dump07.fi"/>
@@ -417,7 +413,6 @@
 		<File RelativePath="..\..\sources\spot\ele01_db.f90"/>
 		<File RelativePath="..\..\sources\truss\ele02_db.f90"/>
 		<File RelativePath="..\..\sources\ssolag\ele04_db.f90"/>
-		<File RelativePath="..\..\sources\tetra\ele04_db.f90"/>
 		<File RelativePath="..\..\sources\sprism\ele05_db.f90"/>
 		<File RelativePath="..\..\sources\shelq\ele06_db.f90"/>
 		<File RelativePath="..\..\sources\shelt\ele07_db.f90"/>
@@ -438,7 +433,6 @@
 		<File RelativePath="..\..\sources\tlbst\ele24_db.f90"/>
 		<File RelativePath="..\..\sources\bsq\ele25_db.f90"/>
 		<File RelativePath="..\..\sources\ssolag\elem04.f90"/>
-		<File RelativePath="..\..\sources\tetra\elem04.f90"/>
 		<File RelativePath="..\..\sources\mainp\elem04.h"/>
 		<File RelativePath="..\..\sources\sprism\elem05.f90"/>
 		<File RelativePath="..\..\sources\mainp\elem05.h"/>
@@ -485,7 +479,6 @@
 		<File RelativePath="..\..\sources\shrev\elemt9.f90"/>
 		<File RelativePath="..\..\sources\mainp\elemt9.h"/>
 		<File RelativePath="..\..\sources\ssolag\elmd04.fi"/>
-		<File RelativePath="..\..\sources\tetra\elmd04.fi"/>
 		<File RelativePath="..\..\sources\sprism\elmd05.fi"/>
 		<File RelativePath="..\..\sources\rigid\elmd10.fi"/>
 		<File RelativePath="..\..\sources\beam2\elmd11.fi"/>
@@ -556,8 +549,6 @@
 		<File RelativePath="..\..\sources\mainp\functa.f90"/>
 		<File RelativePath="..\..\sources\mainp\functs.f90"/>
 		<File RelativePath="..\..\sources\ssolag\gaus04.fi"/>
-		<File RelativePath="..\..\sources\tetra\gaus04.fi"/>
-		<File RelativePath="..\..\sources\tetra\gaus04n.fi"/>
 		<File RelativePath="..\..\sources\sprism\gaus05.fi"/>
 		<File RelativePath="..\..\sources\rigid\gaus10.fi"/>
 		<File RelativePath="..\..\sources\beam2\gaus11.fi"/>
@@ -653,7 +644,6 @@
 		<File RelativePath="..\..\sources\cont2\inpco2.fi"/>
 		<File RelativePath="..\..\sources\cont3\inpco3.fi"/>
 		<File RelativePath="..\..\sources\ssolag\Inpd04.f90"/>
-		<File RelativePath="..\..\sources\tetra\inpd04.f90"/>
 		<File RelativePath="..\..\sources\mainp\inpd04.h"/>
 		<File RelativePath="..\..\sources\sprism\inpd05.f90"/>
 		<File RelativePath="..\..\sources\mainp\inpd05.h"/>
@@ -764,7 +754,6 @@
 		<File RelativePath="..\..\sources\shrev\locla9.fi"/>
 		<File RelativePath="..\..\sources\aeroaero\DGESV\lsame.f"/>
 		<File RelativePath="..\..\sources\ssolag\luma04.fi"/>
-		<File RelativePath="..\..\sources\tetra\luma04.fi"/>
 		<File RelativePath="..\..\sources\sprism\luma05.fi"/>
 		<File RelativePath="..\..\sources\rigid\luma10.fi"/>
 		<File RelativePath="..\..\sources\beam2\luma11.fi"/>
@@ -794,7 +783,6 @@
 		<File RelativePath="..\..\sources\mainp\mainpg.f90"/>
 		<File RelativePath="..\..\sources\solve\masaux.f90"/>
 		<File RelativePath="..\..\sources\ssolag\mase04.fi"/>
-		<File RelativePath="..\..\sources\tetra\mase04.fi"/>
 		<File RelativePath="..\..\sources\sprism\mase05.fi"/>
 		<File RelativePath="..\..\sources\rigid\mase10.fi"/>
 		<File RelativePath="..\..\sources\beam2\mase11.fi"/>
@@ -887,7 +875,6 @@
 		<File RelativePath="..\..\sources\mainp\nvdamp.f90"/>
 		<File RelativePath="..\..\sources\mainp\nvdamp.h"/>
 		<File RelativePath="..\..\sources\ssolag\outd04.fi"/>
-		<File RelativePath="..\..\sources\tetra\outd04.fi"/>
 		<File RelativePath="..\..\sources\sprism\outd05.fi"/>
 		<File RelativePath="..\..\sources\beam2\outd11.fi"/>
 		<File RelativePath="..\..\sources\nbst\outd13.fi"/>
@@ -1006,7 +993,6 @@
 		<File RelativePath="..\..\sources\solve\renum4.h"/>
 		<File RelativePath="..\..\sources\solve\renumn.f90"/>
 		<File RelativePath="..\..\sources\ssolag\rest04.fi"/>
-		<File RelativePath="..\..\sources\tetra\rest04.fi"/>
 		<File RelativePath="..\..\sources\sprism\rest05.fi"/>
 		<File RelativePath="..\..\sources\shelq\rest06.fi"/>
 		<File RelativePath="..\..\sources\shelt\rest07.fi"/>
@@ -1031,9 +1017,6 @@
 		<File RelativePath="..\..\sources\beame\resta8.fi"/>
 		<File RelativePath="..\..\sources\mainp\restar.f90"/>
 		<File RelativePath="..\..\sources\ssolag\resv04.fi"/>
-		<File RelativePath="..\..\sources\tetra\resv04.fi"/>
-		<File RelativePath="..\..\sources\tetra\resv04e.fi"/>
-		<File RelativePath="..\..\sources\tetra\resv04n.fi"/>
 		<File RelativePath="..\..\sources\sprism\resv05.fi"/>
 		<File RelativePath="..\..\sources\beam2\resv11.fi"/>
 		<File RelativePath="..\..\sources\nbst\resv13.fi"/>
@@ -1211,8 +1194,6 @@
 		<File RelativePath="..\..\sources\ttr2d\tlma19.fi"/>
 		<File RelativePath="..\..\sources\tlbst\tlma24.fi"/>
 		<File RelativePath="..\..\sources\therm\tlmass.f90"/>
-		<File RelativePath="..\..\sources\tetra\toar04.fi"/>
-		<File RelativePath="..\..\sources\tetra\toar04n.fi"/>
 		<File RelativePath="..\..\sources\sprism\toar05.fi"/>
 		<File RelativePath="..\..\sources\shelt\toar07.fi"/>
 		<File RelativePath="..\..\sources\beam2\toar11.fi"/>

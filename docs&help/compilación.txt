@@ -1,11 +1,6 @@
 
 
-
-
-
-
-
-
+COMPILACIÓN CON MS VISUAL STUDIO COMMUNITY 2022
 
 2023 09 25  no compila (más de 3mil errores)
             
@@ -41,21 +36,31 @@
                 probé creando un arreglo (no puntero) de dos elementos, guardando en uno de ellos el valor a pasar y pasando eso... funciona... no es muy elegante
                 seteando la opcón de compilación en
                     Proyecto -> Propiesdas -> Propiedades de config -> Fortran -> Diagnostics -> Check routine interfaces -> No
+                !! luego volví esa opción a "Yes" y al usar "Compilar" no saltaban errores (no sé qué pasará si hago "Recompilar")
+                !! en la versión "Release aparentemente esta opción está en "No" por defecto
                     
             error #5102: Cannot open include file 'actrot.h'
             esto se solucionó agregando en
                 Proyecto -> Propiesdas -> Propiedades de config -> Fortran -> General -> Additional Include Directories
             las rutas
                 ..\sources\inclu
-                ..\sources\mainp
+                ..\sources\mainp <- supongo que lo que haya en "mainp" debería estar en "inclu", pero bueno, capaz no
+            !! esto hay que hacerlo para cada ¿perfil? de compilación
             
             error de linkeo por el uso de "DNRM2" en mastrnods_sr y en inter_sr
             se solucionó con
                 Proyecto -> Propiesdas -> Propiedades de config -> Fortran -> Libraries -> Use Intel Math Kernel Library -> Sequential
+                (podría haber sido otra, pero debe estar activada alguna versión de las MKL)
+            !! esto hay que hacerlo para cada ¿perfil? de compilación
             
             error de interdependencia de módulos
             seguí la recomendación indicada en la línea 37 de "..\aerointr\inter_sr.f90"
             (esto la verdad no sé si hacía falta - lo hice sin que el VS acusara ese problema)
             
-            
+            para que compile las MKL dentro del ejecutable hay que setear
+                Proyecto -> Propiesdas -> Propiedades de config -> Fortran -> Libraries -> Runtime Library -> Multithreaded
+                
+                (en realidad, lo importante es elegir una opción que haga que en 
+                    Proyecto -> Propiesdas -> Propiedades de config -> Fortran -> Command Line
+                aparezca la opción "/libs:static" en vez de "/libs:dll")
 
