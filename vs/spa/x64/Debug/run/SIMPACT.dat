@@ -1,0 +1,1377 @@
+$-------------- Version 710 -------------------------------------------------
+TITLE: str01
+$----------------------------------------------------------------------------
+CONTROL:    NDIME = 3   / Problema 3D
+            NEULR = 1   / Activa grados de libertad rotacionales
+            NDOFN = 6   / Número de grados de libertad considerados
+            AERO
+$----------------------------------------------------------------------------
+  TIME: ENDTM  = 5 / Duración de la simulación
+        DTUSER = 0.00e+0 / Paso de cálculo - Si 0, usa el crítico calculado por el código - Es NECESARIO para materiales ortótropos
+        DTSCAL = 0.7500E+00 / Factor de escala para el paso de cálculo crítico calculado por el programa
+        NCDLT  = 100000     / Frecuencia de cálculo del deltat crítico [pasos de cálculo]
+        VEFAC  =  0.000e+00 ! Factor para el suavizado de velocidades
+  OUTPUT:   IWRIT = 1           / Echo input data and print results to formatted file 'name.rsn'
+            TOUTP = 0.010E+00  / Frecuencia de salida para 'stp'
+            TOUTD = 0.0010E+00  / Frecuencia de salida para 'curvas'
+            IENER = 0           ! Energy calculation and output - 0: disabled, 1: enabled
+END_CONTROL
+$----------------------------------------------------------------------------
+GEOMETRY_DEFINITION
+  ! Cada nodo pertenece a un set y sólo a uno
+  ! Los ángulos van en grados sexagesimales
+  GENERAL:  GSCALE = 1.00   / Escala las coordenadas si NO son puestas en metros
+            NRADS  = 0.00   ! Tipo de coordenadas utilizadas para indicar las posiciones nodales 	
+                            !   0 for cartesian coordinate system
+                            !   1 for cylindrical coordinate system
+                            !   2 for spherical coordinate system
+  
+  SET= Torre   ! Torre
+  ! Label   x            y            z            psi(z)       theta(x)     phi(z)
+    400000    0.0000e+00   0.0000e+00   0.0000e+00   9.0000e+01   9.0000e+01   9.0000e+01
+    400001    0.0000e+00   0.0000e+00   7.1053e+00   9.0000e+01   9.0000e+01   9.0000e+01
+    400002    0.0000e+00   0.0000e+00   1.4211e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400003    0.0000e+00   0.0000e+00   2.1316e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400004    0.0000e+00   0.0000e+00   2.8421e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400005    0.0000e+00   0.0000e+00   3.5526e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400006    0.0000e+00   0.0000e+00   4.2632e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400007    0.0000e+00   0.0000e+00   4.9737e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400008    0.0000e+00   0.0000e+00   5.6842e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400009    0.0000e+00   0.0000e+00   6.3947e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400010    0.0000e+00   0.0000e+00   7.1053e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400011    0.0000e+00   0.0000e+00   7.8158e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400012    0.0000e+00   0.0000e+00   8.5263e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400013    0.0000e+00   0.0000e+00   9.2368e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400014    0.0000e+00   0.0000e+00   9.9474e+01   9.0000e+01   9.0000e+01   9.0000e+01
+    400015    0.0000e+00   0.0000e+00   1.0658e+02   9.0000e+01   9.0000e+01   9.0000e+01
+    400016    0.0000e+00   0.0000e+00   1.1368e+02   9.0000e+01   9.0000e+01   9.0000e+01
+    400017    0.0000e+00   0.0000e+00   1.2079e+02   9.0000e+01   9.0000e+01   9.0000e+01
+    400018    0.0000e+00   0.0000e+00   1.2789e+02   9.0000e+01   9.0000e+01   9.0000e+01
+    400019    0.0000e+00   0.0000e+00   1.3500e+02   9.0000e+01   9.0000e+01   9.0000e+01
+  END_SET
+  SET= Union   ! Unión - Efectivos
+  ! Label   x            y            z            psi(z)       theta(x)     phi(z)
+    500001   -3.3206e-01   0.0000e+00   1.3573e+02   1.8000e+02   9.0000e+01   6.5436e+01
+    500002   -6.6413e-01   0.0000e+00   1.3645e+02   1.8000e+02   9.0000e+01   6.5436e+01
+    500003   -9.9619e-01   0.0000e+00   1.3718e+02   1.8000e+02   9.0000e+01   6.5436e+01
+    500004   -1.3283e+00   0.0000e+00   1.3791e+02   1.8000e+02   9.0000e+01   6.5436e+01
+    500005   -1.6603e+00   0.0000e+00   1.3863e+02   1.8000e+02   9.0000e+01   6.5436e+01
+    500006   -1.9924e+00   0.0000e+00   1.3936e+02   1.8000e+02   9.0000e+01   6.5436e+01
+    500007   -2.3245e+00   0.0000e+00   1.4009e+02   1.8000e+02   9.0000e+01   6.5436e+01
+    500008   -2.6565e+00   0.0000e+00   1.4081e+02   1.8000e+02   9.0000e+01   6.5436e+01
+  END_SET
+  SET= Gondola   ! Góndola
+  ! Label   x            y            z            psi(z)       theta(x)     phi(z)
+         2   -2.9886e+00   0.0000e+00   1.4154e+02   9.0000e+01  -5.0000e+00  -9.0000e+01
+  END_SET
+  SET= Cubo   ! Cubo - solo el master
+  ! Label   x            y            z            psi(z)       theta(x)     phi(z)
+         1    7.9696e+00   0.0000e+00   1.4250e+02   9.0000e+01  -5.0000e+00  -9.0000e+01
+  END_SET
+  SET= Pala1   ! Pala 1 - Efectivos
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     100000    8.4915e+00  -5.1912e+00   1.3953e+02   2.1145e+02   1.4450e+02  -6.9309e+01
+     100001    8.7660e+00  -7.5784e+00   1.3798e+02   2.1169e+02   1.4401e+02  -6.9313e+01
+     100002    9.0474e+00  -9.9430e+00   1.3639e+02   2.1135e+02   1.4298e+02  -7.0109e+01
+     100003    9.3397e+00  -1.2272e+01   1.3473e+02   2.1134e+02   1.4259e+02  -7.0319e+01
+     100004    9.6286e+00  -1.4615e+01   1.3310e+02   2.1271e+02   1.4426e+02  -6.8334e+01
+     100005    9.8949e+00  -1.7047e+01   1.3162e+02   2.1482e+02   1.4639e+02  -6.5551e+01
+     100006    1.0161e+01  -1.9522e+01   1.3022e+02   2.1689e+02   1.4772e+02  -6.2848e+01
+     100007    1.0390e+01  -2.2051e+01   1.2891e+02   2.1797e+02   1.4678e+02  -6.1939e+01
+     100008    1.0637e+01  -2.4502e+01   1.2746e+02   2.1615e+02   1.4732e+02  -6.3821e+01
+     100009    1.0900e+01  -2.7024e+01   1.2614e+02   2.1870e+02   1.5035e+02  -6.0057e+01
+     100010    1.1102e+01  -2.9658e+01   1.2500e+02   2.1580e+02   1.5040e+02  -6.2431e+01
+     100011    1.1332e+01  -3.2154e+01   1.2363e+02   2.1163e+02   1.4717e+02  -6.7574e+01
+     100012    1.1574e+01  -3.4581e+01   1.2214e+02   2.1052e+02   1.4644e+02  -6.8778e+01
+     100013    1.1805e+01  -3.7030e+01   1.2069e+02   2.1074e+02   1.4792e+02  -6.7854e+01
+     100014    1.2015e+01  -3.9536e+01   1.1933e+02   2.1036e+02   1.4953e+02  -6.7474e+01
+     100015    1.2215e+01  -4.2065e+01   1.1801e+02   2.0871e+02   1.5004e+02  -6.8764e+01
+     100016    1.2416e+01  -4.4581e+01   1.1667e+02   2.0648e+02   1.4978e+02  -7.0945e+01
+     100017    1.2626e+01  -4.7076e+01   1.1529e+02   2.0448e+02   1.4952e+02  -7.3043e+01
+     100018    1.2851e+01  -4.9560e+01   1.1389e+02   2.0298e+02   1.4960e+02  -7.4721e+01
+     100019    1.3096e+01  -5.2041e+01   1.1250e+02   2.0192e+02   1.4983e+02  -7.5943e+01
+     100020    1.3352e+01  -5.4523e+01   1.1111e+02   2.0103e+02   1.4997e+02  -7.6807e+01
+     100021    1.3607e+01  -5.7005e+01   1.0971e+02   2.0006e+02   1.4998e+02  -7.7523e+01
+     100022    1.3849e+01  -5.9485e+01   1.0832e+02   1.9877e+02   1.4984e+02  -7.8428e+01
+     100023    1.4080e+01  -6.1957e+01   1.0690e+02   1.9710e+02   1.4958e+02  -7.9781e+01
+     100024    1.4307e+01  -6.4418e+01   1.0547e+02   1.9531e+02   1.4964e+02  -8.1573e+01
+     100025    1.4560e+01  -6.6882e+01   1.0404e+02   1.9447e+02   1.4977e+02  -8.2616e+01
+     100026    1.4819e+01  -6.9342e+01   1.0262e+02   1.9384e+02   1.4961e+02  -8.3169e+01
+     100027    1.5070e+01  -7.1797e+01   1.0117e+02   1.9302e+02   1.4964e+02  -8.3798e+01
+     100028    1.5322e+01  -7.4258e+01   9.9744e+01   1.9231e+02   1.4983e+02  -8.4406e+01
+     100029    1.5575e+01  -7.6720e+01   9.8317e+01   1.9163e+02   1.4983e+02  -8.4997e+01
+     100030    1.5826e+01  -7.9179e+01   9.6883e+01   1.9095e+02   1.4972e+02  -8.5583e+01
+     100031    1.6077e+01  -8.1634e+01   9.5444e+01   1.9024e+02   1.4979e+02  -8.6200e+01
+     100032    1.6330e+01  -8.4095e+01   9.4014e+01   1.8953e+02   1.5072e+02  -8.6896e+01
+     100033    1.6596e+01  -8.6594e+01   9.2653e+01   1.8929e+02   1.5262e+02  -8.7290e+01
+     100034    1.6882e+01  -8.9145e+01   9.1388e+01   1.8960e+02   1.5395e+02  -8.7306e+01
+     100035    1.7188e+01  -9.1706e+01   9.0142e+01   1.8947e+02   1.5419e+02  -8.7615e+01
+  END_SET
+  SET= Pala2   ! Pala 2 - Efectivos
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     200000    8.4915e+00   5.1912e+00   1.3953e+02   2.2573e+02   3.8211e+01   2.2556e+02
+     200001    8.7405e+00   7.7470e+00   1.3827e+02   2.2654e+02   3.8139e+01   2.2472e+02
+     200002    8.9897e+00   1.0325e+01   1.3705e+02   2.2795e+02   3.7539e+01   2.2309e+02
+     200003    9.2390e+00   1.2939e+01   1.3588e+02   2.2854e+02   3.7378e+01   2.2242e+02
+     200004    9.4893e+00   1.5538e+01   1.3469e+02   2.2656e+02   3.8786e+01   2.2485e+02
+     200005    9.7437e+00   1.8049e+01   1.3335e+02   2.2425e+02   4.0728e+01   2.2768e+02
+     200006    1.0011e+01   2.0516e+01   1.3194e+02   2.2305e+02   4.2281e+01   2.2955e+02
+     200007    1.0257e+01   2.2932e+01   1.3043e+02   2.2467e+02   4.2483e+01   2.2835e+02
+     200008    1.0498e+01   2.5426e+01   1.2905e+02   2.2338e+02   4.1760e+01   2.2896e+02
+     200009    1.0776e+01   2.7846e+01   1.2756e+02   2.2003e+02   4.4155e+01   2.3299e+02
+     200010    1.1027e+01   3.0158e+01   1.2587e+02   2.1909e+02   4.2875e+01   2.3382e+02
+     200011    1.1264e+01   3.2606e+01   1.2441e+02   2.2198e+02   3.9489e+01   2.3006e+02
+     200012    1.1492e+01   3.5125e+01   1.2308e+02   2.2256e+02   3.8607e+01   2.2934e+02
+     200013    1.1715e+01   3.7621e+01   1.2171e+02   2.2058e+02   3.9423e+01   2.3162e+02
+     200014    1.1936e+01   4.0062e+01   1.2024e+02   2.1826e+02   4.0073e+01   2.3411e+02
+     200015    1.2152e+01   4.2480e+01   1.1872e+02   2.1689e+02   3.9647e+01   2.3529e+02
+     200016    1.2366e+01   4.4911e+01   1.1724e+02   2.1621e+02   3.8584e+01   2.3557e+02
+     200017    1.2583e+01   4.7363e+01   1.1578e+02   2.1553e+02   3.7629e+01   2.3573e+02
+     200018    1.2811e+01   4.9825e+01   1.1435e+02   2.1463e+02   3.7096e+01   2.3606e+02
+     200019    1.3059e+01   5.2288e+01   1.1292e+02   2.1376e+02   3.6845e+01   2.3645e+02
+     200020    1.3318e+01   5.4749e+01   1.1150e+02   2.1308e+02   3.6618e+01   2.3690e+02
+     200021    1.3576e+01   5.7210e+01   1.1007e+02   2.1250e+02   3.6275e+01   2.3750e+02
+     200022    1.3821e+01   5.9675e+01   1.0864e+02   2.1188e+02   3.5728e+01   2.3821e+02
+     200023    1.4051e+01   6.2149e+01   1.0723e+02   2.1111e+02   3.4966e+01   2.3892e+02
+     200024    1.4274e+01   6.4633e+01   1.0584e+02   2.0982e+02   3.4430e+01   2.3974e+02
+     200025    1.4525e+01   6.7113e+01   1.0444e+02   2.0908e+02   3.4275e+01   2.4003e+02
+     200026    1.4781e+01   6.9596e+01   1.0305e+02   2.0879e+02   3.3957e+01   2.4026e+02
+     200027    1.5027e+01   7.2085e+01   1.0167e+02   2.0816e+02   3.3739e+01   2.4086e+02
+     200028    1.5275e+01   7.4568e+01   1.0028e+02   2.0744e+02   3.3688e+01   2.4147e+02
+     200029    1.5525e+01   7.7050e+01   9.8886e+01   2.0692e+02   3.3500e+01   2.4190e+02
+     200030    1.5772e+01   7.9535e+01   9.7498e+01   2.0650e+02   3.3222e+01   2.4225e+02
+     200031    1.6018e+01   8.2023e+01   9.6115e+01   2.0588e+02   3.3096e+01   2.4276e+02
+     200032    1.6268e+01   8.4506e+01   9.4723e+01   2.0448e+02   3.3722e+01   2.4385e+02
+     200033    1.6542e+01   8.6950e+01   9.3268e+01   2.0270e+02   3.5341e+01   2.4513e+02
+     200034    1.6852e+01   8.9339e+01   9.1722e+01   2.0188e+02   3.6586e+01   2.4551e+02
+     200035    1.7186e+01   9.1717e+01   9.0162e+01   2.0161e+02   3.6767e+01   2.4554e+02
+  END_SET
+  SET= Pala3   ! Pala 3 - Efectivos
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     300000    7.7078e+00  -4.1782e-15   1.4849e+02  -2.1655e+01   9.3962e+01   9.0827e+01
+     300001    7.5965e+00  -1.6853e-01   1.5135e+02  -2.1955e+01   9.4370e+01   9.0604e+01
+     300002    7.4887e+00  -3.8214e-01   1.5420e+02  -2.2117e+01   9.5410e+01   9.0069e+01
+     300003    7.3865e+00  -6.6690e-01   1.5706e+02  -2.2245e+01   9.5784e+01   8.9856e+01
+     300004    7.2831e+00  -9.2299e-01   1.5991e+02  -2.2431e+01   9.3930e+01   9.0720e+01
+     300005    7.1703e+00  -1.0021e+00   1.6277e+02  -2.2755e+01   9.1509e+01   9.1752e+01
+     300006    7.0637e+00  -9.9413e-01   1.6562e+02  -2.3253e+01   8.9838e+01   9.2714e+01
+     300007    6.9280e+00  -8.8046e-01   1.6848e+02  -2.4182e+01   9.0448e+01   9.2711e+01
+     300008    6.7988e+00  -9.2412e-01   1.7133e+02  -2.3054e+01   9.0366e+01   9.2367e+01
+     300009    6.6965e+00  -8.2163e-01   1.7419e+02  -2.2973e+01   8.7062e+01   9.3949e+01
+     300010    6.5499e+00  -5.0038e-01   1.7704e+02  -2.1648e+01   8.7614e+01   9.4034e+01
+     300011    6.4099e+00  -4.5197e-01   1.7989e+02  -2.0841e+01   9.1411e+01   9.2446e+01
+     300012    6.2720e+00  -5.4498e-01   1.8275e+02  -2.0514e+01   9.2309e+01   9.2182e+01
+     300013    6.1255e+00  -5.9124e-01   1.8560e+02  -2.0137e+01   9.0869e+01   9.2937e+01
+     300014    5.9673e+00  -5.2541e-01   1.8845e+02  -1.9425e+01   8.9409e+01   9.3643e+01
+     300015    5.8024e+00  -4.1496e-01   1.9131e+02  -1.8479e+01   8.9191e+01   9.3768e+01
+     300016    5.6364e+00  -3.2990e-01   1.9416e+02  -1.7481e+01   8.9758e+01   9.3506e+01
+     300017    5.4762e+00  -2.8699e-01   1.9701e+02  -1.6568e+01   9.0260e+01   9.3134e+01
+     300018    5.3296e+00  -2.6559e-01   1.9987e+02  -1.5811e+01   9.0356e+01   9.2751e+01
+     300019    5.2027e+00  -2.4636e-01   2.0272e+02  -1.5242e+01   9.0248e+01   9.2447e+01
+     300020    5.0877e+00  -2.2531e-01   2.0557e+02  -1.4778e+01   9.0195e+01   9.2352e+01
+     300021    4.9709e+00  -2.0532e-01   2.0843e+02  -1.4296e+01   9.0274e+01   9.2484e+01
+     300022    4.8409e+00  -1.9060e-01   2.1128e+02  -1.3684e+01   9.0516e+01   9.2694e+01
+     300023    4.6978e+00  -1.9173e-01   2.1414e+02  -1.2888e+01   9.0896e+01   9.2791e+01
+     300024    4.5498e+00  -2.1552e-01   2.1699e+02  -1.1979e+01   9.0941e+01   9.2560e+01
+     300025    4.4287e+00  -2.3043e-01   2.1984e+02  -1.1545e+01   9.0847e+01   9.2249e+01
+     300026    4.3132e+00  -2.5331e-01   2.2270e+02  -1.1239e+01   9.1030e+01   9.2250e+01
+     300027    4.1887e+00  -2.8739e-01   2.2555e+02  -1.0826e+01   9.1031e+01   9.2331e+01
+     300028    4.0656e+00  -3.1059e-01   2.2841e+02  -1.0456e+01   9.0868e+01   9.2343e+01
+     300029    3.9432e+00  -3.3000e-01   2.3126e+02  -1.0113e+01   9.0883e+01   9.2349e+01
+     300030    3.8195e+00  -3.5606e-01   2.3412e+02  -9.7749e+00   9.1007e+01   9.2357e+01
+     300031    3.6946e+00  -3.8903e-01   2.3697e+02  -9.4191e+00   9.0948e+01   9.2352e+01
+     300032    3.5727e+00  -4.1088e-01   2.3983e+02  -9.0488e+00   9.0027e+01   9.2276e+01
+     300033    3.4700e+00  -3.5602e-01   2.4268e+02  -8.9082e+00   8.8125e+01   9.2095e+01
+     300034    3.3950e+00  -1.9373e-01   2.4554e+02  -9.0314e+00   8.6794e+01   9.1806e+01
+     300035    3.3421e+00  -1.1553e-02   2.4840e+02  -8.9688e+00   8.6562e+01   9.1615e+01
+  END_SET
+  SET= Pala1X   ! Pala 1 - Auxiliares
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     100200   -3.6599e-01  -3.5942e+00   1.3518e+02
+     100201   -7.2066e-01  -9.8110e+00   1.4022e+02
+     100202   -4.2105e-01  -1.2202e+01   1.3868e+02
+     100203   -1.1324e-01  -1.4553e+01   1.3706e+02
+     100204    1.8749e-01  -1.6913e+01   1.3547e+02
+     100205    4.7272e-01  -1.9371e+01   1.3404e+02
+     100206    7.8061e-01  -2.1903e+01   1.3274e+02
+     100207    1.0680e+00  -2.4507e+01   1.3157e+02
+     100208    1.2387e+00  -2.6858e+01   1.2993e+02
+     100209    1.5065e+00  -2.9387e+01   1.2862e+02
+     100210    1.6518e+00  -3.1942e+01   1.2734e+02
+     100211    1.8420e+00  -3.4382e+01   1.2586e+02
+     100212    2.0549e+00  -3.6763e+01   1.2429e+02
+     100213    2.2503e+00  -3.9158e+01   1.2273e+02
+     100214    2.4160e+00  -4.1591e+01   1.2124e+02
+     100215    2.5677e+00  -4.4033e+01   1.1976e+02
+     100216    2.7215e+00  -4.6457e+01   1.1825e+02
+     100217    2.8905e+00  -4.8866e+01   1.1671e+02
+     100218    3.0848e+00  -5.1278e+01   1.1518e+02
+     100219    3.3105e+00  -5.3713e+01   1.1370e+02
+     100220    3.5545e+00  -5.6163e+01   1.1225e+02
+     100221    3.7957e+00  -5.8608e+01   1.1079e+02
+     100222    4.0181e+00  -6.1031e+01   1.0929e+02
+     100223    4.2237e+00  -6.3426e+01   1.0774e+02
+     100224    4.4262e+00  -6.5800e+01   1.0615e+02
+     100225    4.6702e+00  -6.8229e+01   1.0466e+02
+     100226    4.9245e+00  -7.0668e+01   1.0320e+02
+     100227    5.1684e+00  -7.3091e+01   1.0170e+02
+     100228    5.4138e+00  -7.5523e+01   1.0021e+02
+     100229    5.6605e+00  -7.7958e+01   9.8740e+01
+     100230    5.9067e+00  -8.0390e+01   9.7259e+01
+     100231    6.1523e+00  -8.2818e+01   9.5769e+01
+     100232    6.4004e+00  -8.5251e+01   9.4289e+01
+     100233    6.6639e+00  -8.7733e+01   9.2899e+01
+     100234    6.9513e+00  -9.0295e+01   9.1652e+01
+     100235    7.2555e+00  -9.2843e+01   9.0385e+01
+  END_SET
+  SET= Pala2X   ! Pala 2 - Auxiliares
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     200200   -9.5321e-01   7.4842e+00   1.4189e+02
+     200201   -1.7771e-01   6.2143e+00   1.3401e+02
+     200202    9.7938e-02   8.7642e+00   1.3274e+02
+     200203    3.6970e-01   1.1354e+01   1.3154e+02
+     200204    6.3693e-01   1.3936e+01   1.3033e+02
+     200205    9.1842e-01   1.6419e+01   1.2894e+02
+     200206    1.2451e+00   1.8826e+01   1.2743e+02
+     200207    1.5730e+00   2.1161e+01   1.2580e+02
+     200208    1.7062e+00   2.3761e+01   1.2459e+02
+     200209    1.9915e+00   2.6174e+01   1.2308e+02
+     200210    2.1608e+00   2.8570e+01   1.2152e+02
+     200211    2.3405e+00   3.1079e+01   1.2016e+02
+     200212    2.5256e+00   3.3646e+01   1.1891e+02
+     200213    2.6970e+00   3.6200e+01   1.1763e+02
+     200214    2.8496e+00   3.8718e+01   1.1628e+02
+     200215    2.9911e+00   4.1228e+01   1.1492e+02
+     200216    3.1295e+00   4.3755e+01   1.1358e+02
+     200217    3.2782e+00   4.6298e+01   1.1228e+02
+     200218    3.4537e+00   4.8834e+01   1.1097e+02
+     200219    3.6679e+00   5.1345e+01   1.0962e+02
+     200220    3.9050e+00   5.3840e+01   1.0825e+02
+     200221    4.1380e+00   5.6340e+01   1.0688e+02
+     200222    4.3453e+00   5.8863e+01   1.0555e+02
+     200223    4.5270e+00   6.1417e+01   1.0427e+02
+     200224    4.6994e+00   6.3991e+01   1.0303e+02
+     200225    4.9300e+00   6.6507e+01   1.0169e+02
+     200226    5.1746e+00   6.9012e+01   1.0034e+02
+     200227    5.4036e+00   7.1533e+01   9.9009e+01
+     200228    5.6366e+00   7.4047e+01   9.7668e+01
+     200229    5.8723e+00   7.6556e+01   9.6320e+01
+     200230    6.1063e+00   7.9068e+01   9.4977e+01
+     200231    6.3383e+00   8.1586e+01   9.3643e+01
+     200232    6.5745e+00   8.4097e+01   9.2299e+01
+     200233    6.8412e+00   8.6558e+01   9.0872e+01
+     200234    7.1564e+00   8.8936e+01   8.9308e+01
+     200235    7.4845e+00   9.1326e+01   8.7768e+01
+  END_SET
+  SET= Pala3X   ! Pala 3 - Auxiliares
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     300200   -1.4958e+00  -3.8900e+00   1.4809e+02
+     300201   -1.6588e+00   3.5967e+00   1.5094e+02
+     300202   -1.7441e+00   3.4380e+00   1.5380e+02
+     300203   -1.8272e+00   3.1991e+00   1.5665e+02
+     300204   -1.9162e+00   2.9773e+00   1.5951e+02
+     300205   -2.0058e+00   2.9525e+00   1.6237e+02
+     300206   -2.0613e+00   3.0772e+00   1.6522e+02
+     300207   -2.1265e+00   3.3456e+00   1.6808e+02
+     300208   -2.3483e+00   3.0971e+00   1.7093e+02
+     300209   -2.4448e+00   3.2129e+00   1.7379e+02
+     300210   -2.6611e+00   3.3720e+00   1.7664e+02
+     300211   -2.8497e+00   3.3026e+00   1.7949e+02
+     300212   -3.0242e+00   3.1179e+00   1.8234e+02
+     300213   -3.2143e+00   2.9589e+00   1.8519e+02
+     300214   -3.4288e+00   2.8724e+00   1.8804e+02
+     300215   -3.6560e+00   2.8050e+00   1.9089e+02
+     300216   -3.8836e+00   2.7025e+00   1.9374e+02
+     300217   -4.0985e+00   2.5679e+00   1.9659e+02
+     300218   -4.2871e+00   2.4441e+00   1.9945e+02
+     300219   -4.4405e+00   2.3676e+00   2.0230e+02
+     300220   -4.5732e+00   2.3223e+00   2.0515e+02
+     300221   -4.7093e+00   2.2676e+00   2.0801e+02
+     300222   -4.8678e+00   2.1675e+00   2.1086e+02
+     300223   -5.0477e+00   2.0092e+00   2.1371e+02
+     300224   -5.2337e+00   1.8097e+00   2.1656e+02
+     300225   -5.3696e+00   1.7213e+00   2.1942e+02
+     300226   -5.4933e+00   1.6568e+00   2.2227e+02
+     300227   -5.6302e+00   1.5582e+00   2.2513e+02
+     300228   -5.7641e+00   1.4760e+00   2.2798e+02
+     300229   -5.8962e+00   1.4025e+00   2.3083e+02
+     300230   -6.0293e+00   1.3222e+00   2.3369e+02
+     300231   -6.1637e+00   1.2323e+00   2.3654e+02
+     300232   -6.2948e+00   1.1534e+00   2.3940e+02
+     300233   -6.4027e+00   1.1745e+00   2.4225e+02
+     300234   -6.4743e+00   1.3587e+00   2.4511e+02
+     300235   -6.5310e+00   1.5171e+00   2.4797e+02
+  END_SET
+END_GEOMETRY_DEFINITION
+$----------------------------------------------------------------------------
+MATERIAL_PROPERTIES
+  
+  ! Torre y Unión
+  DEFINITION:   MATNO  = 400000  / Etiqueta del material
+                MATYPE =      1  / Tipo de material. Si 1 es: 	+ isotropic elastic (hyperelastic)
+                                 /								+ elastic-plastic large strain, including non-linear isotropic hardening
+                                 /								+ von Mises yield criterion
+                                 /								+ no kinematic hardening
+                                 / entre otras cosas.
+                ELASTIC     ! material is elastic
+                YOUNG =  2.100e+11 / Módulo de young
+                POISS =  3.000e-01 / módulo de poisson
+                DENS  =  7.850e+03 ! densidad
+  
+  ! Palas - VISCO~=0.0
+  DEFINITION:   MATNO = 2  MATYPE = 8  ELASTIC VISCOU
+                YOUNG =  2.100e+11 POISS =  3.000e-01 DENS =  7.850e+03 /
+                VISCO =  6.7e+06
+END_MATERIAL_PROPERTIES
+$----------------------------------------------------------------------------
+SECTION_DEFINITION
+  
+  ! Secciones para la TORRE
+  DEFINITION:  SECNO  = 400001        SECTYP = BEAM    ! Para diám. exterior D=  1.0868e+01m
+               NUMAT  = 400000                                                       /
+               AREA   =   1.1823e+00  SHEAR2 =   5.9113e-01  SHEAR3 =   5.9113e-01   /
+               TORINE =   3.4691e+01  INERT2 =   1.7345e+01  INERT3 =   1.7345e+01
+  
+  DEFINITION:  SECNO  = 400002        SECTYP = BEAM    ! Para diám. exterior D=  1.0605e+01m
+               NUMAT  = 400000                                                       /
+               AREA   =   1.1361e+00  SHEAR2 =   5.6806e-01  SHEAR3 =   5.6806e-01   /
+               TORINE =   3.1740e+01  INERT2 =   1.5870e+01  INERT3 =   1.5870e+01
+  
+  DEFINITION:  SECNO  = 400003        SECTYP = BEAM    ! Para diám. exterior D=  1.0342e+01m
+               NUMAT  = 400000                                                       /
+               AREA   =   1.0909e+00  SHEAR2 =   5.4543e-01  SHEAR3 =   5.4543e-01   /
+               TORINE =   2.8980e+01  INERT2 =   1.4490e+01  INERT3 =   1.4490e+01
+  
+  DEFINITION:  SECNO  = 400004        SECTYP = BEAM    ! Para diám. exterior D=  1.0079e+01m
+               NUMAT  = 400000                                                       /
+               AREA   =   1.0465e+00  SHEAR2 =   5.2323e-01  SHEAR3 =   5.2323e-01   /
+               TORINE =   2.6402e+01  INERT2 =   1.3201e+01  INERT3 =   1.3201e+01
+  
+  DEFINITION:  SECNO  = 400005        SECTYP = BEAM    ! Para diám. exterior D=  9.8158e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   1.0029e+00  SHEAR2 =   5.0146e-01  SHEAR3 =   5.0146e-01   /
+               TORINE =   2.3998e+01  INERT2 =   1.1999e+01  INERT3 =   1.1999e+01
+  
+  DEFINITION:  SECNO  = 400006        SECTYP = BEAM    ! Para diám. exterior D=  9.5526e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   9.6026e-01  SHEAR2 =   4.8013e-01  SHEAR3 =   4.8013e-01   /
+               TORINE =   2.1760e+01  INERT2 =   1.0880e+01  INERT3 =   1.0880e+01
+  
+  DEFINITION:  SECNO  = 400007        SECTYP = BEAM    ! Para diám. exterior D=  9.2895e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   9.1846e-01  SHEAR2 =   4.5923e-01  SHEAR3 =   4.5923e-01   /
+               TORINE =   1.9680e+01  INERT2 =   9.8401e+00  INERT3 =   9.8401e+00
+  
+  DEFINITION:  SECNO  = 400008        SECTYP = BEAM    ! Para diám. exterior D=  9.0263e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   8.7753e-01  SHEAR2 =   4.3877e-01  SHEAR3 =   4.3877e-01   /
+               TORINE =   1.7752e+01  INERT2 =   8.8758e+00  INERT3 =   8.8758e+00
+  
+  DEFINITION:  SECNO  = 400009        SECTYP = BEAM    ! Para diám. exterior D=  8.7632e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   8.3747e-01  SHEAR2 =   4.1874e-01  SHEAR3 =   4.1874e-01   /
+               TORINE =   1.5966e+01  INERT2 =   7.9832e+00  INERT3 =   7.9832e+00
+  
+  DEFINITION:  SECNO  = 400010        SECTYP = BEAM    ! Para diám. exterior D=  8.5000e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   7.9828e-01  SHEAR2 =   3.9914e-01  SHEAR3 =   3.9914e-01   /
+               TORINE =   1.4317e+01  INERT2 =   7.1587e+00  INERT3 =   7.1587e+00
+  
+  DEFINITION:  SECNO  = 400011        SECTYP = BEAM    ! Para diám. exterior D=  8.2368e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   7.5996e-01  SHEAR2 =   3.7998e-01  SHEAR3 =   3.7998e-01   /
+               TORINE =   1.2798e+01  INERT2 =   6.3990e+00  INERT3 =   6.3990e+00
+  
+  DEFINITION:  SECNO  = 400012        SECTYP = BEAM    ! Para diám. exterior D=  7.9737e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   7.2250e-01  SHEAR2 =   3.6125e-01  SHEAR3 =   3.6125e-01   /
+               TORINE =   1.1401e+01  INERT2 =   5.7005e+00  INERT3 =   5.7005e+00
+  
+  DEFINITION:  SECNO  = 400013        SECTYP = BEAM    ! Para diám. exterior D=  7.7105e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   6.8591e-01  SHEAR2 =   3.4296e-01  SHEAR3 =   3.4296e-01   /
+               TORINE =   1.0120e+01  INERT2 =   5.0600e+00  INERT3 =   5.0600e+00
+  
+  DEFINITION:  SECNO  = 400014        SECTYP = BEAM    ! Para diám. exterior D=  7.4474e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   6.5020e-01  SHEAR2 =   3.2510e-01  SHEAR3 =   3.2510e-01   /
+               TORINE =   8.9482e+00  INERT2 =   4.4741e+00  INERT3 =   4.4741e+00
+  
+  DEFINITION:  SECNO  = 400015        SECTYP = BEAM    ! Para diám. exterior D=  7.1842e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   6.1535e-01  SHEAR2 =   3.0767e-01  SHEAR3 =   3.0767e-01   /
+               TORINE =   7.8797e+00  INERT2 =   3.9399e+00  INERT3 =   3.9399e+00
+  
+  DEFINITION:  SECNO  = 400016        SECTYP = BEAM    ! Para diám. exterior D=  6.9211e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   5.8137e-01  SHEAR2 =   2.9068e-01  SHEAR3 =   2.9068e-01   /
+               TORINE =   6.9082e+00  INERT2 =   3.4541e+00  INERT3 =   3.4541e+00
+  
+  DEFINITION:  SECNO  = 400017        SECTYP = BEAM    ! Para diám. exterior D=  6.6579e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   5.4826e-01  SHEAR2 =   2.7413e-01  SHEAR3 =   2.7413e-01   /
+               TORINE =   6.0279e+00  INERT2 =   3.0139e+00  INERT3 =   3.0139e+00
+  
+  DEFINITION:  SECNO  = 400018        SECTYP = BEAM    ! Para diám. exterior D=  6.3947e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   5.1601e-01  SHEAR2 =   2.5801e-01  SHEAR3 =   2.5801e-01   /
+               TORINE =   5.2329e+00  INERT2 =   2.6165e+00  INERT3 =   2.6165e+00
+  
+  DEFINITION:  SECNO  = 400019        SECTYP = BEAM    ! Para diám. exterior D=  6.1316e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   4.8464e-01  SHEAR2 =   2.4232e-01  SHEAR3 =   2.4232e-01   /
+               TORINE =   4.5178e+00  INERT2 =   2.2589e+00  INERT3 =   2.2589e+00
+  
+  ! Sección única para la UNIÓN
+  DEFINITION:  SECNO  = 500001        SECTYP = BEAM    ! Para diám. exterior D=  6.0000e+00m
+               NUMAT  = 400000                                                       /
+               AREA   =   4.6928e-01  SHEAR2 =   2.3464e-01  SHEAR3 =   2.3464e-01   /
+               TORINE =   4.1884e+00  INERT2 =   2.0942e+00  INERT3 =   2.0942e+00
+  
+  ! Sección única para el CUBO y la GÓNDOLA (cuerpo rígido)
+  DEFINITION:   SECNO  = 0        SEC_TYPE = SOLID
+                NUMAT  = 400000   THICK    = 1d0
+  
+  DEFINITION:  SECNO  = 0001   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   2.7894e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   1.0336e+04  INERT3 =   1.0807e+04 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   4.1276e+10  EIY =   1.5450e+11  EIZ =   1.5828e+11 /
+               GJ =   7.6492e+10  GAY =   1.0089e+10  GAZ =   1.0089e+10 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   7.0909e+03  CNMZ =  -1.5512e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0002   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   2.2640e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   6.8781e+03  INERT3 =   9.7299e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.9772e+10  EIY =   9.9171e+10  EIZ =   1.2433e+11 /
+               GJ =   4.8604e+10  GAY =   6.4066e+09  GAZ =   6.4066e+09 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   7.7294e+06  CNMZ =  -1.8587e+09    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0003   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.9018e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   5.1119e+03  INERT3 =   8.0216e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.4682e+10  EIY =   7.4612e+10  EIZ =   1.0256e+11 /
+               GJ =   3.2781e+10  GAY =   4.5005e+09  GAZ =   4.5005e+09 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   1.1246e+07  CNMZ =  -9.1762e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0004   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.7594e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   4.0906e+03  INERT3 =   7.3115e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.3339e+10  EIY =   6.3281e+10  EIZ =   9.1054e+10 /
+               GJ =   2.0715e+10  GAY =   3.0304e+09  GAZ =   3.0304e+09 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   6.8062e+06  CNMZ =  -2.3596e+06    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0005   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.5784e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   3.0865e+03  INERT3 =   6.6150e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.1707e+10  EIY =   5.0081e+10  EIZ =   8.3206e+10 /
+               GJ =   1.1346e+10  GAY =   1.7729e+09  GAZ =   1.7729e+09 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   6.9237e+05  CNMZ =   3.8485e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0006   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.6518e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   2.7359e+03  INERT3 =   6.9611e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.4671e+10  EIY =   4.7849e+10  EIZ =   9.4122e+10 /
+               GJ =   8.1801e+09  GAY =   1.3391e+09  GAZ =   1.3391e+09 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   1.2344e+07  CNMZ =   4.7434e+07    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0007   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.7480e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   2.1795e+03  INERT3 =   7.4439e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.7467e+10  EIY =   3.9764e+10  EIZ =   1.0686e+11 /
+               GJ =   5.1695e+09  GAY =   9.0089e+08  GAZ =   9.0089e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   3.0562e+07  CNMZ =  -2.3837e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0008   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.7735e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   1.8682e+03  INERT3 =   7.1901e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.8472e+10  EIY =   3.4838e+10  EIZ =   1.0450e+11 /
+               GJ =   3.9036e+09  GAY =   7.4095e+08  GAZ =   7.4095e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   4.2582e+07  CNMZ =  -5.3145e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0009   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.7562e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   1.5809e+03  INERT3 =   7.0071e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.8448e+10  EIY =   2.9462e+10  EIZ =   1.0423e+11 /
+               GJ =   3.3877e+09  GAY =   6.6462e+08  GAZ =   6.6462e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   4.0513e+07  CNMZ =  -3.5435e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0010   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.5718e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   1.2779e+03  INERT3 =   5.5185e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.5009e+10  EIY =   2.3798e+10  EIZ =   7.3251e+10 /
+               GJ =   2.7358e+09  GAY =   6.3174e+08  GAZ =   6.3174e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   6.9808e+07  CNMZ =  -8.8129e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0011   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.4243e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   1.0420e+03  INERT3 =   4.3892e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.2263e+10  EIY =   1.9331e+10  EIZ =   5.0812e+10 /
+               GJ =   2.3006e+09  GAY =   6.0598e+08  GAZ =   6.0598e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   8.0623e+07  CNMZ =  -1.1784e+09    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0012   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.4043e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   8.8774e+02  INERT3 =   4.2010e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.2126e+10  EIY =   1.6512e+10  EIZ =   5.0969e+10 /
+               GJ =   1.9822e+09  GAY =   5.4577e+08  GAZ =   5.4577e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   6.7164e+07  CNMZ =  -9.9673e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0013   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.4143e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   7.7279e+02  INERT3 =   4.2474e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.2616e+10  EIY =   1.4459e+10  EIZ =   5.6417e+10 /
+               GJ =   1.7263e+09  GAY =   4.8382e+08  GAZ =   4.8382e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   4.7506e+07  CNMZ =  -7.1140e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0014   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.3765e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   6.6229e+02  INERT3 =   3.9645e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.2154e+10  EIY =   1.2449e+10  EIZ =   5.3365e+10 /
+               GJ =   1.4883e+09  GAY =   4.4585e+08  GAZ =   4.4585e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   3.6089e+07  CNMZ =  -6.2109e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0015   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.3020e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   5.5550e+02  INERT3 =   3.4270e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.0950e+10  EIY =   1.0469e+10  EIZ =   4.3762e+10 /
+               GJ =   1.2665e+09  GAY =   4.2611e+08  GAZ =   4.2611e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   3.1174e+07  CNMZ =  -6.8198e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0016   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.2259e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   4.6096e+02  INERT3 =   2.8844e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.9705e+10  EIY =   8.6998e+09  EIZ =   3.3858e+10 /
+               GJ =   1.0704e+09  GAY =   4.1027e+08  GAZ =   4.1027e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   2.6600e+07  CNMZ =  -7.5666e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0017   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.1708e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   3.8401e+02  INERT3 =   2.5064e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.8865e+10  EIY =   7.2569e+09  EIZ =   2.7897e+10 /
+               GJ =   9.0604e+08  GAY =   3.8813e+08  GAZ =   3.8813e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   1.8711e+07  CNMZ =  -7.5223e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0018   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.1250e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   3.2141e+02  INERT3 =   2.2490e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.8187e+10  EIY =   6.0799e+09  EIZ =   2.4734e+10 /
+               GJ =   7.6931e+08  GAY =   3.6058e+08  GAZ =   3.6058e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   1.0583e+07  CNMZ =  -6.9529e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0019   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.0710e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   2.6847e+02  INERT3 =   2.0331e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.7321e+10  EIY =   5.0794e+09  EIZ =   2.2340e+10 /
+               GJ =   6.5437e+08  GAY =   3.3036e+08  GAZ =   3.3036e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   6.3634e+06  CNMZ =  -6.3200e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0020   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.0048e+03  TORDEN =   0.0000e+00 /
+               INERT2 =   2.2242e+02  INERT3 =   1.8137e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.6175e+10  EIY =   4.2032e+09  EIZ =   1.9588e+10 /
+               GJ =   5.5646e+08  GAY =   3.0025e+08  GAZ =   3.0025e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   7.0162e+06  CNMZ =  -5.8670e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0021   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   9.4385e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   1.8366e+02  INERT3 =   1.6040e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.5104e+10  EIY =   3.4623e+09  EIZ =   1.6869e+10 /
+               GJ =   4.7255e+08  GAY =   2.7311e+08  GAZ =   2.7311e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   8.1031e+06  CNMZ =  -5.4675e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0022   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   9.0696e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   1.5279e+02  INERT3 =   1.4220e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.4485e+10  EIY =   2.8713e+09  EIZ =   1.4711e+10 /
+               GJ =   3.9983e+08  GAY =   2.5159e+08  GAZ =   2.5159e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   4.8378e+06  CNMZ =  -4.9625e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0023   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   8.7663e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   1.2675e+02  INERT3 =   1.2624e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.4011e+10  EIY =   2.3720e+09  EIZ =   1.3190e+10 /
+               GJ =   3.3640e+08  GAY =   2.3184e+08  GAZ =   2.3184e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -1.8339e+06  CNMZ =  -4.2990e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0024   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   7.9223e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   9.8111e+01  INERT3 =   1.0915e+03 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.2557e+10  EIY =   1.8193e+09  EIZ =   1.1843e+10 /
+               GJ =   2.8154e+08  GAY =   2.0224e+08  GAZ =   2.0224e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -4.1072e+06  CNMZ =  -3.5511e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0025   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   6.8385e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   7.2587e+01  INERT3 =   9.2746e+02 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.0640e+10  EIY =   1.3266e+09  EIZ =   1.0468e+10 /
+               GJ =   2.3896e+08  GAY =   1.7187e+08  GAZ =   1.7187e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -2.0549e+06  CNMZ =  -2.9411e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0026   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   6.1575e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   5.8926e+01  INERT3 =   8.0021e+02 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   9.4453e+09  EIY =   1.0652e+09  EIZ =   9.1792e+09 /
+               GJ =   2.1093e+08  GAY =   1.5692e+08  GAZ =   1.5692e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -2.2970e+06  CNMZ =  -2.5341e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0027   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   5.2553e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   4.5802e+01  INERT3 =   6.6390e+02 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   7.8902e+09  EIY =   8.1107e+08  EIZ =   7.8791e+09 /
+               GJ =   1.9013e+08  GAY =   1.4289e+08  GAZ =   1.4289e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -2.2071e+06  CNMZ =  -2.0611e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0028   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   4.4992e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   3.5076e+01  INERT3 =   5.4786e+02 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   6.5883e+09  EIY =   6.0496e+08  EIZ =   6.7393e+09 /
+               GJ =   1.6995e+08  GAY =   1.2999e+08  GAZ =   1.2999e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -1.8278e+06  CNMZ =  -1.6378e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0029   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   4.0210e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   2.7952e+01  INERT3 =   4.6333e+02 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   5.7633e+09  EIY =   4.7126e+08  EIZ =   5.8075e+09 /
+               GJ =   1.4939e+08  GAY =   1.1914e+08  GAZ =   1.1914e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -1.5459e+06  CNMZ =  -1.3053e+08    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0030   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   3.6349e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   2.2699e+01  INERT3 =   3.9755e+02 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   5.1023e+09  EIY =   3.7377e+08  EIZ =   5.0141e+09 /
+               GJ =   1.3016e+08  GAY =   1.0864e+08  GAZ =   1.0864e+08 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -1.3646e+06  CNMZ =  -9.9152e+07    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0031   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   3.1994e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   1.7796e+01  INERT3 =   3.3771e+02 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   4.3603e+09  EIY =   2.8163e+08  EIZ =   4.2769e+09 /
+               GJ =   1.1292e+08  GAY =   9.7252e+07  GAZ =   9.7252e+07 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -1.2304e+06  CNMZ =  -6.4662e+07    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0032   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   2.8303e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   1.3032e+01  INERT3 =   2.7191e+02 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   3.6896e+09  EIY =   1.9631e+08  EIZ =   3.4497e+09 /
+               GJ =   9.2447e+07  GAY =   8.6216e+07  GAZ =   8.6216e+07 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -7.9323e+05  CNMZ =  -3.4796e+07    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0033   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   2.4794e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   8.3888e+00  INERT3 =   1.8767e+02 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   3.1484e+09  EIY =   1.2273e+08  EIZ =   2.3876e+09 /
+               GJ =   6.3425e+07  GAY =   7.4342e+07  GAZ =   7.4342e+07 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -7.2457e+04  CNMZ =  -1.5267e+07    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0034   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   1.6519e+02  TORDEN =   0.0000e+00 /
+               INERT2 =   3.4648e+00  INERT3 =   7.7401e+01 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   2.3426e+09  EIY =   5.1259e+07  EIZ =   1.0600e+09 /
+               GJ =   2.6461e+07  GAY =   5.3807e+07  GAZ =   5.3807e+07 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =  -6.7754e+02  CNMZ =   3.3555e+04    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+  DEFINITION:  SECNO  = 0035   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =   8.7023e+01  TORDEN =   0.0000e+00 /
+               INERT2 =   4.3375e-01  INERT3 =   1.1151e+01 /
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =   1.2700e+09  EIY =   6.5319e+06  EIZ =   1.6159e+08 /
+               GJ =   3.3663e+06  GAY =   2.4979e+07  GAZ =   2.4979e+07 /
+               CNTY =   0.0000e+00  CNTZ =   0.0000e+00                         / Normal con Cortes
+               CNMX =   0.0000e+00  CNMY =   1.8136e+02  CNMZ =  -9.4299e+03    / Normal con Momentos
+               CTYTZ =   0.0000e+00                                             / Cortes entre sí
+               CTYMX =   0.0000e+00  CTYMY =   0.0000e+00  CTYMZ =   0.0000e+00 / Corte_Y con Momentos
+               CTZMX =   0.0000e+00  CTZMY =   0.0000e+00  CTZMZ =   0.0000e+00 / Corte_Z con Momentos
+               CMXMY =   0.0000e+00  CMXMZ =   0.0000e+00  CMYMZ =   0.0000e+00 / Momentos entre sí
+  
+END_SECTION
+$----------------------------------------------------------------------------
+SET_DEFINITION
+  ELS_NAME = TORRE    ELM_TYPE: BEAM  NELEM = 19
+                      NREQS = 0   / Número de puntos de Gaus elegidos para la salida de tensión
+                      NNODE = 2   / Máximo número de nodos por elemento
+                      NGAUS = 1   / Cantidad de puntos de integración de Gauss
+                      AXES_CO = 0 ! Usa los ángulos de Euler definidos para los nodos
+    ! Elemnt    Sec#        Node 1      Node 2
+            1   400001      400000      400001
+            2   400002      400001      400002
+            3   400003      400002      400003
+            4   400004      400003      400004
+            5   400005      400004      400005
+            6   400006      400005      400006
+            7   400007      400006      400007
+            8   400008      400007      400008
+            9   400009      400008      400009
+           10   400010      400009      400010
+           11   400011      400010      400011
+           12   400012      400011      400012
+           13   400013      400012      400013
+           14   400014      400013      400014
+           15   400015      400014      400015
+           16   400016      400015      400016
+           17   400017      400016      400017
+           18   400018      400017      400018
+           19   400019      400018      400019
+  END_ELEMENT_DEFINITION
+  ELS_NAME = UNION    ELM_TYPE: BEAM  NELEM =  9
+                      NREQS = 0    / Número de puntos de Gaus elegidos para la salida de tensión
+                      NNODE = 2    / Máximo número de nodos por elemento
+                      NGAUS = 1    / Cantidad de puntos de integración de Gauss
+                      AXES_CO = -2 ! Usa el master del cubo para definir el plano donde vive t3'
+    ! Elemnt    Sec#        Node 1      Node 2    RefNode1    RefNode2
+            1   500001      400019      500001       1           1
+            2   500001      500001      500002       1           1
+            3   500001      500002      500003       1           1
+            4   500001      500003      500004       1           1
+            5   500001      500004      500005       1           1
+            6   500001      500005      500006       1           1
+            7   500001      500006      500007       1           1
+            8   500001      500007      500008       1           1
+            9   500001      500008           2       1           1
+  END_ELEMENT_DEFINITION
+  ELS_NAME = Gondola  ELM_TYPE: RIGID / Tipo de elemento
+                      NELEM    = 1    ! Cantidad exacta de elementos a leer - 1 si es definido como nube de puntos
+                      N_NODE   = 1    / Cantidad de nodos por elemento - o de ptos.
+                      R_B_NODE = 2    / Label del master node
+                      N_TYPE   = 0    ! Depende del tipo de elemento que forma el cuerpo
+    ! ElmLabel	Sec#	Nodos que definene el elemento
+                        2
+  END_ELEMENT_DEFINITION
+  ELS_NAME = CUBO     ELM_TYPE: RIGID / Tipo de elemento
+                      NELEM    = 1    ! Cantidad exacta de elementos a leer - 1 si es definido como nube de puntos
+                      N_NODE   = 1    / Cantidad de nodos por elemento - o de ptos.
+                      R_B_NODE = 1    / Label del master node
+                      N_TYPE   = 0    ! Depende del tipo de elemento que forma el cuerpo
+    ! ElmLabel	Sec#	Nodos que definene el elemento
+                        1
+  END_ELEMENT_DEFINITION
+  ELS_NAME = PALA1    ELM_TYPE: BEAM  NELEM = 35
+                      NREQS = 0    / Número de puntos de Gaus elegidos para la salida de tensión
+                      NNODE = 2    / Máximo número de nodos por elemento
+                      NGAUS = 1    / Cantidad de puntos de integración de Gauss
+                      AXES_CO = -2 ! Usa un nodo auxiliar para definir el plano donde vive t3'
+    ! Elemnt  Sec#    Node 1    Node 2    RefNode1    RefNode2
+            1   0001      100000      100001      100200        100200
+            2   0002      100001      100002      100201        100201
+            3   0003      100002      100003      100202        100202
+            4   0004      100003      100004      100203        100203
+            5   0005      100004      100005      100204        100204
+            6   0006      100005      100006      100205        100205
+            7   0007      100006      100007      100206        100206
+            8   0008      100007      100008      100207        100207
+            9   0009      100008      100009      100208        100208
+           10   0010      100009      100010      100209        100209
+           11   0011      100010      100011      100210        100210
+           12   0012      100011      100012      100211        100211
+           13   0013      100012      100013      100212        100212
+           14   0014      100013      100014      100213        100213
+           15   0015      100014      100015      100214        100214
+           16   0016      100015      100016      100215        100215
+           17   0017      100016      100017      100216        100216
+           18   0018      100017      100018      100217        100217
+           19   0019      100018      100019      100218        100218
+           20   0020      100019      100020      100219        100219
+           21   0021      100020      100021      100220        100220
+           22   0022      100021      100022      100221        100221
+           23   0023      100022      100023      100222        100222
+           24   0024      100023      100024      100223        100223
+           25   0025      100024      100025      100224        100224
+           26   0026      100025      100026      100225        100225
+           27   0027      100026      100027      100226        100226
+           28   0028      100027      100028      100227        100227
+           29   0029      100028      100029      100228        100228
+           30   0030      100029      100030      100229        100229
+           31   0031      100030      100031      100230        100230
+           32   0032      100031      100032      100231        100231
+           33   0033      100032      100033      100232        100232
+           34   0034      100033      100034      100233        100233
+           35   0035      100034      100035      100234        100234
+  END_ELEMENT_DEFINITION
+  ELS_NAME = PALA2    ELM_TYPE: BEAM  NELEM = 35
+                      NREQS = 0    / Número de puntos de Gaus elegidos para la salida de tensión
+                      NNODE = 2    / Máximo número de nodos por elemento
+                      NGAUS = 1    / Cantidad de puntos de integración de Gauss
+                      AXES_CO = -2 ! Usa un nodo auxiliar para definir el plano donde vive t3'
+    ! Elemnt  Sec#    Node 1    Node 2    RefNode1    RefNode2
+            1   0001      200000      200001      200200        200200
+            2   0002      200001      200002      200201        200201
+            3   0003      200002      200003      200202        200202
+            4   0004      200003      200004      200203        200203
+            5   0005      200004      200005      200204        200204
+            6   0006      200005      200006      200205        200205
+            7   0007      200006      200007      200206        200206
+            8   0008      200007      200008      200207        200207
+            9   0009      200008      200009      200208        200208
+           10   0010      200009      200010      200209        200209
+           11   0011      200010      200011      200210        200210
+           12   0012      200011      200012      200211        200211
+           13   0013      200012      200013      200212        200212
+           14   0014      200013      200014      200213        200213
+           15   0015      200014      200015      200214        200214
+           16   0016      200015      200016      200215        200215
+           17   0017      200016      200017      200216        200216
+           18   0018      200017      200018      200217        200217
+           19   0019      200018      200019      200218        200218
+           20   0020      200019      200020      200219        200219
+           21   0021      200020      200021      200220        200220
+           22   0022      200021      200022      200221        200221
+           23   0023      200022      200023      200222        200222
+           24   0024      200023      200024      200223        200223
+           25   0025      200024      200025      200224        200224
+           26   0026      200025      200026      200225        200225
+           27   0027      200026      200027      200226        200226
+           28   0028      200027      200028      200227        200227
+           29   0029      200028      200029      200228        200228
+           30   0030      200029      200030      200229        200229
+           31   0031      200030      200031      200230        200230
+           32   0032      200031      200032      200231        200231
+           33   0033      200032      200033      200232        200232
+           34   0034      200033      200034      200233        200233
+           35   0035      200034      200035      200234        200234
+  END_ELEMENT_DEFINITION
+  ELS_NAME = PALA3    ELM_TYPE: BEAM  NELEM = 35
+                      NREQS = 0    / Número de puntos de Gaus elegidos para la salida de tensión
+                      NNODE = 2    / Máximo número de nodos por elemento
+                      NGAUS = 1    / Cantidad de puntos de integración de Gauss
+                      AXES_CO = -2 ! Usa un nodo auxiliar para definir el plano donde vive t3'
+    ! Elemnt  Sec#    Node 1    Node 2    RefNode1    RefNode2
+            1   0001      300000      300001      300200        300200
+            2   0002      300001      300002      300201        300201
+            3   0003      300002      300003      300202        300202
+            4   0004      300003      300004      300203        300203
+            5   0005      300004      300005      300204        300204
+            6   0006      300005      300006      300205        300205
+            7   0007      300006      300007      300206        300206
+            8   0008      300007      300008      300207        300207
+            9   0009      300008      300009      300208        300208
+           10   0010      300009      300010      300209        300209
+           11   0011      300010      300011      300210        300210
+           12   0012      300011      300012      300211        300211
+           13   0013      300012      300013      300212        300212
+           14   0014      300013      300014      300213        300213
+           15   0015      300014      300015      300214        300214
+           16   0016      300015      300016      300215        300215
+           17   0017      300016      300017      300216        300216
+           18   0018      300017      300018      300217        300217
+           19   0019      300018      300019      300218        300218
+           20   0020      300019      300020      300219        300219
+           21   0021      300020      300021      300220        300220
+           22   0022      300021      300022      300221        300221
+           23   0023      300022      300023      300222        300222
+           24   0024      300023      300024      300223        300223
+           25   0025      300024      300025      300224        300224
+           26   0026      300025      300026      300225        300225
+           27   0027      300026      300027      300226        300226
+           28   0028      300027      300028      300227        300227
+           29   0029      300028      300029      300228        300228
+           30   0030      300029      300030      300229        300229
+           31   0031      300030      300031      300230        300230
+           32   0032      300031      300032      300231        300231
+           33   0033      300032      300033      300232        300232
+           34   0034      300033      300034      300233        300233
+           35   0035      300034      300035      300234        300234
+  END_ELEMENT_DEFINITION
+END_SET_DEFINITION
+$----------------------------------------------------------------------------
+KINEMATIC_CONDITIONS
+  
+  BOUNDARY_CONDITIONS
+    ! rotaciones se restringen en sistema local de cada nodo
+    ! recordar el sistema coordenado del los nodos 60, 61 y 40
+    !
+    ! Node #	x_disp	y_disp	z_disp	x_rot	y_rot	z_rot	! 0: free
+    ! or set                                                  	! 1: fixed
+      400000    1       1       1       1       1       1       !
+  END_BOUNDARY_CONDITIONS
+  
+  N_DEPD_NODES
+    SLAVE = 100000   MASTER = 1   ! unión rígida entre pala1 y cubo
+    SLAVE = 200000   MASTER = 1   ! unión rígida entre pala2 y cubo
+    SLAVE = 300000   MASTER = 1   ! unión rígida entre pala3 y cubo
+  END_N_DEPD_NODES
+  
+  SLIDING_NODES
+    ! unión góndola-cubo
+    SLAVE = 2     MASTER = 1      NOSLD     ! fija la distancia entre el
+                                            ! master del cubo y el centro de
+                                            ! la góndola, pero deja que roten
+                                            ! relativamente
+  END_SLIDING_NODES
+  
+  PRESCRIBED_VELOCITIES
+    VEL_SET= 1     FACTOR = 1  ! Amplitud para la función del tiempo usada
+      ! Datos de la función del tiempo elegida (curva)
+      CURVE_DATA   /
+        LTYPE =  4 / Constante hasta START, cosenoidal hasta el máximo, luego constante (Función elegida - Ver pág. 5 de constraints.
+        START =  0          END  =  5            /
+        AMPLI = -0.7308     FREQ =  0.628318531
+      ! Node #	x_vel	y_vel	z_vel	x_vel	y_vel	z_vel
+      ! or set	lineal	lineal	lineal	rotac	rotac	rotac
+        1       0.0e+0  0.0e+0  0.0e+0  1.0e+0  0.0e+0  0.0e+0
+    END_VEL_SET
+  END_PRESCRIBED_VELOCITIES
+  
+END_KINEMATIC_CONDITIONS
+$----------------------------------------------------------------------------
+CONCENTRATED_MASS
+  ! Nodo   M_x           M_y           M_z           In_x          In_y          In_z
+      1     1.9600e+05    1.9600e+05    1.9600e+05    2.8224e+06    2.8224e+06    2.8224e+06 ! masa concentrada del cubo
+      2     1.1845e+06    1.1845e+06    1.1845e+06    1.4806e+07    3.2672e+07    3.2672e+07 ! masa concentrada de la góndola
+END_CONCENTRATED_MASS
+$----------------------------------------------------------------------------
+HISTORICAL_OUTPUT_DEFINITION
+  
+  DISPLACEMENT
+    ! Lista de nodos
+      400000 400001 400002 400003 400004 400005 400006 400007 400008 400009 400010 400011 400012 400013 /
+      400014 400015 400016 400017 400018 400019 /
+      2 1 /
+      100000 100001 100002 100003 100004 100005 100006 100007 100008 100009 /
+      100010 100011 100012 100013 100014 100015 100016 100017 100018 100019 /
+      100020 100021 100022 100023 100024 100025 100026 100027 100028 100029 /
+      100030 100031 100032 100033 100034 100035  /
+      200000 200001 200002 200003 200004 200005 200006 200007 200008 200009 /
+      200010 200011 200012 200013 200014 200015 200016 200017 200018 200019 /
+      200020 200021 200022 200023 200024 200025 200026 200027 200028 200029 /
+      200030 200031 200032 200033 200034 200035    /
+      300000 300001 300002 300003 300004 300005 300006 300007 300008 300009 /
+      300010 300011 300012 300013 300014 300015 300016 300017 300018 300019 /
+      300020 300021 300022 300023 300024 300025 300026 300027 300028 300029 /
+      300030 300031 300032 300033 300034 300035
+  END_DISPLACEMENT
+  
+  VELOCITIES
+    ! Lista de nodos
+      400000 400001 400002 400003 400004 400005 400006 400007 400008 400009 400010 400011 400012 400013 /
+      400014 400015 400016 400017 400018 400019 /
+      2 1 /
+      100000 100001 100002 100003 100004 100005 100006 100007 100008 100009 /
+      100010 100011 100012 100013 100014 100015 100016 100017 100018 100019 /
+      100020 100021 100022 100023 100024 100025 100026 100027 100028 100029 /
+      100030 100031 100032 100033 100034 100035  /
+      200000 200001 200002 200003 200004 200005 200006 200007 200008 200009 /
+      200010 200011 200012 200013 200014 200015 200016 200017 200018 200019 /
+      200020 200021 200022 200023 200024 200025 200026 200027 200028 200029 /
+      200030 200031 200032 200033 200034 200035    /
+      300000 300001 300002 300003 300004 300005 300006 300007 300008 300009 /
+      300010 300011 300012 300013 300014 300015 300016 300017 300018 300019 /
+      300020 300021 300022 300023 300024 300025 300026 300027 300028 300029 /
+      300030 300031 300032 300033 300034 300035
+  END_VELOCITIES
+  
+  ACCELERATION
+    ! Lista de nodos
+      400000 400001 400002 400003 400004 400005 400006 400007 400008 400009 400010 400011 400012 400013 /
+      400014 400015 400016 400017 400018 400019 /
+      2 1 /
+      100000 100001 100002 100003 100004 100005 100006 100007 100008 100009 /
+      100010 100011 100012 100013 100014 100015 100016 100017 100018 100019 /
+      100020 100021 100022 100023 100024 100025 100026 100027 100028 100029 /
+      100030 100031 100032 100033 100034 100035  /
+      200000 200001 200002 200003 200004 200005 200006 200007 200008 200009 /
+      200010 200011 200012 200013 200014 200015 200016 200017 200018 200019 /
+      200020 200021 200022 200023 200024 200025 200026 200027 200028 200029 /
+      200030 200031 200032 200033 200034 200035    /
+      300000 300001 300002 300003 300004 300005 300006 300007 300008 300009 /
+      300010 300011 300012 300013 300014 300015 300016 300017 300018 300019 /
+      300020 300021 300022 300023 300024 300025 300026 300027 300028 300029 /
+      300030 300031 300032 300033 300034 300035
+  END_ACCELERATION
+  
+  INTERNAL
+    ! Lista de nodos
+      400000 400001 400019 2 1/
+      100000 200000 300000
+  END_INTERNAL
+  
+END_HISTORICAL_OUTPUT_DEFINITION
+$----------------------------------------------------------------------------
+DAMPING_DATA_CONDITION
+  
+  ! nuevas sobreescriben las anteriores SIEMPRE
+  DAMP_SET
+    AMPLI = 5.00  FREQ = 7.00
+    SET Torre
+  END_DAMP_SET
+  
+  DAMP_SET
+    AMPLI = 5.00  FREQ = 7.00
+    SET Gondola
+  END_DAMP_SET
+  
+  ! NO es necesario definir un DAMP_SET con "alpha=0" para el rotor.
+  
+END_DAMPING_DATA_CONDITION
+$----------------------------------------------------------------------------
+LOAD_DATA
+  
+  LOAD_SET = 1  ! FACTOR = ?
+    TITLE: Gravedad
+    ! Datos de la función del tiempo elegida (curva)
+    CURVE_DATA              /
+      LTYPE = 1             / Constante (Función elegida - Ver sección 2.2.2 del manual de Stampack - pág. 24)
+      CONST = 1.00000E+00   ! Valor de la constante
+    GRAVITY:                    /
+      IGRAV   =  1              /
+      GCONS   =  9.81000e+00    /
+      GVECT_X =  0.00000e+00    /
+      GVECT_Y =  0.00000e+00    /
+      GVECT_Z = -1.00000e+00
+  END_SET
+  
+END_LOAD_DATA
+$----------------------------------------------------------------------------
+END_STRATEGY
+$----------------------------------------------------------------------------
+NEW_STRATEGY
+$----------------------------------------------------------------------------
+TITLE: str02
+$----------------------------------------------------------------------------
+  TIME: ENDTM  = 10 / Duración de la simulación
+        DTUSER = 0.0000E+00 / Paso de cálculo - Si 0, usa el crítico calculado por el código - Es NECESARIO para materiales ortótropo
+        DTSCAL = 0.7500E+00 / Factor de escala para el paso de cálculo crítico calculado por el programa
+        NCDLT  = 100000     / Frecuencia de cálculo del deltat crítico [pasos de cálculo]
+        VEFAC  = 0.0000E+00 ! Factor para el suavizado de velocidades
+  OUTPUT:   IWRIT = 1           / Echo input data and print results to formatted file 'name.rs'
+            TOUTP = 0.010E+00  / Frecuencia de salida para 'stp'
+            TOUTD = 0.0010E+00  / Frecuencia de salida para 'curvas'
+            IENER = 0           ! Energy calculation and output - 0: disabled, 1: enabled
+END_CONTROL
+$----------------------------------------------------------------------------
+KINEMATIC_CONDITIONS
+  
+  PRESCRIBED_VELOCITIES
+  
+    DELETE
+      VEL_SET 1
+    END_DELETE
+  
+  END_PRESCRIBED_VELOCITIES
+  
+END_KINEMATIC_CONDITIONS
+$----------------------------------------------------------------------------
+DAMPING_DATA_CONDITION
+  ! ! nuevas sobreescriben las anteriores SIEMPRE
+  DAMP_SET
+    AMPLI = 1.00  FREQ = 10.00
+    SET Torre
+  END_DAMP_SET
+  
+  DAMP_SET
+    AMPLI = 1.00  FREQ = 10.00
+    SET Gondola
+  END_DAMP_SET
+END_DAMPING_DATA_CONDITION
+$----------------------------------------------------------------------------
+END_STRATEGY
+$----------------------------------------------------------------------------
+NEW_STRATEGY
+$----------------------------------------------------------------------------
+TITLE: str03
+$----------------------------------------------------------------------------
+  TIME: ENDTM  = 100 / Duración de la simulación
+        DTUSER = 0.0000E+00 / Paso de cálculo - Si 0, usa el crítico calculado por el código - Es NECESARIO para materiales ortótropo
+        DTSCAL = 0.7500E+00 / Factor de escala para el paso de cálculo crítico calculado por el programa
+        NCDLT  = 100000     / Frecuencia de cálculo del deltat crítico [pasos de cálculo]
+        VEFAC  = 0.0000E+00 ! Factor para el suavizado de velocidades
+  OUTPUT:   IWRIT = 1           / Echo input data and print results to formatted file 'name.rs'
+            TOUTP = 0.010E+00  / Frecuencia de salida para 'stp'
+            TOUTD = 0.0010E+00  / Frecuencia de salida para 'curvas'
+            IENER = 0           ! Energy calculation and output - 0: disabled, 1: enabled
+END_CONTROL
+$----------------------------------------------------------------------------
+KINEMATIC_CONDITIONS
+  
+  
+END_KINEMATIC_CONDITIONS
+$----------------------------------------------------------------------------
+DAMPING_DATA_CONDITION
+  ! ! nuevas sobreescriben las anteriores SIEMPRE
+  DAMP_SET
+    AMPLI = 98.00  FREQ = 1.00
+    SET Torre
+  END_DAMP_SET
+  
+  DAMP_SET
+    AMPLI = 98.00  FREQ = 1.00
+    SET Gondola
+  END_DAMP_SET
+END_DAMPING_DATA_CONDITION
+$----------------------------------------------------------------------------
+END_STRATEGY
+$----------------------------------------------------------------------------
+$----------------------------------------------------------------------------
+END_DATA

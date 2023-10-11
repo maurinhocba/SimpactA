@@ -1,0 +1,8 @@
+
+
+   Aerodynamic forces applied on each blade
+   ----------------------------------------
+   (Blade order is the one used in the definition of pairs)
+                            blade1                                                                     blade2                                                                     blade3                                                                     
+   t                        f_x                      f_y                      f_z                      f_x                      f_y                      f_z                      f_x                      f_y                      f_z
+   0.0000000000000000E+00 -0.2347499E+15 -0.5124490E+00  0.2551031E+05 -0.5646037E+01  0.3566214E+00 -0.6024609E+05 -0.6387223E+01  0.1580869E+00 -0.7489754E+04

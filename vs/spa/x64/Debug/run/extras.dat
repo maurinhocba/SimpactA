@@ -1,0 +1,146 @@
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+----------------- NLUVLM extras      INPUT FILE -------------------
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+DATOS EXTRA DE LA SIMULACIÓN
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+Cantidad de pasos a tener en cuenta para estelas (NSA):
+
+        60
+
+-------------------------------------------------------------------
+
+Cantidad de pasos a tener en cuenta para cargas - siempre menor o igual que NSA - (NSAL):
+
+        60
+
+-------------------------------------------------------------------
+
+cutoff:
+
+        0.001000
+
+-------------------------------------------------------------------
+
+Datos para calcular el Deltat:
+        Velocidad DtVel      Factor DtFact      Límite DtMax
+        -9.12                  1                10
+
+-------------------------------------------------------------------
+
+Datos para calcular el Deltat según velocidad de rotación del rotor:
+        ¿Usa omega? rVel    radio rOm     suavizado nSmoothOm
+        FALSE                 0             1
+
+-------------------------------------------------------------------
+
+
+DATOS EXTRA DE LA GEOMETRÍA
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+Parámetros de la ruptura de la estela. Búffer de control.
+     RBT                     RTT                     LT
+     5.500000                3.000000                135.000000
+
+-------------------------------------------------------------------
+
+Ángulos fijos que definen la geometría del molino. [º]
+     phi (Angulo de inclinación del rotor)           beta (pre-cone)
+     -5.000000                                        2.500000
+
+-------------------------------------------------------------------
+
+Ángulos fijos que definen la geometría del molino. Azimut_0 de las plas. [º]
+     theta1                  theta2                  theta3
+     180.000000                300.000000                420.000000
+
+-------------------------------------------------------------------
+
+Posicionamiento de los anclajes de la GÓNDOLA y del CUBO.
+     lnb                     lba
+     141.800000                8.000000
+
+-------------------------------------------------------------------
+
+Posicionamiento del anclaje de la PALA 1 (en coords. locales de la pala).
+     lac1                    lac2                    lac3
+     0.004569                0.000000                5.999998
+
+-------------------------------------------------------------------
+
+Posicionamiento del anclaje de la PALA 2 (en coords. locales de la pala).
+     lad1                    lad2                    lad3
+     0.004569                0.000000                5.999998
+
+-------------------------------------------------------------------
+
+Posicionamiento del anclaje de la PALA 3 (en coords. locales de la pala).
+     lae1                    lae2                    lae3
+     0.004569                0.000000                5.999998
+
+-------------------------------------------------------------------
+
+Ángulo de paso inicial de las palas [º].
+     q1                      q2                      q3
+     171.200000                171.200000                171.200000
+
+-------------------------------------------------------------------
+
+Giro del rotor y giñada de la góndola iniciales [º].
+     q4                      q5
+     -60.000000                0.000000
+
+-------------------------------------------------------------------
+
+
+DATOS EXTRA DE LAS CONDICIONES DE VIENTO
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+Definición de capa límite terrestre:
+     altura para v_inf      exponente
+       1.4250e+02           0.1
+
+-------------------------------------------------------------------
+
+Densidad del aire:
+
+       1.2250e+00
+
+-------------------------------------------------------------------
+
+
+DATOS EXTRA DE LOS PARES
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+Lista de pares.
+     Grilla aerodinámica     Set estrucutural
+     -------------------     ----------------
+     blade1                      PALA1
+     blade2                      PALA2
+     blade3                      PALA3
+     hub                      CUBO
+     tower                      TORRE
+     nacelle                      UNION
+
+Tipo de elementos para el modelo estructural de las palas
+     BEAM
+
+-------------------------------------------------------------------
+
+
+DATOS EXTRA DE LA SALIDA
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+Impresión de archivos para Tecplot con info de:
+     grilla aero.            malla estr.             fzas. en paneles
+     1                       1                       1
+
+-------------------------------------------------------------------
