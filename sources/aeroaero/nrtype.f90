@@ -10,12 +10,15 @@ MODULE nrtype
   INTEGER, PARAMETER :: I4B = SELECTED_INT_KIND(9)
   INTEGER, PARAMETER :: I2B = SELECTED_INT_KIND(4)
   INTEGER, PARAMETER :: I1B = SELECTED_INT_KIND(2)
-  ! Symbolic names for kind types of single- and double-precision reals:
-  INTEGER, PARAMETER :: SP = KIND(1.0)
-  INTEGER, PARAMETER :: DP = KIND(1.0D0)
-  ! Symbolic names for kind types of single- and double-precision complex:
-  INTEGER, PARAMETER :: SPC = KIND((1.0,1.0))
-  INTEGER, PARAMETER :: DPC = KIND((1.0D0,1.0D0))
+              ! modificado por Mauro 2024 07 30
+              ! Symbolic names for kind types of single- and double-precision reals:
+              REAL(4), PARAMETER :: sp_par=1.1
+              REAL(8), PARAMETER :: dp_par=1.1
+              INTEGER, PARAMETER :: SP = KIND(sp_par)
+              INTEGER, PARAMETER :: DP = KIND(dp_par)
+              ! Symbolic names for kind types of single- and double-precision complex:
+              INTEGER, PARAMETER :: SPC = KIND((sp_par,sp_par))
+              INTEGER, PARAMETER :: DPC = KIND((dp_par,dp_par))
   ! Symbolic name for kind type of default logical:
   INTEGER, PARAMETER :: LGT = KIND(.true.)
   ! Frequently used mathematical constants (with precision to spare):

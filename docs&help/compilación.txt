@@ -2,6 +2,11 @@
 
 COMPILACIÓN CON MS VISUAL STUDIO COMMUNITY 2022
 
+2024 07 30  hay que poner Proyecto->propiedades->Fortran->Data->DefaultReal KIND = 8
+            para que ande tuve que modificar    nrtype.f90 al principio
+                                                blas.f90 en dos lugares (líneas 26 y 1861)
+                                                wind_sr.f90->rdwind puse la variable SP_zero
+
 2023 09 25  no compila (más de 3mil errores)
             
             hice cambios a las fuentes:

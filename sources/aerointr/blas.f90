@@ -24,8 +24,11 @@
 !*******************************************************************************
 
 MODULE F95_PRECISION
-    INTEGER, PARAMETER :: SP = KIND(1.0E0)
-    INTEGER, PARAMETER :: DP = KIND(1.0D0)
+              ! modificado por Mauro 2024 07 30
+              REAL(4), PARAMETER :: sp_par=1.1
+              REAL(8), PARAMETER :: dp_par=1.1
+              INTEGER, PARAMETER :: SP = KIND(sp_par)
+              INTEGER, PARAMETER :: DP = KIND(dp_par)
 END MODULE F95_PRECISION
 
 MODULE BLAS95
@@ -1856,8 +1859,11 @@ END INTERFACE GEMM3M
 END MODULE BLAS95
 
 MODULE MKL95_PRECISION
-    INTEGER, PARAMETER :: SP = KIND(1.0E0)
-    INTEGER, PARAMETER :: DP = KIND(1.0D0)
+              ! modificado por Mauro 2024 07 30
+              REAL(4), PARAMETER :: sp_par=1.1
+              REAL(8), PARAMETER :: dp_par=1.1
+              INTEGER, PARAMETER :: SP = KIND(sp_par)
+              INTEGER, PARAMETER :: DP = KIND(dp_par)
 END MODULE MKL95_PRECISION
 
 MODULE MKL95_BLAS

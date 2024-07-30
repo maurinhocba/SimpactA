@@ -42,6 +42,7 @@ CONTAINS !===================================================================
     IMPLICIT NONE
     
     INTEGER :: i, j
+    REAL(4), PARAMETER :: SP_zero=0
     
     
     OPEN( UNIT = 218, FILE = 'wind.dat', STATUS = 'old', FORM = 'formatted', ACCESS = 'sequential', IOSTAT = j )
@@ -60,8 +61,8 @@ CONTAINS !===================================================================
       CLOSE( UNIT = 218 )
       
       ! splines - 0.0 are for natural boundary condition (zero second derivative)
-      CALL spline(windTab(:,2), windTab(:,3), 0.0, 0.0, windTab(:,5)) ! vel. norm
-      CALL spline(windTab(:,2), windTab(:,4), 0.0, 0.0, windTab(:,6)) ! vel. angle
+      CALL spline(windTab(:,2), windTab(:,3), SP_zero, SP_zero, windTab(:,5)) ! vel. norm
+      CALL spline(windTab(:,2), windTab(:,4), SP_zero, SP_zero, windTab(:,6)) ! vel. angle
     ENDIF
     
   ENDSUBROUTINE rdwind
