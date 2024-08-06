@@ -1176,7 +1176,7 @@ KINEMATIC_CONDITIONS
       ! Datos de la función del tiempo elegida (curva)
       CURVE_DATA   /
         LTYPE =  4 / Constante hasta START, cosenoidal hasta el máximo, luego constante (Función elegida - Ver pág. 5 de constraints.pdf)
-        START =  0          END  =  5            /
+        START =  5          END  =  10            /
         AMPLI = -0.7308     FREQ =  0.628318531
       ! Node #	x_vel	y_vel	z_vel	x_vel	y_vel	z_vel
       ! or set	lineal	lineal	lineal	rotac	rotac	rotac
@@ -1263,16 +1263,13 @@ DAMPING_DATA_CONDITION
 
   ! nuevas sobreescriben las anteriores SIEMPRE
   DAMP_SET
-    AMPLI = 5.00  FREQ = 7.00
+    AMPLI = 10.00  FREQ = 1.00
     SET Torre
+    SET Union
+    SET Pala1
+    SET Pala2
+    SET Pala3
   END_DAMP_SET
-  
-  DAMP_SET
-    AMPLI = 5.00  FREQ = 7.00
-    SET Gondola
-  END_DAMP_SET
-
-  ! NO es necesario definir un DAMP_SET con "alpha=0" para el rotor.
 
 END_DAMPING_DATA_CONDITION
 $----------------------------------------------------------------------------
@@ -1311,29 +1308,13 @@ $----------------------------------------------------------------------------
             IENER = 0           ! Energy calculation and output - 0: disabled, 1: enabled
 END_CONTROL
 $----------------------------------------------------------------------------
-KINEMATIC_CONDITIONS
-  
-  PRESCRIBED_VELOCITIES
-  
-    DELETE
-      VEL_SET 1
-    END_DELETE
-     
-  END_PRESCRIBED_VELOCITIES
-  
-END_KINEMATIC_CONDITIONS
-$----------------------------------------------------------------------------
 DAMPING_DATA_CONDITION
   ! ! nuevas sobreescriben las anteriores SIEMPRE
   DAMP_SET
-    AMPLI = 1.00  FREQ = 10.00
+    AMPLI = 1.00  FREQ = 1.00
     SET Torre
   END_DAMP_SET
-      
-  DAMP_SET
-    AMPLI = 1.00  FREQ = 10.00
-    SET Gondola
-  END_DAMP_SET
+  
 END_DAMPING_DATA_CONDITION
 $----------------------------------------------------------------------------
 END_STRATEGY
@@ -1342,7 +1323,7 @@ NEW_STRATEGY
 $----------------------------------------------------------------------------
 TITLE: str03
 $----------------------------------------------------------------------------
-  TIME: ENDTM  = 100 / Duración de la simulación
+  TIME: ENDTM  = 30 / Duración de la simulación
         DTUSER = 0.0000E+00 / Paso de cálculo - Si 0, usa el crítico calculado por el código - Es NECESARIO para materiales ortótropos
         DTSCAL = 0.7500E+00 / Factor de escala para el paso de cálculo crítico calculado por el programa
         NCDLT  = 100000     / Frecuencia de cálculo del deltat crítico [pasos de cálculo]
@@ -1355,8 +1336,33 @@ END_CONTROL
 $----------------------------------------------------------------------------
 KINEMATIC_CONDITIONS
   
- 
+  PRESCRIBED_VELOCITIES
+  
+    DELETE
+      VEL_SET 1
+    END_DELETE
+     
+  END_PRESCRIBED_VELOCITIES
+  
 END_KINEMATIC_CONDITIONS
+$----------------------------------------------------------------------------
+END_STRATEGY
+$----------------------------------------------------------------------------
+$----------------------------------------------------------------------------
+NEW_STRATEGY
+$----------------------------------------------------------------------------
+TITLE: str04
+$----------------------------------------------------------------------------
+  TIME: ENDTM  = 90 / Duración de la simulación
+        DTUSER = 0.0000E+00 / Paso de cálculo - Si 0, usa el crítico calculado por el código - Es NECESARIO para materiales ortótropos
+        DTSCAL = 0.7500E+00 / Factor de escala para el paso de cálculo crítico calculado por el programa
+        NCDLT  = 100000     / Frecuencia de cálculo del deltat crítico [pasos de cálculo]
+        VEFAC  = 0.0000E+00 ! Factor para el suavizado de velocidades
+  OUTPUT:   IWRIT = 1           / Echo input data and print results to formatted file 'name.rs'
+            TOUTP = 0.010E+00  / Frecuencia de salida para 'stp'
+            TOUTD = 0.0010E+00  / Frecuencia de salida para 'curvas'
+            IENER = 0           ! Energy calculation and output - 0: disabled, 1: enabled
+END_CONTROL
 $----------------------------------------------------------------------------
 DAMPING_DATA_CONDITION
   ! ! nuevas sobreescriben las anteriores SIEMPRE
@@ -1364,14 +1370,32 @@ DAMPING_DATA_CONDITION
     AMPLI = 98.00  FREQ = 1.00
     SET Torre
   END_DAMP_SET
-      
-  DAMP_SET
-    AMPLI = 98.00  FREQ = 1.00
-    SET Gondola
-  END_DAMP_SET
+  
 END_DAMPING_DATA_CONDITION
+$----------------------------------------------------------------------------
 $----------------------------------------------------------------------------
 END_STRATEGY
 $----------------------------------------------------------------------------
+NEW_STRATEGY
+$----------------------------------------------------------------------------
+TITLE: str05
+$----------------------------------------------------------------------------
+  TIME: ENDTM  = 120 / Duración de la simulación
+        DTUSER = 0.0000E+00 / Paso de cálculo - Si 0, usa el crítico calculado por el código - Es NECESARIO para materiales ortótropos
+        DTSCAL = 0.7500E+00 / Factor de escala para el paso de cálculo crítico calculado por el programa
+        NCDLT  = 100000     / Frecuencia de cálculo del deltat crítico [pasos de cálculo]
+        VEFAC  = 0.0000E+00 ! Factor para el suavizado de velocidades
+  OUTPUT:   IWRIT = 1           / Echo input data and print results to formatted file 'name.rs'
+            TOUTP = 0.010E+00  / Frecuencia de salida para 'stp'
+            TOUTD = 0.0010E+00  / Frecuencia de salida para 'curvas'
+            IENER = 0           ! Energy calculation and output - 0: disabled, 1: enabled
+END_CONTROL
+$----------------------------------------------------------------------------
+DAMPING_DATA_CONDITION
+  ! ! nuevas sobreescriben las anteriores SIEMPRE
+END_DAMPING_DATA_CONDITION
+$----------------------------------------------------------------------------
+$----------------------------------------------------------------------------
+END_STRATEGY
 $----------------------------------------------------------------------------
 END_DATA

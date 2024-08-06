@@ -47,6 +47,7 @@ CONTAINS ! =============================================
     
     IMPLICIT NONE
     
+    LOGICAL                         :: fExist
     INTEGER                         :: j
     CHARACTER(len=*), INTENT(IN)    :: doWhat
     CHARACTER(len=milb), OPTIONAL   :: actio
@@ -86,6 +87,12 @@ CONTAINS ! =============================================
       ! Start some as 0 - done also in introut_db
       dtimeOld = 0
       DeltatOld = 0
+      ! Delete debbuging files that may exist
+      INQUIRE(FILE='AeroFcsOnStruc.dat', exist=fExist)
+      IF(fExist)THEN
+        CALL EXECUTE_COMMAND_LINE('del ' // 'AeroFcsOnStruc.dat')
+        !OPEN(UNIT = 252, FILE='AeroFcsOnStruc.dat', STATUS='old', POSITION='append', ACTION='write')
+      ENDIF
       
     CASE('openFiles')
       IF( TRIM(actio)/='NEW' .AND. TRIM(actio)/='RESTAR' )THEN ! neither new problem nor restart, then new strategy

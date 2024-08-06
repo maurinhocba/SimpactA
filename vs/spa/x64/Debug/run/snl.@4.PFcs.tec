@@ -1,0 +1,4 @@
+ TITLE = "Panels' Forces"
+ VARIABLES = "X" "Y" "Z" "n(X)" "n(Y)" "n(Z)" "Cp"
+
+

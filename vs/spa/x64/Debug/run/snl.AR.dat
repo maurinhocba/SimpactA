@@ -8,7 +8,7 @@
 
  INPUT DATA READ ============================================
  SIMULATION -------------------------------------------------
- Number of time steps (NS):                            100000
+ Number of time steps (NS):                                10
  Number of time steps for wakes (NSA):                     60
  Cutoff (cutoff):                                0.100000E-02
  Velocity for calculating time step (DtVel):    -0.912000E+01
@@ -82,3 +82,4 @@
   t             STS           ATS           ATS/STS       tpTS
  ---------------------------------------------------------------------
   0.000000E+00  0.114937E-03  0.150337E+00  0.130800E+04  0.267266E+03
+  0.150337E+00  0.114849E-03  0.150337E+00  0.130900E+04  0.267266E+03

@@ -660,7 +660,7 @@ CONTAINS ! ==================================================================
     
     !CALL nbstFcsTecplot   ! for debugging purposes only
     !CALL FcsTecplotCurves ! for debugging purposes only
-    !CALL AeroFcsOnStruc   ! for debugging purposes only
+    CALL AeroFcsOnStruc   ! for debugging purposes only
     
   CONTAINS
   
@@ -956,6 +956,9 @@ CONTAINS ! ==================================================================
           WRITE( 252 , * ) '...'
           WRITE( 252 , * ) 'nodeId fx fy fz mx my mz'
           WRITE( 252 , 400 )
+          WRITE( 252 , * ) 'Note: forces are in global coords., but'
+          WRITE( 252 , * ) '      moments are in local nodes coords.'
+          WRITE( 252 , 400 )
         ENDIF
         
         IF( ASSOCIATED(headpair) )THEN		! Check if a list is empty
@@ -965,10 +968,10 @@ CONTAINS ! ==================================================================
           
           posic => headpair
           DO ! Loop over pairs
-            !IF( TRIM(posic%m_aer)=='blade1' .OR. &      ! no forces for non-lifting surfaces
-            !    TRIM(posic%m_aer)=='blade2' .OR. &
-            !    TRIM(posic%m_aer)=='blade3'        )THEN
-            IF( TRIM(posic%m_aer)=='blade2' )THEN
+            IF( TRIM(posic%m_aer)=='blade1' .OR. &      ! no forces for non-lifting surfaces
+                TRIM(posic%m_aer)=='blade2' .OR. &
+                TRIM(posic%m_aer)=='blade3'        )THEN
+            ! IF( TRIM(posic%m_aer)=='blade2' )THEN
               
               ! write data into file
               WRITE(252,500) posic%numbnodes

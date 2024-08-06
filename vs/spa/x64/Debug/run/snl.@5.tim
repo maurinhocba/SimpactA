@@ -1,0 +1,54 @@
+
+
+
+T I M I N G   I N F O R M A T I O N
+
+     ACCION                           CPU(SEC)         %
+
+     INITIAL COMPUTATIONS .........    0.8300E-01    0.05 %
+
+               RESTART INPUT-OUTPUT .........    0.0000E+00    0.00 %
+
+               GAUSSIN VARIABLES INTIALIZAT..    0.9999E-03    1.20 %
+
+               DATA INPUT ...................    0.1600E-01   19.28 %
+
+               CONTACT DATA INPUT ...........    0.0000E+00    0.00 %
+
+               INITIAL CONDITIONS ...........    0.1500E-01   18.07 %
+
+               INITIAL STRESS STATE .........    0.0000E+00    0.00 %
+
+               NODAL LOAD VECTOR COMPUT. ....    0.2000E-02    2.41 %
+
+               LUMPED MASS COMPUTATION ......    0.2100E-01   25.30 %
+
+               DUMPING OF SPRINGBACK DATA....    0.0000E+00    0.00 %
+
+     DYNAMIC ANALYSIS .............    0.1631E+03   99.95 %
+
+               TIME INTEGRATION .............    0.1407E+01    0.86 %
+
+               RESIDUAL FORCES COMPUTATION ..    0.7955E+01    4.88 %
+
+               RESULTS OUTPUT ...............    0.1174E+01    0.72 %
+
+               CONTACT COMPUTATIONS .........    0.0000E+00    0.00 %
+
+               TIME INCREMENT EVALUATION ....    0.2000E-02    0.00 %
+
+               MESH REFINAMENT EVALUATION ...    0.0000E+00    0.00 %
+
+     FILE CLOSING .................    0.0000E+00    0.00 %
+
+
+     T O T A L                        0.1632E+03
+
+
+
+
+
+
+               HOURS:      0        MINUTES: 2        SECONDS:43
+
+
