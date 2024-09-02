@@ -1047,4 +1047,26 @@ CONTAINS ! ==================================================================
       
   ENDSUBROUTINE inter_loa
   
+! ---------------------------------------------------------------------------
+  
+  SUBROUTINE inter_loa_upd
+    
+    ! INTERaction_LOAds_UPDate
+  
+    ! Mauro S. Maza - 02/09/2024
+    
+    ! Because the rotational DoFs in Simpact are related to local nodal
+    ! coordinate systems, the moments added in array loa(:,:) represent
+    ! follower loads.
+    ! Instead, translational DoFs are related to global coordinates, so
+    ! the forces added to loa(:,:) in inter_loa are constant in magnitude
+    ! and orientation.
+    ! This subroutine updates the orientation of the forces stored in
+    ! rows 1 to 3 as a function of the nodal rotations.
+    
+    
+    
+    
+  ENDSUBROUTINE inter_loa_upd
+  
 ENDMODULE inter_sr

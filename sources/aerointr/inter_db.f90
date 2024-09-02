@@ -73,6 +73,7 @@ MODULE inter_db
                                                     !        (6,np)  for 'BEAM ' elements
                                                     !        (2,np)  for 'NBST ' elements
                                                     !                   normalized distance to each surface
+    REAL(8),            ALLOCATABLE :: fces_gc(6,:) ! XXXXXXXXX
     LOGICAL,            ALLOCATABLE :: cpReguDep(:) ! (np) Regular dependency .TRUE.
                                                     !       for shell model
     ! ---------------------------------------------------------------------------------------------
