@@ -1,3 +1,28 @@
+
+SUBROUTINE sort_ivect(v)
+  
+  ! Mauro S. Maza - 03/09/2024
+  
+  ! Sorts a vector of integers in ascending order
+  
+  INTEGER(kind=4),              INTENT(INOUT) :: v(:)
+  INTEGER(kind=4)                             :: i
+  INTEGER(kind=4), ALLOCATABLE                :: vaux(:)
+  LOGICAL,         ALLOCATABLE                :: mk(:)
+  
+  ALLOCATE( vaux(SIZE(v)) )
+  ALLOCATE(   mk(SIZE(v)) )
+  
+  mk = .TRUE.
+  DO i = 1, SIZE(v)
+    vaux(i) = MINVAL(v,mk)
+    mk(MINLOC(v,mk)) = .FALSE.
+  END DO
+  v=vaux
+  
+ENDSUBROUTINE
+
+
 !
         SUBROUTINE cross_product( c , a , b )
 

@@ -164,8 +164,79 @@ CONTAINS ! ==================================================================
       ALLOCATE(nbstH(27,nIrrDCP))
     ENDIF
     
+    ! prepare arrays for forces orientation updating
+    ! (follower forces during an aero. step)
+    CALL follower_loads_arrays
+    
     ! More reference quantities
     CALL DtCalc(.FALSE.)    ! aero. time step - needs hub_master to be determined
+    
+  CONTAINS !...............................................
+  
+    SUBROUTINE follower_loads_arrays
+      
+      ! Mauro S. Maza - 03/09/2024
+      
+      ! Determines the labels of the structural nodes
+      ! that are loaded with aero forces
+      ! and allocates some arrays
+      
+      USE ctrl_db,        ONLY: npoin
+      USE StructuresA,    ONLY: nsec, npan
+      
+      IMPLICIT NONE
+    
+      INTEGER                             ::  i, j, fp, m, n1, n2, nnode, labels(npoin)
+      TYPE(pair),         POINTER         ::  posic
+      
+      labels(:) = -1 ! aux array
+      nnode=0 ! number of struc. nodes associated to lifting surfaces
+    
+      IF( ASSOCIATED(headpair) )THEN    ! Check if a list is empty
+      posic => headpair
+        
+        DO ! Loop over blade pairs
+          
+          IF( TRIM(posic%m_aer)=='blade1' .OR. &      ! no forces for non-lifting surfaces
+              TRIM(posic%m_aer)=='blade2' .OR. &
+              TRIM(posic%m_aer)=='blade3'        )THEN
+              
+            DO i=1,nsec   ! loop over sections in lifting surface
+              fp = posic%section(i)%panels(1)  ! section first panel
+              DO j=1,npan ! loop over panels in present section
+                m = fp - 1 + j    ! panel (control point) index
+                n1 = posic%cpmnods(1,m)     ! master node n1
+                n2 = posic%cpmnods(2,m)     ! master node n2
+                IF ( NOT (ANY(labels == n1)) ) THEN
+                  nnode = nnode +1
+                  labels(nnode) = n1
+                ENDIF
+                IF ( NOT (ANY(labels == n2)) ) THEN
+                  nnode = nnode +1
+                  labels(nnode) = n2
+                ENDIF
+              ENDDO
+            ENDDO
+          
+          ENDIF
+          
+          IF (ASSOCIATED (posic%next)) THEN	! Check if it's not the end of the list
+            posic => posic%next
+          ELSE
+            exit
+          ENDIF
+      
+        ENDDO
+      ENDIF
+      
+      ALLOCATE( afsnl(nnode) )
+      afsnl(:)=labels(1:nnode)
+      CALL sort_ivect(afsnl)
+      
+      ALLOCATE( fls(3,nnode) )
+      fls(:,:)=0
+      
+    ENDSUBROUTINE follower_loads_arrays
     
     
   ENDSUBROUTINE inter_ini
@@ -571,13 +642,14 @@ CONTAINS ! ==================================================================
     TYPE(pair), POINTER     :: posic
     
     INTEGER (kind=4)        :: n1, n2, nn6(6), nn3(3)
-    INTEGER                 :: i, j, m, fp
+    INTEGER                 :: i, j, m, fp, k
+    INTEGER, ALLOCATABLE    :: id1(:), id2(:)
     
-    REAL(kind = 8)          :: F(3), F1(3), F2(3),           &
-                               d1l(3), d2l(3), d1(3), d2(3), &
-                               m1l(3), m2l(3), m1(3), m2(3), &
-                               lambda1(3,3), lambda2(3,3),   &
-                               Fa(3,1), FF6(3,6), FF3(3,3),  &
+    REAL(kind = 8)          :: F(3), F1(3), F2(3), F1l(3), F2l(3),  &
+                               d1l(3), d2l(3), d1(3), d2(3),        &
+                               m1l(3), m2l(3), m1(3), m2(3),        &
+                               lambda1(3,3), lambda2(3,3),          &
+                               Fa(3,1), FF6(3,6), FF3(3,3),         &
                                fces(9), alphas(1,6)
     REAL                    :: xita1
     LOGICAL, PARAMETER :: printMore01=.FALSE.
@@ -587,7 +659,7 @@ CONTAINS ! ==================================================================
     IF( ASSOCIATED(headpair) )THEN    ! Check if a list is empty
     posic => headpair
       
-    DO ! Loop over blade pairs
+      DO ! Loop over blade pairs
         
         IF( TRIM(posic%m_aer)=='blade1' .OR. &      ! no forces for non-lifting surfaces
             TRIM(posic%m_aer)=='blade2' .OR. &
@@ -600,22 +672,31 @@ CONTAINS ! ==================================================================
               DO j=1,npan ! loop over panels in present section
                 ! General data
                 m = fp - 1 + j    ! panel (control point) index
-                n1 = posic%cpmnods(1,m)     ! master node n1
-                n2 = posic%cpmnods(2,m)     ! master node n2
-                d1l = posic%cpdists(1:3,m)  ! Initial distance vector in local coords. of master node n1
-                d2l = posic%cpdists(4:6,m)  ! Initial distance vector in local coords. of master node n2
+                n1 = posic%cpmnods(1,m)         ! master node n1
+                n2 = posic%cpmnods(2,m)         ! master node n2
+                xita1 = posic%cpxita(1,m)       ! coordinate for projection (relative to n1)
+                F = posic%panel(m)%CF * CF2F    ! Force, normal to panel m, acting on its control point
                 lambda1 = RESHAPE(euler(1:9,n1),(/3,3/))	! Rotation matrix for n1 local system
                 lambda2 = RESHAPE(euler(1:9,n2),(/3,3/))	! Rotation matrix for n2 local system
+                ! Forces
+                F1 = F * (1-xita1)  ! contribution of aero. node m force to struc. node n1 force
+                F2 = F *    xita1   ! contribution of aero. node m force to struc. node n2 force
+                loa(1:3,n1) = 0   ! OLD VERSION - DELETE: loa(1:3,n1) = loa(1:3,n1) + F1
+                loa(1:3,n2) = 0   ! OLD VERSION - DELETE: loa(1:3,n2) = loa(1:3,n2) + F2
+                !   express forces in local nodal coordinates
+                F1l = MATMUL(F1,lambda1)        ! force vector in local coords. of master node n1
+                F2l = MATMUL(F2,lambda2)        ! force vector in local coords. of master node n2
+                id1 = FINDLOC(afsnl, n1) !index of n1 in afsnl
+                id2 = FINDLOC(afsnl, n2) !index of n2 in afsnl
+                        ! id1 = PACK([ (k, k=1, SIZE(afsnl)) ], afsnl == n1) !index of n1 in afsnl - old FORTRAN
+                        ! id2 = PACK([ (k, k=1, SIZE(afsnl)) ], afsnl == n2) !index of n1 in afsnl - old FORTRAN
+                fls(1:3, id1(1) ) = fls(1:3, id1(1) ) + F1l
+                fls(1:3, id2(1) ) = fls(1:3, id2(1) ) + F2l
+                ! Moments
+                d1l = posic%cpdists(1:3,m)  ! Initial distance vector in local coords. of master node n1
+                d2l = posic%cpdists(4:6,m)  ! Initial distance vector in local coords. of master node n2
                 d1 = MATMUL(lambda1,d1l)  ! Distance vector from master node to aero. node n1-->an
                 d2 = MATMUL(lambda2,d2l)  ! Distance vector from master node to aero. node n2-->an
-                xita1 = posic%cpxita(1,m)         ! coordinate for projection (relative to n1)
-                F = posic%panel(m)%CF * CF2F  ! Force, normal to panel m, acting on its control point
-                F1 = F * (1-xita1)
-                F2 = F *    xita1
-                ! Forces
-                loa(1:3,n1) = loa(1:3,n1) + F1   ! contribution of aero. node m force to struc. node n1 force
-                loa(1:3,n2) = loa(1:3,n2) + F2   ! contribution of aero. node m force to struc. node n2 force
-                ! Moments
                 CALL cross_product( m1 , d1 , F1 )  ! Moment applied on master node due to translation of force, global coordinates
                 CALL cross_product( m2 , d2 , F2 )  ! Moment applied on master node due to translation of force, global coordinates
                 m1l = MATMUL(m1,lambda1) ! Moment in local coordinates of master node
@@ -649,11 +730,11 @@ CONTAINS ! ==================================================================
             
         ENDIF
         
-    IF (ASSOCIATED (posic%next)) THEN	! Check if it's not the end of the list
-      posic => posic%next
-    ELSE
-      exit
-    ENDIF
+        IF (ASSOCIATED (posic%next)) THEN	! Check if it's not the end of the list
+          posic => posic%next
+        ELSE
+          exit
+        ENDIF
     
       ENDDO
     ENDIF
@@ -1064,8 +1145,18 @@ CONTAINS ! ==================================================================
     ! This subroutine updates the orientation of the forces stored in
     ! rows 1 to 3 as a function of the nodal rotations.
     
+    IMPLICIT NONE
     
+    INTEGER (kind=4)        :: i, n
+    REAL(kind=8)            :: lambda(3,3), Fl(3), Fg(3)
     
+    DO i=1,SIZE(afsnl)
+      n = afsnl(i)                              ! struc. node loaded with aero. force
+      lambda = RESHAPE(euler(1:9,n),(/3,3/))	! Rotation matrix for n local system
+      Fl = fls(1:3,i)                           ! force vector in local coords. of master node n
+      Fg = MATMUL(lambda,Fl)                   ! force vector in global coords.
+      loa(1:3,n) = Fg                           ! ready to add to resid(ndofn,npoin)
+    ENDDO
     
   ENDSUBROUTINE inter_loa_upd
   

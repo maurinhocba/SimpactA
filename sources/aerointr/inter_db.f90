@@ -73,7 +73,6 @@ MODULE inter_db
                                                     !        (6,np)  for 'BEAM ' elements
                                                     !        (2,np)  for 'NBST ' elements
                                                     !                   normalized distance to each surface
-    REAL(8),            ALLOCATABLE :: fces_gc(6,:) ! XXXXXXXXX
     LOGICAL,            ALLOCATABLE :: cpReguDep(:) ! (np) Regular dependency .TRUE.
                                                     !       for shell model
     ! ---------------------------------------------------------------------------------------------
@@ -102,6 +101,10 @@ MODULE inter_db
   REAL( kind = 8 )                  :: CF2F                   ! Force coefficient
   REAL( kind = 8 ), ALLOCATABLE     :: loa(:,:)               ! Loads from aero. step for adding to resid(ndofn,npoin) in npo_db
                                                               ! allocated in NLUVLM_Calc.f90 (if n==0)
+  INTEGER,          ALLOCATABLE     :: afsnl(:)               ! Aero Forces Structural Nodes Labels
+                                                              ! allocated in inter_sr/inter_ini/follower_loads_arrays
+  REAL( kind = 8 ), ALLOCATABLE     :: fls(:,:)               ! Forces in Local coordinate Systems
+                                                              ! allocated in inter_sr/inter_ini/follower_loads_arrays
                                                               
   INTEGER                           :: nIrrDCP = 0            ! number of Control Points with IRRegular Dependency
   REAL(8),          ALLOCATABLE     :: nbstH(:,:)             ! NBST velocity transfering factors (for aero control points

@@ -11,11 +11,11 @@
    USE loa_db,  ONLY : ifloa                                  !load sets
    USE npo_db,  ONLY : resid,fcont,velnp,tresi,tmass    !point information
    USE outp_db, ONLY : toutd,iwrit,cpui    !output asked, frequencies
-   USE inter_db,    ONLY:   n, nest, numnest, loa     ! nest and numnest, both set to zero in inter_ini
-   USE inter_sr,    ONLY:   inter_kin, inter_loa      ! subroutines
+   USE inter_db,    ONLY:   n, nest, numnest, loa               ! nest and numnest, both set to zero in inter_ini
+   USE inter_sr,    ONLY:   inter_kin, inter_loa, inter_loa_upd ! subroutines
    USE introut_sr,  ONLY:   introut_mng ! subroutines
    USE StructuresA, ONLY:   NS
-   USE wind_sr,     ONLY: DtCalc
+   USE wind_sr,     ONLY:   DtCalc
    !USE control_db,  ONLY:   ctrlData
    !USE control_sr,  ONLY:   ssoSeq
 
@@ -99,6 +99,7 @@
       !           Nonconservative loading
 
       IF (ifloa > 0) CALL loadfl(ttime+dtime)
+      IF( aero ) CALL inter_loa_upd
       IF( aero ) resid = resid - loa
 
       !           Time integration
