@@ -3,7 +3,7 @@
 	<Configurations>
 		<Configuration Name="Debug|Win32">
 		</Configuration>
-		<Configuration Name="Debug|x64" CommandArguments="snl.dat" WorkingDirectory="$(OutDir)\run">
+		<Configuration Name="Debug|x64" CommandArguments="pcolgante.dat" WorkingDirectory="$(OutDir)\run">
 		</Configuration>
 		<Configuration Name="Release|Win32">
 		</Configuration>

@@ -1,0 +1,116 @@
+
+% Define los datos de entrada necesarios para MALLAS
+% Todo en unidades del SI (y grados sexagesimales para los ángulos)
+
+% ---------------------------------------------------------------------------
+% ---------------------------------------------------------------------------
+GEOMETRY
+  TOWER
+      H=   80.000     % Tor.H  : Altura
+     Di=   30.000     % Tor.Di : Diámetro exterior de la sección inferior
+     Ds=   30.000     % Tor.Ds : Diámetro exterior de la sección superior
+     ei=    0.035     % Tor.ei : Espesor de la sección inferior
+     es=    0.025     % Tor.es : Espesor de la sección superior
+      E=    2.100e+11 % Tor.E  : Módulo de Young
+     nu=    0.3       % Tor.nu : Coeficiente de Poison
+    rho=    7.850e+03 % Tor.rho: Densidad
+     NH=    6         % Tor.NH : #nodos sobre la circunferencia (aero)
+     NV=    6         % Tor.NV : #nodos sobre la altura (aero)
+    CNT=    2         % Tor.CNT: #nodos sobre la altura (estr)
+  END_TOWER
+% ---------------------------------------------------------------------------
+  NACELLE
+      D=      100.0 % Gon.D  : Diámetro (único)
+    LFS=       80.0 % Gon.LFS: Location of Forward  Section (respecto al Centro de Referencia)
+    LBS=       80.0 % Gon.LBS: Location of Backward Section (respecto al Centro de Referencia)
+    lnb=      150.0 % Gon.lnb: Distancia entre el Centro de Referencia de la Góndola y la base de la Torre
+    phi=        0.0 % Gon.phi: Pre-tilt
+     q5=        0.0 % Gon.q5 : Guiñada inicial de la góndola
+      m=  1184500.0 % Gon.m  : Masa de la góndola y el generador
+    NP1=        2   % Gon.NP1: #nodos en el parche del medio (debe ser par) (aero)
+    CNU=        2   % Gon.CNU: #nodos en la Unión Torre-Góndola (estr)
+  END_NACELLE
+% ---------------------------------------------------------------------------
+  HUB
+     lba=     130.0 % Cub.lba : Distancia entre el Centro de Referencia de la Góndola y el del Cubo
+    beta=       0.0 % Cub.beta: Pre-cone
+      q4=     -30.0 % Cub.q4  : Giro inicial del rotor
+       m=  196000.0 % Cub.m   : Masa del Cubo
+     NP1=       2   % Cub.NP1 : #nodos en el parche del medio (debe ser par) (aero)
+  END_HUB
+% ---------------------------------------------------------------------------
+  BLADES
+      Lss=   600.0 % Pal.Lss   : Longitud de la superficie sustentadora
+       Lr=     5.0 % Pal.Lr    : Longitud de la raíz
+      lac=  6000.0 % Pal.lac   : Distancia entre el Centro de Referencia del Cubo y la raíz de las palas
+    visco= 0.00e09 % Pal.vis   : Viscosidad (dependencia de los esfuerzos característicos de las velocidades de deformación) - default 0
+       q1=    90.0 % Pal.q1    : Ángulo de paso inicial pala 1
+       q2=    90.0 % Pal.q2    : Ángulo de paso inicial pala 2
+       q3=    90.0 % Pal.q3    : Ángulo de paso inicial pala 3
+   theta1=   180.0 % Pal.theta1: Posición angular de la pala 1 (al rededor del rotor) - el de las otras dos se calcula sumando 120° y 240°
+      NN1=     7   % Pal.NN1   : #nodos sobre la cuerda en la superficie sustentadora (aero)
+    NN2ss=    30   % Pal.NN2ss : #nodos sobre la envergadura de la superficie sustentadora (aero)
+      CNP=    11   % Pal.CNP   : #nodos sobre la envergadura total (est)
+    eType=    BEAM % Pal.eType : tipo de elemento usado para el modelo estructural de las palas
+    %eType=    NBST % Pal.eType : tipo de elemento usado para el modelo estructural de las palas
+    % BEAM: vigas mat. anisótropo - NBST: lámina triángulos sin rotaciones
+  END_BLADES
+END_GEOMETRY
+% ---------------------------------------------------------------------------
+% ---------------------------------------------------------------------------
+AEROSIM
+      NS= 100000     % Sim.NS    : #pasos de cálculo (aero)
+     NSA=     60     % Sim.NSA   : Cantidad de pasos a tener en cuenta para estelas (aero)
+  cutoff=      0.001 % Sim.cutoff: Cutoff (aero)
+     vfs=   -120.0   % Sim.vfs   : Módulo de la velocidad de la corriente libre
+    expo=      0.0   % Sim.expo  : Exponente de la ley exponencial utilizada para la capa límite terrestre - default 0.1
+    dens= 0.002377   % Sim.densi : Densidad del aire - obligatoria
+   DtVel=      0.0   % Sim.DtVel : Valor de velocidad utilizada para calcular el Deltat (si 0 usa vfs) - default 0
+  DtFact=      7.071085623775819e-001   % Sim.DtFact: Factor para modificar Deltat calculado según lref y DtVel - default 1
+   DtMax=      1.0   % Sim.DtMax : Máximo Deltat aceptable - default 100
+  Alphad=      0.0   % Sim.Alphad: Ángulo entre la velocidad de la corriente libre y el plano x-y
+  aerOut=      1     % Sim.aerOut: Bandera impresión de grilla aerodinámica - default 1
+  strOut=      0     % Sim.strOut: Bandera impresión de malla estructural - default 0
+  fcsOut=      1     % Sim.fcsOut: Bandera impresión de vectores fuerza en palas - default 0
+END_AEROSIM
+% ---------------------------------------------------------------------------
+% ---------------------------------------------------------------------------
+GENERATOR
+  dampCo= 0 % Gen.dampCo: Coeficiente de amortiguamiento para quitar energía al rotor - default 0
+END_GENERATOR
+% ---------------------------------------------------------------------------
+% ---------------------------------------------------------------------------
+STRATEGY
+     name=str01=  % STR(iStr).name   : strategy name - compulsory
+  endTime=   100.0 % STR(iStr).endTime: ending time for strategy - compulsory
+  %velDelt=     0   % STR(iStr).velDelt: decides if delete (1) previous VEL_SETs or not (0) - default 0
+  %velType=     1   % STR(iStr).velType: Simpact LTYPE for velocity definition - default 0 (no new definition)
+  %newDamp=     0   % STR(iStr).newDamp: decides if replace (1) previous DAMP_SETs or not (0) - default 0
+  %valDamp=     1.0 % STR(iStr).valDamp: damping constant (function of FREQ and AMPLI) - default 0 (only delete previous DAMP_SETs)
+  %velFac=  200.0   % STR(iStr).velFac : velocities' smoothing factor - default 0
+END_STRATEGY
+% ---------------------------------------------------------------------------
+% ---------------------------------------------------------------------------
+STRATEGY
+     name=str02=  % STR(iStr).name   : strategy name - compulsory
+  endTime=   200.0 % STR(iStr).endTime: ending time for strategy - compulsory
+END_STRATEGY
+% ---------------------------------------------------------------------------
+% ---------------------------------------------------------------------------
+END_DATA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,379 @@
+$-------------- Version 710 -------------------------------------------------
+TITLE: str01
+$----------------------------------------------------------------------------
+CONTROL:    NDIME = 3   / Problema 3D
+            NEULR = 1   / Activa grados de libertad rotacionales
+            NDOFN = 6   / Número de grados de libertad considerados
+            AERO
+$----------------------------------------------------------------------------
+  TIME: ENDTM  = 1.000e+002 / Duración de la simulación
+        DTUSER = 0.0000E+00 / Paso de cálculo - Si 0, usa el crítico calculado por el código - Es NECESARIO para materiales ortótropos
+        DTSCAL = 0.7500E+00 / Factor de escala para el paso de cálculo crítico calculado por el programa
+        NCDLT  = 100000     / Frecuencia de cálculo del deltat crítico [pasos de cálculo]
+        VEFAC  =  0.000e+00 ! Factor para el suavizado de velocidades
+  OUTPUT:   IWRIT = 1           / Echo input data and print results to formatted file 'name.rs'
+            TOUTP = 0.1000E+00  / Frecuencia de salida para 'stp'
+            TOUTD = 0.0600E+00  / Frecuencia de salida para 'curvas'
+            IENER = 0           ! Energy calculation and output - 0: disabled, 1: enabled
+END_CONTROL
+$----------------------------------------------------------------------------
+GEOMETRY_DEFINITION
+  ! Cada nodo pertenece a un set y sólo a uno
+  ! Los ángulos van en grados sexagesimales
+  GENERAL:  GSCALE = 1.00   / Escala las coordenadas si NO son puestas en metros
+            NRADS  = 0.00   ! Tipo de coordenadas utilizadas para indicar las posiciones nodales 	
+                            !   0 for cartesian coordinate system
+                            !   1 for cylindrical coordinate system
+                            !   2 for spherical coordinate system
+
+  SET= Torre   ! Torre
+  ! Label   x            y            z            psi(z)       theta(x)     phi(z)
+    400000    0.0000e+00   0.0000e+00   0.0000e+00   9.0000e+01   9.0000e+01   9.0000e+01
+    400001    0.0000e+00   0.0000e+00   8.0000e+01   9.0000e+01   9.0000e+01   9.0000e+01
+  END_SET
+  SET= Gondola   ! Góndola
+  ! Label   x            y            z            psi(z)       theta(x)     phi(z)
+         2    0.0000e+00   0.0000e+00   1.5000e+02   9.0000e+01   0.0000e+00  -9.0000e+01
+  END_SET
+  SET= Cubo   ! Cubo - solo el master
+  ! Label   x            y            z            psi(z)       theta(x)     phi(z)
+         1    1.3000e+02   0.0000e+00   1.5000e+02   9.0000e+01   0.0000e+00  -9.0000e+01
+  END_SET
+  SET= Pala1   ! Pala 1 - Efectivos
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     100000    1.3000e+02  -3.0000e+03  -5.0462e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+     100001    1.3000e+02  -3.0305e+03  -5.0990e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+     100002    1.3000e+02  -3.0610e+03  -5.1518e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+     100003    1.3000e+02  -3.0915e+03  -5.2046e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+     100004    1.3000e+02  -3.1220e+03  -5.2575e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+     100005    1.3000e+02  -3.1525e+03  -5.3103e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+     100006    1.3000e+02  -3.1830e+03  -5.3631e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+     100007    1.3000e+02  -3.2135e+03  -5.4159e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+     100008    1.3000e+02  -3.2440e+03  -5.4688e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+     100009    1.3000e+02  -3.2745e+03  -5.5216e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+     100010    1.3000e+02  -3.3050e+03  -5.5744e+03  -9.0000e+01   9.0000e+01  -6.0000e+01
+  END_SET
+  SET= Pala2   ! Pala 2 - Efectivos
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     200000    1.3000e+02   6.0000e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+     200001    1.3000e+02   6.0610e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+     200002    1.3000e+02   6.1220e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+     200003    1.3000e+02   6.1830e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+     200004    1.3000e+02   6.2440e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+     200005    1.3000e+02   6.3050e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+     200006    1.3000e+02   6.3660e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+     200007    1.3000e+02   6.4270e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+     200008    1.3000e+02   6.4880e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+     200009    1.3000e+02   6.5490e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+     200010    1.3000e+02   6.6100e+03   1.5000e+02  -9.0000e+01   9.0000e+01   1.8000e+02
+  END_SET
+  SET= Pala3   ! Pala 3 - Efectivos
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     300000    1.3000e+02  -3.0000e+03   5.3462e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+     300001    1.3000e+02  -3.0305e+03   5.3990e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+     300002    1.3000e+02  -3.0610e+03   5.4518e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+     300003    1.3000e+02  -3.0915e+03   5.5046e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+     300004    1.3000e+02  -3.1220e+03   5.5575e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+     300005    1.3000e+02  -3.1525e+03   5.6103e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+     300006    1.3000e+02  -3.1830e+03   5.6631e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+     300007    1.3000e+02  -3.2135e+03   5.7159e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+     300008    1.3000e+02  -3.2440e+03   5.7688e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+     300009    1.3000e+02  -3.2745e+03   5.8216e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+     300010    1.3000e+02  -3.3050e+03   5.8744e+03  -9.0000e+01   9.0000e+01   6.0000e+01
+  END_SET
+  SET= Pala1X   ! Pala 1 - Auxiliares
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     100200    1.3000e+02  -3.0528e+03  -5.0157e+03
+     100201    1.3000e+02  -3.0833e+03  -5.0685e+03
+     100202    1.3000e+02  -3.1138e+03  -5.1213e+03
+     100203    1.3000e+02  -3.1443e+03  -5.1741e+03
+     100204    1.3000e+02  -3.1748e+03  -5.2270e+03
+     100205    1.3000e+02  -3.2053e+03  -5.2798e+03
+     100206    1.3000e+02  -3.2358e+03  -5.3326e+03
+     100207    1.3000e+02  -3.2663e+03  -5.3854e+03
+     100208    1.3000e+02  -3.2968e+03  -5.4383e+03
+     100209    1.3000e+02  -3.3273e+03  -5.4911e+03
+     100210    1.3000e+02  -3.3578e+03  -5.5439e+03
+  END_SET
+  SET= Pala2X   ! Pala 2 - Auxiliares
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     200200    1.3000e+02   6.0000e+03   8.9000e+01
+     200201    1.3000e+02   6.0610e+03   8.9000e+01
+     200202    1.3000e+02   6.1220e+03   8.9000e+01
+     200203    1.3000e+02   6.1830e+03   8.9000e+01
+     200204    1.3000e+02   6.2440e+03   8.9000e+01
+     200205    1.3000e+02   6.3050e+03   8.9000e+01
+     200206    1.3000e+02   6.3660e+03   8.9000e+01
+     200207    1.3000e+02   6.4270e+03   8.9000e+01
+     200208    1.3000e+02   6.4880e+03   8.9000e+01
+     200209    1.3000e+02   6.5490e+03   8.9000e+01
+     200210    1.3000e+02   6.6100e+03   8.9000e+01
+  END_SET
+  SET= Pala3X   ! Pala 3 - Auxiliares
+  ! Label	x			 y			  z		       psi(z)       theta(x)     phi(z)
+     300200    1.3000e+02  -2.9472e+03   5.3767e+03
+     300201    1.3000e+02  -2.9777e+03   5.4295e+03
+     300202    1.3000e+02  -3.0082e+03   5.4823e+03
+     300203    1.3000e+02  -3.0387e+03   5.5351e+03
+     300204    1.3000e+02  -3.0692e+03   5.5880e+03
+     300205    1.3000e+02  -3.0997e+03   5.6408e+03
+     300206    1.3000e+02  -3.1302e+03   5.6936e+03
+     300207    1.3000e+02  -3.1607e+03   5.7464e+03
+     300208    1.3000e+02  -3.1912e+03   5.7993e+03
+     300209    1.3000e+02  -3.2217e+03   5.8521e+03
+     300210    1.3000e+02  -3.2522e+03   5.9049e+03
+  END_SET
+END_GEOMETRY_DEFINITION
+$----------------------------------------------------------------------------
+MATERIAL_PROPERTIES
+  ! Torre y Unión
+  DEFINITION:   MATNO  = 400000  / Etiqueta del material
+                MATYPE =      1  / Tipo de material. Si 1 es: 	+ isotropic elastic (hyperelastic)
+                                 /								+ elastic-plastic large strain, including non-linear isotropic hardening
+                                 /								+ von Mises yield criterion
+                                 /								+ no kinematic hardening
+                                 / entre otras cosas.
+                ELASTIC     ! material is elastic
+                YOUNG =  2.100e+11 / Módulo de young
+                POISS =  3.000e-01 / módulo de poisson
+                DENS  =  7.850e+03 ! densidad
+  
+  ! Palas - VISCO==0.0
+  DEFINITION:   MATNO = 2  MATYPE = 1  ELASTIC
+                YOUNG = 1.091435e+07 POISS = 2.874891e-01 DENS = 9.607143e-01
+END_MATERIAL_PROPERTIES
+$----------------------------------------------------------------------------
+SECTION_DEFINITION
+  
+  ! Secciones para la TORRE
+  DEFINITION:  SECNO  = 400001        SECTYP = BEAM    ! Para diám. exterior D=  3.0000e+01m
+               NUMAT  = 400000                                                       /
+               AREA   =   2.8246e+00  SHEAR2 =   1.4123e+00  SHEAR3 =   1.4123e+00   /
+               TORINE =   6.3427e+02  INERT2 =   3.1713e+02  INERT3 =   3.1713e+02
+  
+  ! Sección única para la UNIÓN
+  DEFINITION:  SECNO  = 500001        SECTYP = BEAM    ! Para diám. exterior D=  3.0000e+01m
+               NUMAT  = 400000                                                       /
+               AREA   =   2.3542e+00  SHEAR2 =   1.1771e+00  SHEAR3 =   1.1771e+00   /
+               TORINE =   5.2882e+02  INERT2 =   2.6441e+02  INERT3 =   2.6441e+02
+  
+  ! Sección única para el CUBO y la GÓNDOLA (cuerpo rígido)
+  DEFINITION:   SECNO  = 0        SEC_TYPE = SOLID
+                NUMAT  = 400000   THICK    = 1d0
+  
+  DEFINITION:  SECNO  = 0001   SECTYP = BEAM
+               NUMAT  =   2   NON_HOMOGENEOUS /
+               / inercias - todas obligatorias
+               AXIALD =  2.690000e+002  TORDEN =  9.406033e+004  / 
+               INERT2 =  2.441495e+004  INERT3 =  6.964538e+004 / 
+               / rigideces - obligatorias las 6 de la diagonal ppal. - N:normal; T:corte; M:momento
+               EA =  3.264903e+009  EIY =  2.963288e+011  EIZ =  8.452988e+011 / 
+               GJ =  8.546405e+009  GAY =  1.226703e+009  GAZ =  1.226703e+009 / 
+               CNTY =  0.0000e+000  CNTZ =  0.0000e+000                         / Normal con Cortes
+               CNMX =  0.0000e+000  CNMY =  0.0000e+000  CNMZ =  0.0000e+000    / Normal con Momentos
+               CTYTZ =  0.0000e+000                                             / Cortes entre sí
+               CTYMX =  0.0000e+000  CTYMY =  0.0000e+000  CTYMZ =  0.0000e+000 / Corte_Y con Momentos
+               CTZMX =  0.0000e+000  CTZMY =  0.0000e+000  CTZMZ =  0.0000e+000 / Corte_Z con Momentos
+               CMXMY =  0.0000e+000  CMXMZ =  0.0000e+000  CMYMZ =  0.0000e+000 / Momentos entre sí
+               
+
+  DEFINITION:  SECNO  = 0002   SECTYP = BEAM
+               NUMAT  =   2 /
+               AREA   = 2.800000e+02 SHEAR2 = 2.800000e+02 SHEAR3 = 2.800000e+02 /
+               TORINE = 1.950752e+03 INERT2 = 2.541333e+04 INERT3 = 7.249333e+04
+               
+END_SECTION
+$----------------------------------------------------------------------------
+SET_DEFINITION
+  ELS_NAME = TORRE    ELM_TYPE: BEAM  NELEM =  1
+                      NREQS = 0   / Número de puntos de Gaus elegidos para la salida de tensión
+                      NNODE = 2   / Máximo número de nodos por elemento
+                      NGAUS = 1   / Cantidad de puntos de integración de Gauss 
+                      AXES_CO = 0 ! Usa los ángulos de Euler definidos para los nodos
+    ! Elemnt    Sec#        Node 1      Node 2
+            1   400001      400000      400001
+  END_ELEMENT_DEFINITION
+  ELS_NAME = UNION    ELM_TYPE: BEAM  NELEM =  1
+                      NREQS = 0    / Número de puntos de Gaus elegidos para la salida de tensión
+                      NNODE = 2    / Máximo número de nodos por elemento
+                      NGAUS = 1    / Cantidad de puntos de integración de Gauss
+                      AXES_CO = -2 ! Usa el master del cubo para definir el plano donde vive t3'
+    ! Elemnt    Sec#        Node 1      Node 2    RefNode1    RefNode2
+            1   500001      400001           2       1           1
+  END_ELEMENT_DEFINITION
+  ELS_NAME = Gondola  ELM_TYPE: RIGID / Tipo de elemento
+                      NELEM    = 1    ! Cantidad exacta de elementos a leer - 1 si es definido como nube de puntos
+                      N_NODE   = 1    / Cantidad de nodos por elemento - o de ptos.
+                      R_B_NODE = 2    / Label del master node
+                      N_TYPE   = 0    ! Depende del tipo de elemento que forma el cuerpo
+    ! ElmLabel	Sec#	Nodos que definene el elemento
+                        2
+  END_ELEMENT_DEFINITION
+  ELS_NAME = CUBO     ELM_TYPE: RIGID / Tipo de elemento
+                      NELEM    = 1    ! Cantidad exacta de elementos a leer - 1 si es definido como nube de puntos
+                      N_NODE   = 1    / Cantidad de nodos por elemento - o de ptos.
+                      R_B_NODE = 1    / Label del master node
+                      N_TYPE   = 0    ! Depende del tipo de elemento que forma el cuerpo
+    ! ElmLabel	Sec#	Nodos que definene el elemento
+                        1
+  END_ELEMENT_DEFINITION
+  ELS_NAME = PALA1    ELM_TYPE: BEAM  NELEM = 10
+                      NREQS = 0    / Número de puntos de Gaus elegidos para la salida de tensión
+                      NNODE = 2    / Máximo número de nodos por elemento
+                      NGAUS = 1    / Cantidad de puntos de integración de Gauss 
+                      AXES_CO = -2 ! Usa un nodo auxiliar para definir el plano donde vive t3'
+    ! Elemnt  Sec#    Node 1    Node 2    RefNode1    RefNode2
+            1   0001      100000      100001      100200        100200
+            2   0001      100001      100002      100201        100201
+            3   0001      100002      100003      100202        100202
+            4   0001      100003      100004      100203        100203
+            5   0001      100004      100005      100204        100204
+            6   0001      100005      100006      100205        100205
+            7   0001      100006      100007      100206        100206
+            8   0001      100007      100008      100207        100207
+            9   0001      100008      100009      100208        100208
+           10   0001      100009      100010      100209        100209
+  END_ELEMENT_DEFINITION
+  ELS_NAME = PALA2    ELM_TYPE: BEAM  NELEM = 10
+                      NREQS = 0    / Número de puntos de Gaus elegidos para la salida de tensión
+                      NNODE = 2    / Máximo número de nodos por elemento
+                      NGAUS = 1    / Cantidad de puntos de integración de Gauss 
+                      AXES_CO = -2 ! Usa un nodo auxiliar para definir el plano donde vive t3'
+    ! Elemnt  Sec#    Node 1    Node 2    RefNode1    RefNode2
+            1   0001      200000      200001      200200        200200
+            2   0001      200001      200002      200201        200201
+            3   0001      200002      200003      200202        200202
+            4   0001      200003      200004      200203        200203
+            5   0001      200004      200005      200204        200204
+            6   0001      200005      200006      200205        200205
+            7   0001      200006      200007      200206        200206
+            8   0001      200007      200008      200207        200207
+            9   0001      200008      200009      200208        200208
+           10   0001      200009      200010      200209        200209
+  END_ELEMENT_DEFINITION
+  ELS_NAME = PALA3    ELM_TYPE: BEAM  NELEM = 10
+                      NREQS = 0    / Número de puntos de Gaus elegidos para la salida de tensión
+                      NNODE = 2    / Máximo número de nodos por elemento
+                      NGAUS = 1    / Cantidad de puntos de integración de Gauss 
+                      AXES_CO = -2 ! Usa un nodo auxiliar para definir el plano donde vive t3'
+    ! Elemnt  Sec#    Node 1    Node 2    RefNode1    RefNode2
+            1   0001      300000      300001      300200        300200
+            2   0001      300001      300002      300201        300201
+            3   0001      300002      300003      300202        300202
+            4   0001      300003      300004      300203        300203
+            5   0001      300004      300005      300204        300204
+            6   0001      300005      300006      300205        300205
+            7   0001      300006      300007      300206        300206
+            8   0001      300007      300008      300207        300207
+            9   0001      300008      300009      300208        300208
+           10   0001      300009      300010      300209        300209
+  END_ELEMENT_DEFINITION
+END_SET_DEFINITION
+$----------------------------------------------------------------------------
+KINEMATIC_CONDITIONS
+  
+  BOUNDARY_CONDITIONS
+    ! Node #	x_disp	y_disp	z_disp	x_rot	y_rot	z_rot	! 0: free
+    ! or set                                                  	! 1: fixed
+      400000    1       1       1       1       1       1       ! empotramiento de la torre
+           1    1       1       1       1       1       1       ! empotramiento del cubo
+           
+      200000    1       1       1       1       1       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      200001    1       1       0       1       0       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      200002    1       1       0       1       0       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      200003    1       1       0       1       0       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      200004    1       1       0       1       0       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      200005    1       1       0       1       0       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      200006    1       1       0       1       0       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      200007    1       1       0       1       0       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      200008    1       1       0       1       0       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      200009    1       1       0       1       0       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      200010    1       1       1       1       1       0 ! viga simplemete apoyada en flexión, empotrada en torsión
+      
+      100010    1       1       1       1       1       1 ! restricción de las otras palas para que no se vayan al diablo - extremo
+      300010    1       1       1       1       1       1 ! restricción de las otras palas para que no se vayan al diablo - extremo
+      100005    1       1       1       1       1       1 ! restricción de las otras palas para que no se vayan al diablo - punto medio
+      300005    1       1       1       1       1       1 ! restricción de las otras palas para que no se vayan al diablo - punto medio
+  END_BOUNDARY_CONDITIONS
+  
+  N_DEPD_NODES
+    SLAVE = 100000   MASTER = 1   ! unión rígida entre pala1 y cubo
+    !SLAVE = 200000   MASTER = 1   ! unión rígida entre pala2 y cubo
+    SLAVE = 300000   MASTER = 1   ! unión rígida entre pala3 y cubo
+  END_N_DEPD_NODES
+  
+  SLIDING_NODES
+    ! unión góndola-cubo
+    SLAVE = 2     MASTER = 1      NOSLD     ! fija la distancia entre el
+                                            ! master del cubo y el centro de
+                                            ! la góndola, pero deja que roten
+                                            ! relativamente
+  END_SLIDING_NODES
+  
+END_KINEMATIC_CONDITIONS
+$----------------------------------------------------------------------------
+CONCENTRATED_MASS
+  ! Nodo   M_x           M_y           M_z           In_x          In_y          In_z
+      1     1.9600e+05    1.9600e+05    1.9600e+05    2.8224e+12    2.8224e+12    2.8224e+12 ! masa concentrada del cubo
+      2     1.1845e+06    1.1845e+06    1.1845e+06    1.4806e+09    3.2672e+09    3.2672e+09 ! masa concentrada de la góndola
+END_CONCENTRATED_MASS
+$----------------------------------------------------------------------------
+HISTORICAL_OUTPUT_DEFINITION
+
+  DISPLACEMENT
+    ! Lista de nodos
+      200000 200001 200002 200003 200004 200005 200006 200007 200008 200009 200010
+  END_DISPLACEMENT
+
+  VELOCITIES
+    ! Lista de nodos
+      200000 200001 200002 200003 200004 200005 200006 200007 200008 200009 200010
+  END_VELOCITIES
+
+  INTERNAL
+    ! Lista de nodos
+      200000 200001 200002 200003 200004 200005 200006 200007 200008 200009 200010
+  END_INTERNAL
+
+END_HISTORICAL_OUTPUT_DEFINITION
+$----------------------------------------------------------------------------
+LOAD_DATA
+
+  LOAD_SET = 2  ! FACTOR = ?
+    TITLE: Puntual
+    ! Datos de la función del tiempo elegida (curva)
+    CURVE_DATA              /
+      LTYPE = 1             / Constante (Función elegida - Ver sección 2.2.2 del manual de Stampack - pág. 24)
+      START = 0.00e+0       /
+      END   = 2.00e+0       /
+      CONST = 1.00000E+00   ! Valor de la constante
+    POINT_LOAD                  /
+    ! Node #    x_global    y_global    z_global    x_local     y_local     z_local
+      200005    0.0         0.0         4e4         0.0         0.0         0.0
+    END_POINT_LOAD
+  END_SET
+
+END_LOAD_DATA
+$----------------------------------------------------------------------------
+END_STRATEGY
+$----------------------------------------------------------------------------
+$----------------------------------------------------------------------------
+NEW_STRATEGY
+$----------------------------------------------------------------------------
+TITLE: str02
+$----------------------------------------------------------------------------
+  TIME: ENDTM  = 2.000e+002 / Duración de la simulación
+        DTUSER = 0.0000E+00 / Paso de cálculo - Si 0, usa el crítico calculado por el código - Es NECESARIO para materiales ortótropos
+        DTSCAL = 0.7500E+00 / Factor de escala para el paso de cálculo crítico calculado por el programa
+        NCDLT  = 100000     / Frecuencia de cálculo del deltat crítico [pasos de cálculo]
+        VEFAC  = 0.000e+000 ! Factor para el suavizado de velocidades
+  OUTPUT:   IWRIT = 1           / Echo input data and print results to formatted file 'name.rs'
+            TOUTP = 0.1000E+00  / Frecuencia de salida para 'stp'
+            TOUTD = 0.0200E+00  / Frecuencia de salida para 'curvas'
+            IENER = 0           ! Energy calculation and output - 0: disabled, 1: enabled
+END_CONTROL
+$----------------------------------------------------------------------------
+END_STRATEGY
+$----------------------------------------------------------------------------
+$----------------------------------------------------------------------------
+END_DATA

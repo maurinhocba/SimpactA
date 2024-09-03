@@ -1,0 +1,1 @@
+cambiar la coordenada x de los nodos del final de la lista (los de la raíz, que no están ni en el borde de ataque ni en el de fuga) para que la presencia de la raíz y la transición tenga menos influencia

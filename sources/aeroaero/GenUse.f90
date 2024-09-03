@@ -15,12 +15,65 @@ SUBROUTINE sort_ivect(v)
   
   mk = .TRUE.
   DO i = 1, SIZE(v)
-    vaux(i) = MINVAL(v,mk)
+    vaux(i) = MINVAL(v,MASK=mk)
     mk(MINLOC(v,mk)) = .FALSE.
   END DO
   v=vaux
   
 ENDSUBROUTINE
+
+RECURSIVE SUBROUTINE quicksort(v, low, high)
+  
+  ! Mauro S. Maza - 03/09/2024
+  ! from ChatGPT (modified)
+  
+  ! Sorts a vector of integers in ascending order
+  
+  INTEGER, INTENT(INOUT) :: v(:)
+  INTEGER, INTENT(IN)    :: low, high
+  INTEGER                :: pivotIndex
+
+  IF (low < high) THEN
+    ! Particiona el vector y obtiene el índice del pivote
+    CALL partition(v, low, high, pivotIndex)
+
+    ! Ordena recursivamente las dos sub-partes
+    CALL quicksort(v, low, pivotIndex - 1)
+    CALL quicksort(v, pivotIndex + 1, high)
+  END IF
+  
+CONTAINS
+
+  SUBROUTINE partition(v, low, high, pivotIndex)
+    INTEGER, INTENT(INOUT) :: v(:)
+    INTEGER, INTENT(IN)    :: low, high
+    INTEGER, INTENT(OUT)   :: pivotIndex
+    INTEGER                :: pivotValue, i, j, temp
+  
+    ! Elegimos el último elemento como pivote
+    pivotValue = v(high)
+    i = low - 1
+  
+    ! Reorganiza el arreglo de manera que los elementos menores o iguales al pivote
+    ! estén a la izquierda y los mayores a la derecha
+    DO j = low, high - 1
+      IF (v(j) <= pivotValue) THEN
+        i = i + 1
+        ! Intercambia v(i) con v(j)
+        temp = v(i)
+        v(i) = v(j)
+        v(j) = temp
+      END IF
+    END DO
+  
+    ! Coloca el pivote en la posición correcta
+    pivotIndex = i + 1
+    temp = v(pivotIndex)
+    v(pivotIndex) = v(high)
+    v(high) = temp
+  END SUBROUTINE partition
+
+END SUBROUTINE quicksort
 
 
 !

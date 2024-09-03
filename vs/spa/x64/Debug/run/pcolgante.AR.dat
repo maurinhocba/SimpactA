@@ -1,0 +1,84 @@
+
+
+ AEROELASTIC REGISTRY
+
+
+ PROBLEM: pcolgante
+
+
+ INPUT DATA READ ============================================
+ SIMULATION -------------------------------------------------
+ Number of time steps (NS):                            100000
+ Number of time steps for wakes (NSA):                     60
+ Cutoff (cutoff):                                0.100000E-02
+ Velocity for calculating time step (DtVel):    -0.120000E+03
+ Factor for changing time step (DtFact):         0.707109E+00
+ Max allowable Aero Time Step (DtMax):           0.100000E+01
+ Free Stream Velocity Norm "with sign" (vfs):   -0.120000E+03
+ Free Stream Velocity Angle (Alphadeg):          0.000000E+00
+ Exponent for earth boundary layer (expo):       0.000000E+00
+ Reference velocity height (HVfs):               0.150000E+03
+ Use rotor speed for Deltat (rVel)?:                        F
+ Reference length if rVel=.TRUE. (rOm):          0.000000E+00
+ Smoothening factor if rVel=.TRUE. (rOm):                   1
+
+
+ BLADES -----------------------------------------------------
+ Number of nodes (nn):                                    256
+ Number of panels (np):                                   204
+ Number of segments (nseg):                               458
+ Number of sections (nsec):                                30
+ Number of panels per section (npan):                       6
+ Number of wake nodes (nnwke):                             31
+ Number of union panel in upper side (npu1):              198
+ Number of union panel in lower side (npu2):              199
+
+
+ HUB --------------------------------------------------------
+ Number of nodes (nnh):                                   378
+ Number of panels (nph):                                  216
+ Number of segments (nsegh):                              576
+
+
+ NACELLE ----------------------------------------------------
+ Number of nodes (nnn):                                   230
+ Number of panels (npn):                                  124
+ Number of segments (nsegn):                              340
+
+
+ TOWER ------------------------------------------------------
+ Number of nodes (nnt):                                    72
+ Number of panels (npt):                                   50
+ Number of segments (nsegt):                              120
+
+
+ ENTIRE TURBINE GEOMETRY (some) -----------------------------
+ Pre-Tilt angle (phi):                                   0.00
+ Pre-Cone angle (beta):                                  0.00
+ Blade 1 initial pitch angle (q1):                      90.00
+ Blade 2 initial pitch angle (q2):                      90.00
+ Blade 3 initial pitch angle (q3):                      90.00
+ Rotor initial rotation angle (q4):                    -30.00
+ Nacelle-Rotor initial yaw angle (q5):                   0.00
+
+
+ TECPLOT OUTPUT ---------------------------------------------
+ Aerodynamic Grid:           YES
+ Structural Mesh:            YES
+ Blades' Panels' Forces:     YES
+
+
+ GENERATOR --------------------------------------------------
+ Rotor damp coefficient (rotorDam)               0.000000E+00
+
+
+ CALCUALTED VARIABLES =======================================
+ Total area of one lifting surface (Areat):      0.360000E+05
+ Reference length (lref):                        0.141421E+02
+ Reference velocity (vref):                      0.120000E+03
+ Initial Aero Time Step (Deltat):                0.833336E-01
+ Structural and Aerodynamic Time Steps, their Ratio and Max duration
+ of strategy (not to exceed max number of zones Tecplot can manage):
+  t             STS           ATS           ATS/STS       tpTS
+ ---------------------------------------------------------------------
+  0.000000E+00  0.925929E-02  0.833336E-01  0.900000E+01  0.148149E+03

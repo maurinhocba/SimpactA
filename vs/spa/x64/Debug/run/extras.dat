@@ -29,7 +29,7 @@ cutoff:
 
 Datos para calcular el Deltat:
         Velocidad DtVel      Factor DtFact      Límite DtMax
-        -9.12                  1                10
+        -120                  0.707109                1
 
 -------------------------------------------------------------------
 
@@ -46,13 +46,13 @@ DATOS EXTRA DE LA GEOMETRÍA
 
 Parámetros de la ruptura de la estela. Búffer de control.
      RBT                     RTT                     LT
-     5.500000                3.000000                135.000000
+     15.000000                15.000000                80.000000
 
 -------------------------------------------------------------------
 
 Ángulos fijos que definen la geometría del molino. [º]
      phi (Angulo de inclinación del rotor)           beta (pre-cone)
-     -5.000000                                        2.500000
+     0.000000                                        0.000000
 
 -------------------------------------------------------------------
 
@@ -64,37 +64,37 @@ Parámetros de la ruptura de la estela. Búffer de control.
 
 Posicionamiento de los anclajes de la GÓNDOLA y del CUBO.
      lnb                     lba
-     141.800000                8.000000
+     150.000000                130.000000
 
 -------------------------------------------------------------------
 
 Posicionamiento del anclaje de la PALA 1 (en coords. locales de la pala).
      lac1                    lac2                    lac3
-     0.004569                0.000000                5.999998
+     0.000000                0.000000                6000.000000
 
 -------------------------------------------------------------------
 
 Posicionamiento del anclaje de la PALA 2 (en coords. locales de la pala).
      lad1                    lad2                    lad3
-     0.004569                0.000000                5.999998
+     0.000000                0.000000                6000.000000
 
 -------------------------------------------------------------------
 
 Posicionamiento del anclaje de la PALA 3 (en coords. locales de la pala).
      lae1                    lae2                    lae3
-     0.004569                0.000000                5.999998
+     0.000000                0.000000                6000.000000
 
 -------------------------------------------------------------------
 
 Ángulo de paso inicial de las palas [º].
      q1                      q2                      q3
-     171.200000                171.200000                171.200000
+     90.000000                90.000000                90.000000
 
 -------------------------------------------------------------------
 
 Giro del rotor y giñada de la góndola iniciales [º].
      q4                      q5
-     -60.000000                0.000000
+     -30.000000                0.000000
 
 -------------------------------------------------------------------
 
@@ -105,13 +105,13 @@ DATOS EXTRA DE LAS CONDICIONES DE VIENTO
 
 Definición de capa límite terrestre:
      altura para v_inf      exponente
-       1.4250e+02           0.1
+      1.5000e+002           0
 
 -------------------------------------------------------------------
 
 Densidad del aire:
 
-       1.2250e+00
+      2.3770e-003
 
 -------------------------------------------------------------------
 

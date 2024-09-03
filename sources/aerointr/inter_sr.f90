@@ -231,7 +231,8 @@ CONTAINS ! ==================================================================
       
       ALLOCATE( afsnl(nnode) )
       afsnl(:)=labels(1:nnode)
-      CALL sort_ivect(afsnl)
+      !CALL sort_ivect(afsnl)
+      !CALL quicksort(afsnl, 1, SIZE(afsnl))
       
       ALLOCATE( fls(3,nnode) )
       fls(:,:)=0
@@ -1154,7 +1155,7 @@ CONTAINS ! ==================================================================
       n = afsnl(i)                              ! struc. node loaded with aero. force
       lambda = RESHAPE(euler(1:9,n),(/3,3/))	! Rotation matrix for n local system
       Fl = fls(1:3,i)                           ! force vector in local coords. of master node n
-      Fg = MATMUL(lambda,Fl)                   ! force vector in global coords.
+      Fg = MATMUL(lambda,Fl)                    ! force vector in global coords.
       loa(1:3,n) = Fg                           ! ready to add to resid(ndofn,npoin)
     ENDDO
     
