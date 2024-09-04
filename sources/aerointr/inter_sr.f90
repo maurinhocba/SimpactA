@@ -455,7 +455,7 @@ CONTAINS ! ==================================================================
       ENDDO
     ENDIF
     
-    !CALL CPsVelsText ! for debugging purposes only - file is never deleted by the program; data is simply added to the end - you may delet it manually
+    CALL CPsVelsText ! for debugging purposes only - file is never deleted by the program; data is simply added to the end - you may delet it manually
     !CALL nbstOmTecplot ! for debugging purposes only - file is never deleted by the program; data is simply added to the end - you may delet it manually
   
   CONTAINS
