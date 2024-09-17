@@ -17,7 +17,8 @@
 * **Branches de Lanzamiento** (`release/vX.Y.Z`):  
   * Usados para preparar una nueva versión antes de fusionarla en `main`.  
   * Ejemplo: `release/v1.0.0`.  
-  * Permiten pruebas finales y corrección de errores antes de ser integradas en `main`.  
+  * Permiten pruebas finales y corrección de errores antes de ser integradas en `main`.
+  * Permiten limpiar directorios y preparar todo para hacer un `release` de GitHub (con `tag` incluido) - recordar que al generar un `release`, GitHub hace dos archivos comprimidos (condiferente extensión) con todo lo que está en el repositorio (digamos, fuentes) y, además, permite agregar ejecutables para que queden a mano
 * **Branches de Hotfix** (`hotfix/nombre-hotfix`):  
   * Usados para correcciones urgentes que deben aplicarse directamente en `main`.  
   * Ejemplo: `hotfix/correccion-urgente`.  
