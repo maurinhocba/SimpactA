@@ -7,7 +7,7 @@
  !********************************************************************
  IMPLICIT NONE
  INTEGER (kind=4) ndime,nnode,ndofn,nelem,ifpre(:,:)
- REAL (kind=8) coora(:,:),euler(:,:),veloc(:,:),resid(:,:),emass(:,:),dtime
+ REAL (kind=8) coora(:,:),euler(:,:),veloc(:),resid(:,:),emass(:,:),dtime
  TYPE(ele01), POINTER :: heade
 
  INTEGER (kind=4) ielem,isec,nl,osec,n1,n2,tc,rc,tcv,rcv,i,j,dir
@@ -39,7 +39,7 @@
        tcv = sec%iprop(3)                  !curve for translational damping
        rcv = sec%iprop(4)                  !curve for rotational damping
        IF( tc  > 0 ) CALL cur_point( tc ,sec%mtbas%chead,c_tc )
-       IF( rc  > 0 ) CALL cur_point( rc ,sec%mtbas%chead,c_rc )
+       IF( rc  > 0 ) CALL cur_point( tc ,sec%mtbas%chead,c_rc )
        IF( tcv > 0 ) CALL cur_point( tcv,sec%mtbas%chead,c_tcv)
        IF( rcv > 0 ) CALL cur_point( rcv,sec%mtbas%chead,c_rcv)
        stc  = sec%rprop(1)                 !translational stiffnes
@@ -64,12 +64,19 @@
      same = (n2 == 0)                !one node only
      ! Coordinates and velocities
      x(:,1) = coora(:,n1)            !coordinates of first node
-     v(:,1) = veloc(:,n1)           !nodal velocity
+     v = 0d0                         !initializes velocities
+     DO i=1,ndofn                    !for each DOF
+       j = ifpre(i,n1)                   !associated equation
+       IF( j > 0 ) v(i,1) = veloc(j)     !non-prescribed velocity
+     END DO
      IF( same ) THEN                 !if 1 node olny
        x(:,2) = e%gausv(2:ndime+1)    !recover original coordinates
      ELSE
        x(:,2) = coora(:,n2)           !coordinates of the second node
-       v(:,2) = veloc(:,n2)           !nodal velocity
+       DO i=1,ndofn                   !for each DOF
+         j = ifpre(i,n2)                  !associated equation
+         IF( j > 0 ) v(i,2) = veloc(j)    !non-prescribed velocity
+       END DO
      END IF
      dx = x(:,2) - x(:,1)             !distance vector
      !ddd(ielem) = SQRT(DOT_PRODUCT(dx,dx))       !DEBUG
@@ -121,9 +128,6 @@
          CALL proma4(lb(1,3),lb(1,1),lb(1,2),3,3,3) ! l3 = l1^T * l2
          CALL cuate8(lb(1,3),al(1))                 ! al = rotation vector
          lx = SQRT(DOT_PRODUCT(al,al))              ! rotation angle
-         IF( rc  > 0 ) src = inte_cr (c_rc%val,c_rc%np,lx,i)
-         lx = SQRT(DOT_PRODUCT(v(4:6,3),v(4:6,3)))  ! rotation velocity
-         IF( rcv > 0 ) srcv= inte_cr (c_rcv%val,c_rcv%np,lx,i)
          al = src*al + srcv*v(4:6,3)                ! moment vector
          facto = SQRT(DOT_PRODUCT(al,al))           ! moment modulus
          bts(4:6) =  al(1:3)                        !
