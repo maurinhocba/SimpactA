@@ -12,7 +12,7 @@
                               CORDOBA - ARGENTINA               
 
 
-                       Started at  16:36:50  on  06/08/2024
+                       Started at  16:30:49  on  14/03/2025
 
 
 *** PLEASE WAIT FOR THE PRELIMINARY CALCULATIONS TO BE COMPLETED ...
@@ -20,6 +20,5 @@
 
      ***  BEGIN STAGE 1: str01                                                                                              
 
- STEP 1250   DT=  0.1149E-03   Time= 0.14356E+00   CPU 0:00:14  CPU to end stage (est.) 0:00:33
- STEP 2500   DT=  0.1148E-03   Time= 0.28712E+00   CPU 0:00:29  CPU to end stage (est.) 0:07:59
- STEP 3750   DT=  0.1148E-03   Time= 0.43068E+00   CPU 0:00:43  CPU to end stage (est.) 0:07:50
+ STEP 1250   DT=  0.5747E-04   Time= 0.71778E-01   CPU 0:00:14  CPU to end stage (est.) 0:01:52
+ STEP 2500   DT=  0.5747E-04   Time= 0.14361E+00   CPU 0:00:16  CPU to end stage (est.) 0:01:42

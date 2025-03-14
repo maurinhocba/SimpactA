@@ -37,6 +37,7 @@
    INTEGER (kind=4), INTENT(IN OUT) :: i
 
    i = MIN(i,np-1)
+   IF( i .le. 0 ) i=1
    DO
      IF( val(1,i) <= t )THEN
        IF( val(1,i+1) >= t )THEN
