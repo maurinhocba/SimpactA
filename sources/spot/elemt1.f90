@@ -63,7 +63,7 @@
                    ndime,elset%ngrqs,ttime)
 
    CASE ('RESVPL')
-     CALL resvp1(ndime,nnode,ndofn,nelem,ifpre,coora,euler,veloc,resid,emass, &
+     CALL resvp1(ndime,nnode,ndofn,nelem,ifpre,coora,euler,velnp,resid,emass, &
                  elset%head,dtime)
 
    CASE ('WRTPOS')
