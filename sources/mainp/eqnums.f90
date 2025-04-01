@@ -218,9 +218,11 @@ SUBROUTINE eqnums (actio )
         !IF( iffix(j) > 0 ) iffix(j) = -i  !keep position in array NNDPD
       END DO
     END IF
-
-    IF (ASSOCIATED(force)) DEALLOCATE (force, loadv, loass)
-    IF( nload /= 0 )ALLOCATE( force(neq+1,nload+1), loadv(ndofn,npoin,nload), loass(MAX(nload,1)) )
+    
+    ! --- Mauro Maza under recom of Fernando Flores 2025 04 01
+    ! --- see also loaini.f90 line 28
+    ! IF (ASSOCIATED(force)) DEALLOCATE (force, loadv, loass)
+    ! IF( nload /= 0 )ALLOCATE( force(neq+1,nload+1), loadv(ndofn,npoin,nload), loass(MAX(nload,1)) )
 
     CALL flushf(lures)
     IF(iwrit == 1) THEN

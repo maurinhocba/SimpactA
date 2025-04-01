@@ -24,10 +24,12 @@ SUBROUTINE loaini ( )
     INCLUDE 'dsurf1.h'
     INCLUDE 'waterb_ini.h'
   END INTERFACE
-
-  !IF (ASSOCIATED(force)) DEALLOCATE (force, loadv, loass)
+  
+  ! --- Mauro Maza under recom of Fernando Flores 2025 04 01
+  ! --- see also eqnums.f90 line 222
+  IF (ASSOCIATED(force)) DEALLOCATE (force, loadv, loass)
   IF( nload == 0 )RETURN
-  !ALLOCATE( force(neq+1,nload+1), loadv(ndofn,npoin,nload), loass(MAX(nload,1)) )
+  ALLOCATE( force(neq+1,nload+1), loadv(ndofn,npoin,nload), loass(MAX(nload,1)) )
 
   IF (iwrit == 1) WRITE (lures, &
        "(/,'  L O A D   A P P L I E D   I N   T H E   ', &
