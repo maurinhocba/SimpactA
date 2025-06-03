@@ -1,0 +1,58 @@
+Uso de History
+
+Parámetros de la línea de comandos
+
+Hay dos modos
+a-modo Automático (por lo menos 6 parámteros en la línea de comandos)
+b-modo manual, se van dando los datos a medida que se soliciten
+
+1- Proyecto/estrategia (string)   ????.@?  o ????.@?_rm?
+   debe incluir la estrategia .@? y opcionalmente el número de refinamiento/remallado
+   Si no se incluye el refinamiento/remallado y existen, se concatenan los resultados
+   (solo en modo automático)
+   Limitacion: no se actualiza la cantidad de valores en el encabezamiento
+
+2- Frecuencia a leer de los archivos (entero)
+   si se desean todos los pasos leidos (1)
+   0 si se desea un resumen de la información disponible
+
+3- Opción para títulos o encabezamiento 0:sin  1:GNUPlot  2:Tecplot
+   Esto incluye los datos del nudo/elemento/superficie y componente en el archivo
+
+4- Option  CHARACTER
+   [D,L,C,E,V,A,S,F,B,P,T] de acuerdo a la variable deseada
+   o * si se desea un resumen de la información disponible en ????.@?.inf
+
+    D Displacements
+    L Loads (internal)
+    C Contact forces
+    E Energy
+    V Velocities
+    A Accelerations
+    S Stresses
+    F Total contact forces
+    B drawbeads
+    P Pressure & volume
+    T Temperatures
+
+  la opción S funciona en automático sólo si hay un único set de elementos con información
+
+
+5- Primer parámetro (entero)
+   nudo/valor de energía/elemento/superfice/linea (de acuerdo a la opción)
+   Para la opción L puede ser 0, en tal caso se suman todos los valores
+
+6- Componente (entero)
+   componente deseada, si se coloca 0 se incluyen todas
+
+7- Nombre del archivo de salida (string)
+   Si no se entra se genera un nombre automático
+
+
+Cosas que podrían mejorarse:
+1-sobre los títulos/encabezamiento
+a-dice V A L U E, si se leyera el POSTYPE se podría poner TIME / DISPL / FUNCTION
+b-en modo automático, cuando se carga más de una estrategia, se podría reabrir el archivo y actualizar el número de valores
+c-en TECPLOT dice ZONE=ONE podría colocarse otra opción, no tengo claro que
+d-en el caso de tensiones, en modo automático se podría usar definir una escala default (sólido-lamina-etc) para cuando hay mas de un set
+
