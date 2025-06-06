@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.0] - 2025-06-03
+### Added
+- Complementary tool "curvaslarge" (sources and compilation). This is a modification of the original Fernando Flores version, in which more memory is allocated in order to work with larger data arrays (higher sampling rates in the output).
+
 ## [0.0.0] - 2024-09-13
 First version, as described in Mauro S. Maza's doctoral thesis.
 
