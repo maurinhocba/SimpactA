@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jun  3 12:20:38 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Fri Jun  6 13:15:03 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE HISTD__genmod

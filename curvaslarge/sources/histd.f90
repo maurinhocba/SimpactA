@@ -25,7 +25,8 @@
       LOGICAL, INTENT(IN) :: auto                !automatic output
 
    ! local variables
-     INTEGER (kind=4), PARAMETER ::  maxv = 10000000   !size of array A
+     INTEGER (kind=4), PARAMETER ::  maxv = 40000000   !size of array A - CUIDADO: está redefinido en history.f90 y debe modificarse en ambos casos
+                                                       !el tamaño de A debe ser suficiente para contener todos los valores de cada grado de libertad, de cada nodo incluido en la salida
      REAL(kind=8), PARAMETER :: pi = 3.1415926535897932384626433832795
      INTEGER (kind=4) :: i,j,itime,nstep,kstep,idesp,leng
      REAL(kind=8), ALLOCATABLE :: a(:)

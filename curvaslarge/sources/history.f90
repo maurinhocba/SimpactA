@@ -9,7 +9,8 @@
       INTEGER, PARAMETER :: chlen = 30,   & !names length
                             nsets = 20,   & !maximum number of sets with stresses
                             maxva = 2048, & !maximum number of values for a set
-                            maxv = 10000000   !size of array A - CUIDADO: está redefinido en histd.f90
+                            maxv = 40000000   !size of array A - CUIDADO: está redefinido en histd.f90 y debe modificarse en ambos casos
+                                              !el tamaño de A debe ser suficiente para contener todos los valores de cada grado de libertad, de cada nodo incluido en la salida
 
       CHARACTER(len=5) :: elty(25) = (/                   &
                 'SPOT ','TRUSS','NONE ','TETRA','SPRIS',  &
