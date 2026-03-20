@@ -5,12 +5,53 @@
  IMPLICIT NONE
  TYPE (section), POINTER :: sec
  !local variales
- LOGICAL :: found
+ LOGICAL :: found, point
  INTEGER (kind=4) matno,nc,i,k
  INTEGER (kind=4) :: matsa = 20
  CHARACTER (len=mnam) :: cname
  TYPE (curve), POINTER :: c
 
+ ! SECDEF
+ ! (1) 16= size of array of integer
+ ! (2) 17= size of array of reals
+ ! (3) : option for force direction
+ ! (4) : not used, but reserved for postprocess information
+ ! (5) : not used
+ ! IPROP
+ ! ( 1) curve for axial stiffness ASTIFF
+ ! ( 2) curve for rotational stiffness RSTIFF
+ ! ( 3) curve for axial damping ADAMPI
+ ! ( 4) curve for rotational damping RDAMPI
+ ! ( 5) curve for axial stiffness ASTIF2
+ ! ( 6) curve for rotational stiffness RSTIF2
+ ! ( 7) curve for axial damping ADAMP2
+ ! ( 8) curve for rotational damping RDAMP2
+ ! ( 9) curve for axial stiffness ASTIF3
+ ! (10) curve for rotational stiffness RSTIF3
+ ! (11) curve for axial damping ADAMP3
+ ! (12) curve for rotational damping RDAMP3
+ ! (13) curve for translational mass TMASS
+ ! (14) curve for rotational inertia RMASS
+ ! (15) 1 if Masing Rule
+ ! (16) 0 Global 1 initial 2 present
+ ! RPROP
+ ! ( 1) ASTIFF
+ ! ( 2) RSTIFF
+ ! ( 3) ADAMPI
+ ! ( 4) RDAMPI
+ ! ( 5) ASTIF2
+ ! ( 6) RSTIF2
+ ! ( 7) ADAMP2
+ ! ( 8) RDAMP2
+ ! ( 9) ASTIF3
+ ! (10) RSTIF3
+ ! (11) ADAMP3
+ ! (12) RDAMP3
+ ! (13) TMASS
+ ! (14) RMASS
+ ! (15) AREA
+ ! (16) Normal Penalty
+ ! (17) HRATIO
  CALL listen('SC_SPO')
 
  sec%secty = 2  ! spot
@@ -23,7 +64,7 @@
       CALL runend('SC_SPO: Invalid material association')
 
  sec%mabas = matno  !material label
- sec%secdef = (/ 6,8,0,0,0 /)
+ sec%secdef = (/ 16,17,7,0,0 /)
  ALLOCATE (sec%iprop(sec%secdef(1)), sec%rprop(sec%secdef(2)) )
  sec%iprop = 0
  sec%rprop = 0d0
@@ -31,24 +72,93 @@
  nc = sec%mtbas%matdef(12)      ! number of curves
 
  ! read curve for stiffness
- sec%rprop(1) = getrea('ASTIFF',0d0,' Axial Stiffness ..................')
- IF( sec%rprop(1) <= 0d0 .AND. exists('ASTIFF') )THEN
-   cname = get_name('ASTIFF') !read curve name
-   CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
-   sec%iprop(1) = k
-   i = 1
-   sec%rprop(1) = inte_cr(c%val,c%np,0d0,i)
+
+ point = exists('POINT')
+ IF( exists('ASTIFF') ) THEN
+   sec%rprop(1) = getrea('ASTIFF',0d0,' Axial Stiffness ..................')
+   IF( sec%rprop(1) <= 0d0  )THEN
+     cname = get_name('ASTIFF') !read curve name
+     CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+     sec%iprop(1) = k
+     i = 1
+     sec%rprop(1) = inte_cr(c%val,c%np,0d0,i)
+   END IF
+ ELSE IF (point) THEN
+   IF( exists('ASTIF1')) THEN
+     sec%rprop(1) = getrea('ASTIF1',0d0,' Axial Stiffness dir 1.............')
+     IF( sec%rprop(1) <= 0d0 )THEN
+       cname = get_name('ASTIF1') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(1) = k
+       i = 1
+       sec%rprop(1) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
+   IF( exists('ASTIF2')) THEN
+     sec%rprop(5) = getrea('ASTIF2',0d0,' Axial Stiffness dir 2.............')
+     IF( sec%rprop(5) <= 0d0 )THEN
+       cname = get_name('ASTIF2') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(5) = k
+       i = 1
+       sec%rprop(5) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
+   IF( exists('ASTIF3')) THEN
+     sec%rprop(9) = getrea('ASTIF3',0d0,' Axial Stiffness dir 3.............')
+     IF( sec%rprop(9) <= 0d0 )THEN
+       cname = get_name('ASTIF3') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(9) = k
+       i = 1
+       sec%rprop(9) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
  END IF
- sec%rprop(2) = getrea('RSTIFF',0d0,' Rotational Stiffness..............')
- IF( sec%rprop(2) <= 0d0 .AND. exists('RSTIFF') )THEN
-   cname = get_name('RSTIFF') !read curve name
-   CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
-   sec%iprop(2) = k
-   i = 1
-   sec%rprop(2) = inte_cr(c%val,c%np,0d0,i)
+ IF( exists('RSTIFF') ) THEN
+   sec%rprop(2) = getrea('RSTIFF',0d0,' Rotational Stiffness..............')
+   IF( sec%rprop(2) <= 0d0 )THEN
+     cname = get_name('RSTIFF') !read curve name
+     CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+     sec%iprop(2) = k
+     i = 1
+     sec%rprop(2) = inte_cr(c%val,c%np,0d0,i)
+   END IF
+ ELSE IF(point) THEN
+   IF( exists('RSTIF1') ) THEN
+     sec%rprop(2) = getrea('RSTIF1',0d0,' Rotational Stiffness..............')
+     IF( sec%rprop(2) <= 0d0 )THEN
+       cname = get_name('RSTIF1') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(2) = k
+       i = 1
+       sec%rprop(2) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
+   IF( exists('RSTIF2') ) THEN
+     sec%rprop(6) = getrea('RSTIF2',0d0,' Rotational Stiffness..............')
+     IF( sec%rprop(6) <= 0d0 )THEN
+       cname = get_name('RSTIF2') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(6) = k
+       i = 1
+       sec%rprop(6) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
+   IF( exists('RSTIF3') ) THEN
+     sec%rprop(10) = getrea('RSTIF3',0d0,' Rotational Stiffness..............')
+     IF( sec%rprop(10) <= 0d0 )THEN
+       cname = get_name('RSTIF3') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(10) = k
+       i = 1
+       sec%rprop(10) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
  END IF
+
  IF( exists('XYZ') )THEN
-   sec%secdef(3) = 0           !default
+   sec%secdef(3) = 7           !default
  ELSE IF( exists('XY') )THEN
    sec%secdef(3) = 4
  ELSE IF( exists('XZ') )THEN
@@ -61,46 +171,127 @@
    sec%secdef(3) = 2
  ELSE IF( exists('Z') )THEN
    sec%secdef(3) = 3
+ ELSE
+   sec%secdef(3) = 7           !default
  END IF
+ IF( point ) sec%secdef(3) = -sec%secdef(3)
  ! read curve for damping
- sec%rprop(3) = getrea('ADAMPI',0d0,' Axial Damping ....................')
- IF( sec%rprop(3) <= 0d0 .AND. exists('ADAMPI') )THEN
-   cname = get_name('ADAMPI') !read curve name
-   CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
-   sec%iprop(3) = k
-   i = 1
-   sec%rprop(3) = inte_cr(c%val,c%np,0d0,i)
+ IF( exists('ADAMPI') )THEN
+   sec%rprop(3) = getrea('ADAMPI',0d0,' Axial Damping ....................')
+   IF( sec%rprop(3) <= 0d0  )THEN
+     cname = get_name('ADAMPI') !read curve name
+     CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+     sec%iprop(3) = k
+     i = 1
+     sec%rprop(3) = inte_cr(c%val,c%np,0d0,i)
+   END IF
+ ELSE IF(point) THEN
+   IF( exists('ADAMP1') )THEN
+     sec%rprop(3) = getrea('ADAMP1',0d0,' Axial Damping .dir 1..............')
+     IF( sec%rprop(3) <= 0d0  )THEN
+       cname = get_name('ADAMP1') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(3) = k
+       i = 1
+       sec%rprop(3) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
+   IF( exists('ADAMP2') )THEN
+     sec%rprop(7) = getrea('ADAMP2',0d0,' Axial Damping .dir 2..............')
+     IF( sec%rprop(7) <= 0d0  )THEN
+       cname = get_name('ADAMP2') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(7) = k
+       i = 1
+       sec%rprop(7) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
+   IF( exists('ADAMP3') )THEN
+     sec%rprop(11) = getrea('ADAMP3',0d0,' Axial Damping .dir 3..............')
+     IF( sec%rprop(11) <= 0d0  )THEN
+       cname = get_name('ADAMP3') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(11) = k
+       i = 1
+       sec%rprop(11) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
  END IF
- sec%rprop(4) = getrea('RDAMPI',0d0,' Rotational Damping ...............')
- IF( sec%rprop(4) <= 0d0 .AND. exists('RDAMPI') )THEN
-   cname = get_name('RDAMPI') !read curve name
-   CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
-   sec%iprop(4) = k
-   i = 1
-   sec%rprop(4) = inte_cr(c%val,c%np,0d0,i)
+ IF( exists('RDAMPI') )THEN
+   sec%rprop(4) = getrea('RDAMPI',0d0,' Rotat Damping ....................')
+   IF( sec%rprop(4) <= 0d0  )THEN
+     cname = get_name('RDAMPI') !read curve name
+     CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+     sec%iprop(4) = k
+     i = 1
+     sec%rprop(4) = inte_cr(c%val,c%np,0d0,i)
+   END IF
+ ELSE IF(point) THEN
+   IF( exists('RDAMP1') )THEN
+     sec%rprop(4) = getrea('RDAMP1',0d0,' Rotat Damping .dir 1..............')
+     IF( sec%rprop(4) <= 0d0  )THEN
+       cname = get_name('RDAMP1') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(4) = k
+       i = 1
+       sec%rprop(4) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
+   IF( exists('RDAMP2') )THEN
+     sec%rprop(8) = getrea('RDAMP2',0d0,' Rotat Damping .dir 2..............')
+     IF( sec%rprop(8) <= 0d0  )THEN
+       cname = get_name('RDAMP2') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(8) = k
+       i = 1
+       sec%rprop(8) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
+   IF( exists('RDAMP3') )THEN
+     sec%rprop(12) = getrea('RDAMP3',0d0,' Rotat Damping .dir 3..............')
+     IF( sec%rprop(12) <= 0d0  )THEN
+       cname = get_name('RDAMP3') !read curve name
+       CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
+       sec%iprop(12) = k
+       i = 1
+       sec%rprop(12) = inte_cr(c%val,c%np,0d0,i)
+     END IF
+   END IF
  END IF
 
  ! read mass for translation and rotation
- sec%rprop(5) = getrea('TMASS ',0d0,' Translational Mass................')
- IF( sec%rprop(5) <= 0d0 .AND. exists('TMASS ') )THEN
+ sec%rprop(13) = getrea('TMASS ',0d0,' Translational Mass................')
+ IF( sec%rprop(13) <= 0d0 .AND. exists('TMASS ') )THEN
    cname = get_name('TMASS ') !read curve name
    CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
-   sec%iprop(5) = k
+   sec%iprop(13) = k
    i = 1
-   sec%rprop(5) = inte_cr(c%val,c%np,0d0,i)
+   sec%rprop(13) = inte_cr(c%val,c%np,0d0,i)
  END IF
- sec%rprop(6) = getrea('RMASS ',0d0,' Rotational Mass ..................')
- IF( sec%rprop(6) <= 0d0 .AND. exists('RMASS ') )THEN
+ sec%rprop(14) = getrea('RMASS ',0d0,' Rotational Mass ..................')
+ IF( sec%rprop(14) <= 0d0 .AND. exists('RMASS ') )THEN
    cname = get_name('RMASS ') !read curve name
    CALL find_cr(sec%mtbas%chead,c,cname,nc,k)
-   sec%iprop(6) = k
+   sec%iprop(14) = k
    i = 1
-   sec%rprop(6) = inte_cr(c%val,c%np,0d0,i)
+   sec%rprop(14) = inte_cr(c%val,c%np,0d0,i)
+ END IF
+
+ IF( exists('MASIN') ) THEN
+   sec%iprop(15) = 1
+   sec%rprop(17) = getrea('HRATIO',2d0,' Homothetic Ratio .................')
+ END IF
+ IF( point )THEN
+   IF( exists ('SYS0') )THEN
+     sec%iprop(16) = 1
+   ELSE IF( exists ('SYS') )THEN
+     sec%iprop(16) = 2
+   END IF
  END IF
 
  ! read values for 6-node spots
- sec%rprop(7) = getrea('AREA  ',0d0,' Transversal Area .................')
- sec%rprop(8) = getrea('NPENAL',1d-2,' Normal Penalty ...................')
+ sec%rprop(15) = getrea('AREA  ',0d0,' Transversal Area .................')
+ sec%rprop(16) = getrea('NPENAL',1d-2,' Normal Penalty ...................')
 
  RETURN
 

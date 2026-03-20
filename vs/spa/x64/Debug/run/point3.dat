@@ -1,0 +1,120 @@
+TITLE: EXAMPLE
+$-------------------------------------------------------------------------------
+CONTROL: /
+         NDIME = 3       NDOFN = 6     NEULR = 1
+TIME:    /
+         ENDTM = 2.000E+00  /
+         DTUSER= 1.000E-03  /  ! 1.000E-03
+         DTSCAL= 0.900      /
+         NCDLT =  10000
+OUTPUT:  /
+         IWRIT= 1           /
+         TOUTD = 0.200E-01  /
+         TOUTP = 0.200E-00  /
+         IENER= 0
+END_CONTROL
+$-------------------------------------------------------------------------------
+GEOMETRY_DEFINITION
+   GENERAL:  GSCALE= 1.00
+   SET ONE
+         1     0.000     0.000   0.000  !  90.0 90.0 0.0
+         2     0.000     0.000   0.000  !  90.0 90.0 0.0
+   END_SET
+END_GEOMETRY_DEFINITION
+$-------------------------------------------------------------------------------
+MATERIAL_PROPERTIES
+
+     DEFINITION: MATNO = 0  MATYPE = 1
+     YOUNG = 0.5000e+11  POISS = 0.000e-00   DENSI = 6.500e+04
+
+     DEFINITION: MATNO = 2     MATYPE = 20 ELASTIC
+                 YOUNG = 2.000E+11   POISS = 0.3   DENSI = 8.000e+03
+                 
+END_MATERIAL_PROPERTIES
+SECTION_DEFINITION
+     DEFINITION: SECNO = 1     SEC_TYPE = TRUSS
+     NUMAT = 0 AREA  = 1.0000e+02 STRAI = 0.000e+00  STYPE = 3
+
+
+     DEFINITION: SECNO = 2     SEC_TYPE = SPOT
+                  NUMAT = 2     POINT /         !XZ
+                  TMASS = 1d4  RMASS = 1d4 /
+                  ASTIFF = 1e5    / !ADAMPI = 1e4
+				  RSTIFF = 1e5      !RDAMPI = 1e4 
+
+END_SECTION
+$-------------------------------------------------------------------------------
+SET_DEFINITION
+
+  ELS_NAME=RSPOT   ELM_TYPE: SPOT              NELEM = 1
+          NNODE = 2
+         1  2  1 2
+  END_ELEMENT_DEFINITION
+END_SET_DEFINITION
+$-------------------------------------------------------------------------------
+KINEMATIC_CONDITIONS
+$-------------------------------------------------------------------------------
+  BOUNDARY_CONDITIONS
+         1    1 1 1 1 1 1
+  END_BOUNDARY_CONDITIONS
+     PRESCRIBED_VELOCITIES
+     VEL_SET = 1   FACTOR = 1.00
+     CURVE_DEF: 1  LTYPE = 3  NUMPTS = 20
+  TIME = 0.00E+00      VALUE =     0.010
+  TIME = 1.9999E-01    VALUE =     0.010
+  TIME = 2.0001E-01    VALUE =     -0.005
+  TIME = 3.9999E-01    VALUE =     -0.005
+  TIME = 4.0001E-01    VALUE =     0.005
+  TIME = 5.9999E-01    VALUE =     0.005
+  TIME = 6.0001E-01    VALUE =     -0.015
+  TIME = 7.9999E-01    VALUE =     -0.015
+  TIME = 8.0001E-01    VALUE =     0.015
+  TIME = 9.9999E-01    VALUE =     0.015
+  TIME = 1.00001E+00   VALUE =     -0.015
+  TIME = 1.19999E+00   VALUE =     -0.015
+  TIME = 1.20E+00      VALUE =     0.015
+  TIME = 1.39999E+00   VALUE =     0.015
+  TIME = 1.40E+00      VALUE =     -0.015
+  TIME = 1.59999E+00   VALUE =     -0.015
+  TIME = 1.60E+00      VALUE =     0.015
+  TIME = 1.79999E+00   VALUE =     0.015
+  TIME = 1.80E+00      VALUE =     0.020
+  TIME = 2.00001E+00   VALUE =     0.020
+
+         2 1.00    0.00    0.00     0.00   0.00    0.00
+   END_VEL_SET
+  END_PRESCRIBED_VELOCITIES
+$-------------------------------------------------------------------------------
+END_KINEMATIC_CONDITIONS
+$-------------------------------------------------------------------------------
+HISTORICAL_OUTPUT_DEFINITION
+
+   DISPLACEMENT
+      1 2
+   END_DISPLACEMENT
+   INTERNAL
+      1 2
+   END_INTERNAL
+
+END_HISTORICAL_OUTPUT_DEFINITION
+$-------------------------------------------------------------------------------
+!DAMPING_DATA
+!    DAMP_SET
+!        AMPLI = 2.00d0  FREQ = 0.1
+!      SET ONE
+!    END_DAMP_SET
+!END_DAMPING_DATA
+$-------------------------------------------------------------------------------
+LOAD_DATA
+   ! LOAD_SET =         1
+      ! TITLE : sinusoidal load
+       ! CURVE_DATA   LTYPE = 2   START = 0.00 /
+                         ! CONST = 0.5000E+00   AMPLI= 1.000    /
+                         ! FREQ  = 12.5664
+     ! POINT_LOAD
+          ! 2   2.e7   -2.e7    -2.e7   1.e7 -1.e7  1.e-7
+     ! END_POINT_LOAD
+   ! END_SET
+END_LOAD_DATA
+END_STRATEGY
+END_DATA

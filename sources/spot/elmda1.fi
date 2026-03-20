@@ -11,8 +11,8 @@
 
  TYPE(ele01), POINTER :: elem
  TYPE(section), POINTER :: sec
- INTEGER (kind=4) stype,i,isec,osec,nvare,ip
- LOGICAL :: found,rot,same
+ INTEGER (kind=4) stype,i,isec,osec,nvare,ip,nvar2,ndofn
+ LOGICAL :: found,rot,same,masing,curves,point,sys
  INTEGER (kind=4) chnode
 
  ! *** READ the element nodal connections, and the property numbers.
@@ -39,13 +39,22 @@
      osec = isec
      IF( nnode == 2 )THEN
        rot = ( sec%rprop(2) > 0d0 .OR. sec%rprop(4) > 0d0 .OR.   &
-               sec%iprop(2) > 0   .OR. sec%iprop(2) > 0 ) .AND. neulr > 0
+               sec%iprop(2) > 0   .OR. sec%iprop(4) > 0 ) .AND. neulr > 0
+       sys = rot .AND. sec%iprop(16) > 0
+       point  =  sec%secdef(3) < 0
+       masing =  sec%iprop(15) == 1
+       curves = (sec%iprop(1) + sec%iprop(2) + sec%iprop(5) + sec%iprop(6) + sec%iprop(9) + sec%iprop(10)) > 0
+       IF( masing .AND.  (.NOT.curves) ) &
+          CALL runend('ELMDA1: Masing rule, requires a curve  ')
      ELSE
        rot = .FALSE.
+       sys = .FALSE.
      END IF
    END IF
    elem%matno = ip        !store section Label
 
+   nvar2 = 0
+   ndofn = ndime
    IF( nnode == 2) THEN
      elem%lnods(1:2) = INT (param(3:4))  !connectivities
      same =  (elem%lnods(1) == elem%lnods(2)) .OR. (elem%lnods(2) == 0)
@@ -56,24 +65,35 @@
 
        IF( ndime == 2 ) THEN
          IF( rot )THEN
-           nvare = 5
+           nvare = 5      !F,x0(2),M,angle
+           ndofn = ndofn + 1
          ELSE      ! no Euler angles
-           nvare = 3
+           nvare = 3      !F,x0(2)
          END IF
        ELSE !ndime ==3
          IF( rot )THEN
-           nvare = 14
+           nvare = 14     !F,x0(3),M,Lamb(9)
+           ndofn = ndofn + 3
          ELSE      ! no Euler angles
-           nvare = 4
+           nvare = 4      !F,x0(3)
          END IF
        END IF
      ELSE    !different nodes
        IF(iwrit == 1) WRITE(lures,"(3x,i8,i5,6i7)",ERR=9999) elem%numel,     &
                       isec,elem%lnods(1:2)
        IF( rot )THEN
-         nvare = 2
+         nvare = 2        !F,M
+         IF( ndime == 2 ) ndofn = 3
+         IF( ndime == 3 ) ndofn = 6
        ELSE      ! no Euler angles
-         nvare = 1
+         nvare = 1        !F
+       END IF
+     END IF                        !      1         2       3      4      5     6     7
+     IF( masing ) THEN
+       IF (point) THEN
+         nvar2 = 7*ndofn  !maxDist, maxForce, DirMov, Dist0,Force0,Dprev,Fprev
+       ELSE
+         nvar2 = 7         !maxDist, maxForce, DirMov, Dist0,Force0,Dprev,Fprev
        END IF
      END IF
    ELSE
@@ -84,6 +104,7 @@
        IF(iwrit == 1) WRITE(lures,"(3x,i8,i5,i10)",ERR=9999) elem%numel,isec,elem%lnods(1)
      CASE(8)
        elem%lnods(1:nnode) = INT (param(3:8))  !connectivities
+
        IF(iwrit == 1) WRITE(lures,"(3x,i8,i5,6i7)",ERR=9999) elem%numel,isec,elem%lnods
      CASE(9)
        elem%lnods(1:nnode) = INT (param(3:8))  !connectivities
@@ -93,7 +114,7 @@
        elem%numel = - i
      END SELECT
    END IF
-   ALLOCATE (elem%gausv(nvare))
+   ALLOCATE (elem%gausv(nvare+nvar2))
 
    elem%gausv = 0d0                     !initializes
    elem%rot   = rot
