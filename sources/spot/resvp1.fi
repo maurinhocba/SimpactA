@@ -19,8 +19,17 @@
  TYPE(section), POINTER :: sec
  LOGICAL :: newm,same,masing,point
  TYPE (curve), POINTER :: c_tc, c_rc, c_tcv, c_rcv
-
- !INTEGER(kind=4), SAVE :: itera = 1 !debug
+ 
+ ! some internal variables for POINT elements:
+ ! e%gausv(j-1=1)=force f
+ ! e%gausv(j+0=2)=moment m
+ ! e%gausv(j+1=3)=historic u_max (with sign)
+ ! e%gausv(j+2=4)=historic f_max (with sign)
+ ! e%gausv(j+3=5)=u sign (load direction)
+ ! e%gausv(j+4=6)=last reversion u (with sign)
+ ! e%gausv(j+5=7)=last reversion f (with sign)
+ ! e%gausv(j+6=8)=last u (with sign)
+ ! e%gausv(j+7=9)=last f (with sign)
 
  !***  loop over all the elements
  osec = -1             !initializes
@@ -166,7 +175,7 @@
            IF( tc  > 0 .AND. masing)THEN
              CALL cur_point( tc ,sec%mtbas%chead,c_tc ) !point to curve
              !      first time        or   virgin part
-             IF( e%gausv(j+1) == 0d0 .OR. e%gausv(j+1)/lx < 1d0 )THEN !virgin part  d > maximum d value
+             IF( e%gausv(j+1) == 0d0 .OR. ABS(e%gausv(j+1)/lx) < 1d0 )THEN !virgin part  d > maximum d value
                stc = inte_cr (c_tc%val,c_tc%np,ABS(lx),k)   !Normal interpolation in p-d curve
                e%gausv(j+1) = lx                       !keep maximum d value
                e%gausv(j+3) = SIGN(1d0,lx)             !loading direction
@@ -185,7 +194,7 @@
              END IF
              e%gausv(j+6) = lx                     !keep last d
              e%gausv(j+7) = stc                    !keep last p
-             IF( lx /= 0d0 )stc = stc/lx
+             IF( lx /= 0d0 )stc = stc/lx ! secant stiffness for total force determination
              j = j+7          !update position in GAUSV
            ELSE
              IF( tc > 0 )  THEN
@@ -205,7 +214,6 @@
          ELSE
            force(i) = 0d0         ! no force
          END IF
-         !res(1,i) = lx  !debug
        END DO
        IF( sys == 1 )THEN          !proyect on initial system
          IF( ndime == 2 )THEN
@@ -234,7 +242,7 @@
            IF( rc  > 0 .AND. masing) THEN     !Masing and there is a curve
              CALL cur_point( rc ,sec%mtbas%chead,c_rc ) !point to curve
              !      first time        or   virgin part
-             IF( e%gausv(j+1) == 0d0 .OR. e%gausv(j+1)/al(3) < 1d0 )THEN !virgin part  d > maximum d value
+             IF( e%gausv(j+1) == 0d0 .OR. ABS(e%gausv(j+1)/al(3)) < 1d0 )THEN !virgin part  d > maximum d value
                src = inte_cr (c_rc%val,c_rc%np,ABS(al(3)),k)   !Normal interpolation in p-d curve
                e%gausv(j+1) = al(3)                       !keep maximum d value
                e%gausv(j+3) = SIGN(1d0,al(3))             !loading direction
@@ -283,7 +291,7 @@
                IF( rc  > 0 .AND. masing) THEN     ! Masing and there is a curve
                  CALL cur_point( rc ,sec%mtbas%chead,c_rc ) !point to curve
                  !      first time        or   virgin part
-                 IF( e%gausv(j+1) == 0d0 .OR. e%gausv(j+1)/lx < 1d0 )THEN !virgin part  d > maximum d value
+                 IF( e%gausv(j+1) == 0d0 .OR. ABS(e%gausv(j+1)/lx) < 1d0 )THEN !virgin part  d > maximum d value
                    src = inte_cr (c_rc%val,c_rc%np,ABS(lx),k)   !Normal interpolation in p-d curve
                    e%gausv(j+1) = lx                       !keep maximum d value
                    e%gausv(j+3) = SIGN(1d0,lx)             !loading direction
@@ -322,7 +330,6 @@
              ELSE
                force(i) = 0d0         ! no force
              END IF
-             !res(1:2,i+3) = (/lx,force(i)/)  !debug
            END DO
            bts(4:6) =  force(1:3)                        !
            CALL vecuni(ndime,force,facto)   !force direction and modulus
@@ -490,6 +497,5 @@
    END IF
    e => e%next   !point to next element
  END DO
- !itera = itera+1  !debug
  RETURN
  END SUBROUTINE resvp1

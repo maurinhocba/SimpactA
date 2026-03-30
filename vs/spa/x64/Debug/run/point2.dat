@@ -123,33 +123,33 @@ $-------------------------------------------------------------------------------
   BOUNDARY_CONDITIONS
          1    1 1 1 1 1 1
   END_BOUNDARY_CONDITIONS
-!      PRESCRIBED_VELOCITIES
-!      VEL_SET = 1   FACTOR = 1.00
-!      CURVE_DEF: 1  LTYPE = 3  NUMPTS = 20
-!   TIME = 0.00E+00      VALUE =     0.010
-!   TIME = 1.9999E-01    VALUE =     0.010
-!   TIME = 2.0001E-01    VALUE =     -0.005
-!   TIME = 3.9999E-01    VALUE =     -0.005
-!   TIME = 4.0001E-01    VALUE =     0.005
-!   TIME = 5.9999E-01    VALUE =     0.005
-!   TIME = 6.0001E-01    VALUE =     -0.015
-!   TIME = 7.9999E-01    VALUE =     -0.015
-!   TIME = 8.0001E-01    VALUE =     0.015
-!   TIME = 9.9999E-01    VALUE =     0.015
-!   TIME = 1.00001E+00   VALUE =     -0.015
-!   TIME = 1.19999E+00   VALUE =     -0.015
-!   TIME = 1.20E+00      VALUE =     0.015
-!   TIME = 1.39999E+00   VALUE =     0.015
-!   TIME = 1.40E+00      VALUE =     -0.015
-!   TIME = 1.59999E+00   VALUE =     -0.015
-!   TIME = 1.60E+00      VALUE =     0.015
-!   TIME = 1.79999E+00   VALUE =     0.015
-!   TIME = 1.80E+00      VALUE =     0.020
-!   TIME = 2.00001E+00   VALUE =     0.020
+     PRESCRIBED_VELOCITIES
+     VEL_SET = 1   FACTOR = 1.00
+     CURVE_DEF: 1  LTYPE = 3  NUMPTS = 20
+  TIME = 0.00E+00      VALUE =     0.010
+  TIME = 1.9999E-01    VALUE =     0.010
+  TIME = 2.0001E-01    VALUE =     -0.005
+  TIME = 3.9999E-01    VALUE =     -0.005
+  TIME = 4.0001E-01    VALUE =     0.005
+  TIME = 5.9999E-01    VALUE =     0.005
+  TIME = 6.0001E-01    VALUE =     -0.015
+  TIME = 7.9999E-01    VALUE =     -0.015
+  TIME = 8.0001E-01    VALUE =     0.015
+  TIME = 9.9999E-01    VALUE =     0.015
+  TIME = 1.00001E+00   VALUE =     -0.015
+  TIME = 1.19999E+00   VALUE =     -0.015
+  TIME = 1.20E+00      VALUE =     0.015
+  TIME = 1.39999E+00   VALUE =     0.015
+  TIME = 1.40E+00      VALUE =     -0.015
+  TIME = 1.59999E+00   VALUE =     -0.015
+  TIME = 1.60E+00      VALUE =     0.015
+  TIME = 1.79999E+00   VALUE =     0.015
+  TIME = 1.80E+00      VALUE =     0.020
+  TIME = 2.00001E+00   VALUE =     0.020
 
-!          2 1.00    1.00    0.00     0.10   -0.10    0.02
-!    END_VEL_SET
-!   END_PRESCRIBED_VELOCITIES
+         2 1.00    0.00    0.00     0.00   0.00    0.00
+   END_VEL_SET
+  END_PRESCRIBED_VELOCITIES
 $-------------------------------------------------------------------------------
 END_KINEMATIC_CONDITIONS
 $-------------------------------------------------------------------------------
@@ -171,16 +171,16 @@ $-------------------------------------------------------------------------------
 !    END_DAMP_SET
 !END_DAMPING_DATA
 $-------------------------------------------------------------------------------
-LOAD_DATA
-   LOAD_SET =         1
-      TITLE : sinusoidal load
-       CURVE_DATA   LTYPE = 2   START = 0.00 /
-                         CONST = 0.5000E+00   AMPLI= 1.000    /
-                         FREQ  = 12.5664
-     POINT_LOAD
-          2   2.e5   -2.e5    -2.e5   1.e5 -1.e5  1.e-5
-     END_POINT_LOAD
-   END_SET
-END_LOAD_DATA
+! LOAD_DATA
+   ! LOAD_SET =         1
+      ! TITLE : sinusoidal load
+       ! CURVE_DATA   LTYPE = 2   START = 0.00 /
+                         ! CONST = 0.5000E+00   AMPLI= 1.000    /
+                         ! FREQ  = 12.5664
+     ! POINT_LOAD
+          ! 2   2.e5   -2.e5    -2.e5   1.e5 -1.e5  1.e-5
+     ! END_POINT_LOAD
+   ! END_SET
+! END_LOAD_DATA
 END_STRATEGY
 END_DATA
