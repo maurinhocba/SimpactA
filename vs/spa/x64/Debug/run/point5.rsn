@@ -1,0 +1,4364 @@
+
+
+          EXAMPLE                                                     
+
+
+
+  C O N T R O L   P A R A M E T E R S 
+
+         Number of coordinate Dimension ........ NDIME   =            3
+         Nodal system code 0:NO 1:YES .......... NEULR   =            1
+         Number of Degrees Of Freedom .......... NDOFN   =            6
+
+Type of analysis:
+
+      mechanical only
+
+         Number of Temperature DOFs............. NDOFT   =            1
+
+  T I M E   P A R A M E T E R S 
+
+         Final Time ............................ ENDTM   =     2.4000    
+         SCAle fact. for DT in auto mode........ DTSCAL  =    0.90000    
+         No of steps between DT computat........ NCDLT   =        10000
+         Time Increment = 0.-> Auto calc........ DTUSER  =    0.10000E-02
+         Mass SCALing factor  .................. MSCALE  =     1.0000    
+         Time SCALing factor for therm.ana...... TSCALE  =     1.0000    
+         Velocity smoothing factor ............. VEFAC   =     0.0000    
+
+  O U T P U T   P A R A M E T E R S 
+
+         Node for Output Control ............... POINT   =            0
+         Dof  for Output Control ............... DOF     =            3
+         History Output Interval  .............. TOUTD   =    0.10000E-03
+         Complete Output IntervaL .............. TOUTP   =    0.10000E-03
+         Print-out code -      0:NO 1:Yes ...... IWRIT   =            1
+         Calculation of Energy 0:NO 1:Yes ...... IENER   =            0
+
+Type of analysis: mechanical
+
+
+--------------------------------------------------------------------------------
+
+  G E O M E T R Y   DEFINITION
+
+         SCALE Factor for Coordinates .......... GSCALE  =     1.0000    
+         Coordinates Sys 0:CART 1:CYL 2:SPH..... NRADS   =            0
+
+
+   ECHO of the Coordinate Data 
+      Node      X         Y         Z       Alfa      Beta      Gamma
+=============  nodes in set ONE ============
+         1   0.00000   0.00000   0.00000  90.00000  90.00000  90.00000
+         2   0.00000   0.00000   0.00000  90.00000  90.00000  90.00000
+
+
+
+         MATERIAL NUMBER ....................... MATNO   =            0
+         Material Space Dimension .............. NDIME   =            3
+         Material Definition 
+         MATERIAL TYPE ......................... MATYPE  =            1
+         YOUNG MODULUS ......................... YOUNG   =    0.50000E+11
+         POISSON RATIO ......................... POISS   =     0.0000    
+         DENSITY ............................... DENS    =     65000.    
+         Thermical Dilatation Coeff............. ALPHAT  =     0.0000    
+
+
+
+         MATERIAL NUMBER ....................... MATNO   =            2
+         Material Space Dimension .............. NDIME   =            3
+         Material Definition ELASTI &
+         MATERIAL TYPE ......................... MATYPE  =           20
+         YOUNG MODULUS ......................... YOUNG   =    0.20000E+12
+         POISSON RATIO ......................... POISS   =    0.30000    
+         DENSITY ............................... DENS    =     8000.0    
+
+
+           CURVE NAME:.... DEFINI = AXIALF
+         Number of Sample Points ............... NUMPTS  =           28
+
+     Point    Abscissa   Function Value 
+         1    0.00000E+00    0.00000E+00
+         2    0.10000E-03    0.77178E+05
+         3    0.20000E-03    0.11066E+06
+         4    0.30000E-03    0.13107E+06
+         5    0.40000E-03    0.14518E+06
+         6    0.50000E-03    0.15662E+06
+         7    0.60000E-03    0.16612E+06
+         8    0.70000E-03    0.17432E+06
+         9    0.80000E-03    0.18157E+06
+        10    0.90000E-03    0.18810E+06
+        11    0.10000E-02    0.19410E+06
+        12    0.20000E-02    0.23458E+06
+        13    0.30000E-02    0.27017E+06
+        14    0.40000E-02    0.28624E+06
+        15    0.60000E-02    0.31936E+06
+        16    0.80000E-02    0.33592E+06
+        17    0.12000E-01    0.36149E+06
+        18    0.16000E-01    0.37773E+06
+        19    0.20000E-01    0.39014E+06
+        20    0.24000E-01    0.39948E+06
+        21    0.28000E-01    0.40729E+06
+        22    0.32000E-01    0.41363E+06
+        23    0.36000E-01    0.41861E+06
+        24    0.40000E-01    0.42312E+06
+        25    0.10000E+00    0.42311E+06
+        26    0.20000E+00    0.42310E+06
+        27    0.40000E+00    0.42312E+06
+        28    0.40000E+01    0.42312E+06
+
+
+           CURVE NAME:.... DEFINI = ROTMOM
+         Number of Sample Points ............... NUMPTS  =           43
+
+     Point    Abscissa   Function Value 
+         1    0.00000E+00    0.00000E+00
+         2    0.10000E-03    0.32911E+08
+         3    0.20000E-03    0.55848E+08
+         4    0.30000E-03    0.61599E+08
+         5    0.40000E-03    0.65576E+08
+         6    0.50000E-03    0.69057E+08
+         7    0.60000E-03    0.72861E+08
+         8    0.70000E-03    0.77186E+08
+         9    0.80000E-03    0.81777E+08
+        10    0.90000E-03    0.86573E+08
+        11    0.10000E-02    0.91336E+08
+        12    0.20000E-02    0.13293E+09
+        13    0.30000E-02    0.16170E+09
+        14    0.40000E-02    0.18410E+09
+        15    0.50000E-02    0.20388E+09
+        16    0.60000E-02    0.22076E+09
+        17    0.70000E-02    0.23286E+09
+        18    0.80000E-02    0.24536E+09
+        19    0.90000E-02    0.25598E+09
+        20    0.10000E-01    0.26467E+09
+        21    0.25000E-01    0.34030E+09
+        22    0.30000E-01    0.35235E+09
+        23    0.35000E-01    0.36237E+09
+        24    0.40000E-01    0.37033E+09
+        25    0.45000E-01    0.37727E+09
+        26    0.50000E-01    0.38293E+09
+        27    0.55000E-01    0.38854E+09
+        28    0.60000E-01    0.39315E+09
+        29    0.65000E-01    0.39674E+09
+        30    0.70000E-01    0.40018E+09
+        31    0.75000E-01    0.40362E+09
+        32    0.80000E-01    0.40637E+09
+        33    0.85000E-01    0.40758E+09
+        34    0.90000E-01    0.40758E+09
+        35    0.95000E-01    0.40758E+09
+        36    0.10000E+00    0.40758E+09
+        37    0.20000E+00    0.40758E+09
+        38    0.30000E+00    0.40758E+09
+        39    0.40000E+00    0.40758E+09
+        40    0.50000E+00    0.40758E+09
+        41    0.60000E+00    0.40758E+09
+        42    0.70000E+00    0.40758E+09
+        43    0.80000E+00    0.40758E+09
+
+
+
+         SECTION NUMBER ........................ SECNO   =            1
+         SECTION TYPE  ......................... SEC_TYP =       TRUSS
+         Associated Material ................... NUMAT   =            0
+         Cross section area .................... AREA    =     100.00    
+         Initial strain ........................ STRAI   =     0.0000    
+         Strain type ........................... STYPE   =            3
+         The stress-strain pair considered will be:
+            1st Piola-Kirchhoff stress - Engineering strain
+
+
+
+
+         SECTION NUMBER ........................ SECNO   =            2
+         SECTION TYPE  ......................... SEC_TYP =       SPOT
+         Associated Material ................... NUMAT   =            2
+         Axial Stiffness dir 1.................. ASTIF1  =     0.0000    
+         Axial Stiffness dir 2.................. ASTIF2  =     0.0000    
+         Axial Stiffness dir 3.................. ASTIF3  =     0.0000    
+         Rotational Stiffness................... RSTIF1  =     0.0000    
+         Rotational Stiffness................... RSTIF2  =     0.0000    
+         Rotational Stiffness................... RSTIF3  =     0.0000    
+         Axial Damping .dir 1................... ADAMP1  =     10000.    
+         Axial Damping .dir 2................... ADAMP2  =     10000.    
+         Axial Damping .dir 3................... ADAMP3  =     10000.    
+         Rotat Damping .dir 1................... RDAMP1  =     10000.    
+         Rotat Damping .dir 2................... RDAMP2  =     10000.    
+         Rotat Damping .dir 3................... RDAMP3  =     10000.    
+         Translational Mass..................... TMASS   =     10000.    
+         Rotational Mass ....................... RMASS   =     10000.    
+         Homothetic Ratio ...................... HRATIO  =     2.0000    
+         Transversal Area ...................... AREA    =     0.0000    
+         Normal Penalty ........................ NPENAL  =    0.10000E-01
+
+--------------------------------------------------------------------------------
+
+ ELEMENT SETS DEFINITION
+
+ Element set named: RSPOT  will be read
+
+   Elements type (SPOT)
+
+         Number of nodes defining spot ......... NNODE   =            2
+         Gauss pt for stress time history....... NREQS   =            0
+
+    element  mat        node numbers
+
+          1    2      1      2
+
+
+ KINEMATIC CONDITIONS read in this strategy
+
+
+ B O U N D A R Y  C O N D I T I O N S
+
+
+     Node   XYZABG
+        1   111111
+
+
+ P R E S C R I B E D   V E L O C I T I E S 
+
+
+
+
+         PRESCRIBED VELOCITY SET ............... VELSET = VELS01
+         Participation factor of this set ...... FACTOR  =     1.0000    
+         Time Function Type .................... LTYPE   =            3
+         Number of Sample Points ............... NUMPTS  =           24
+  Sample Point    1 TIME   0.0000E+00 VALUE   0.1000E-01
+  Sample Point    2 TIME   0.2000E+00 VALUE   0.1000E-01
+  Sample Point    3 TIME   0.2000E+00 VALUE  -0.5000E-02
+  Sample Point    4 TIME   0.4000E+00 VALUE  -0.5000E-02
+  Sample Point    5 TIME   0.4000E+00 VALUE   0.4000E-02
+  Sample Point    6 TIME   0.6000E+00 VALUE   0.4000E-02
+  Sample Point    7 TIME   0.6000E+00 VALUE  -0.3000E-02
+  Sample Point    8 TIME   0.8000E+00 VALUE  -0.3000E-02
+  Sample Point    9 TIME   0.8000E+00 VALUE   0.2000E-02
+  Sample Point   10 TIME   0.1000E+01 VALUE   0.2000E-02
+  Sample Point   11 TIME   0.1000E+01 VALUE  -0.1000E-02
+  Sample Point   12 TIME   0.1200E+01 VALUE  -0.1000E-02
+  Sample Point   13 TIME   0.1200E+01 VALUE   0.5000E-03
+  Sample Point   14 TIME   0.1400E+01 VALUE   0.5000E-03
+  Sample Point   15 TIME   0.1400E+01 VALUE  -0.5000E-03
+  Sample Point   16 TIME   0.1600E+01 VALUE  -0.5000E-03
+  Sample Point   17 TIME   0.1600E+01 VALUE   0.4000E-03
+  Sample Point   18 TIME   0.1800E+01 VALUE   0.4000E-03
+  Sample Point   19 TIME   0.1800E+01 VALUE  -0.3000E-03
+  Sample Point   20 TIME   0.2000E+01 VALUE  -0.3000E-03
+  Sample Point   21 TIME   0.2000E+01 VALUE   0.2000E-03
+  Sample Point   22 TIME   0.2200E+01 VALUE   0.2000E-03
+  Sample Point   23 TIME   0.2200E+01 VALUE  -0.1000E-01
+  Sample Point   24 TIME   0.2400E+01 VALUE  -0.1000E-01
+
+
+
+
+
+
+     RIGID BODY VELOCITIES
+
+
+      NODE     X-VELO.       Y-VELO.       Z-VELO.       A-VELO.       B-VELO.       C-VELO.
+
+         2   0.10000E+01   0.00000E+00   0.00000E+00   0.00000E+00   0.00000E+00   0.00000E+00
+
+
+      Selective Output Requested for Displacements 
+         1    2
+
+
+      Selective Output Requested for Internal Loads
+         1    2
+
+  L O A D   R E A D   I N   T H E   P R E S E N T   S T R A T E G Y 
+
+
+
+ KINEMATIC CONDITIONS applied in this strategy
+
+
+ Boundary Conditions
+   Node   XYZABG
+      1   111111
+
+
+     Curve scaling this velocity set ....
+
+
+     RIGID BODY VELOCITIES
+
+
+      NODE     X-VELO.       Y-VELO.       Z-VELO.       A-VELO.       B-VELO.       C-VELO.
+
+         2   0.10000E+01   0.00000E+00   0.00000E+00   0.00000E+00   0.00000E+00   0.00000E+00
+
+
+  Information Relative to the Equations Numbers 
+      NODE         X         Y         Z      Alfa      Beta     Gamma
+         1  -1000001  -1000002  -1000003  -1000004  -1000005  -1000006         1
+         2  -1000007         1         2         3         4         5         2
+
+  Coordinates After Generation
+  Node     X         Y         Z
+     1    0.00000E+00    0.00000E+00    0.00000E+00
+     2    0.00000E+00    0.00000E+00    0.00000E+00
+
+  Nodal Systems After Generation
+   Node  X1     X2     X3       Y1     Y2     Y3       Z1     Z2     Z3
+      1  -0.0000 0.0000 1.0000  -0.0000-1.0000 0.0000   1.0000-0.0000 0.0000
+      2  -0.0000 0.0000 1.0000  -0.0000-1.0000 0.0000   1.0000-0.0000 0.0000
+
+
+  total mass for SPOT  element :  0.1000000E+05
+
+
+Total Mass of the System (Without Point Masses):  0.1000000E+05
+
+
+  Lumped Mass Matrix
+ Node      X           Y           z          RX          RY          RZ
+    1  0.5000E+04  0.5000E+04  0.5000E+04  0.5000E+04  0.5000E+04  0.5000E+04
+    2  0.5000E+04  0.5000E+04  0.5000E+04  0.5000E+04  0.5000E+04  0.5000E+04
+
+
+Results are reported for postprocess at:
+          Istep=        0     Ttime=   0.0000000E+00
+
+
+
+     Displacements at time step          0     Time    0.00000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step          0     Time    0.00000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step          0     Time    0.00000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.00000E+00   M =  0.00000E+00    EPD=  0.0000E+00
+ Critical Time Increment    0.10000E+21
+ Time Increment    0.10000E-02
+
+
+Results are reported for postprocess at:
+          Istep=        2     Ttime=   0.2000000E-02
+
+
+
+     Displacements at time step          2     Time    0.20000000000E-02
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.20000E-04  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step          2     Time    0.20000000000E-02
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step          2     Time    0.20000000000E-02
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.15536E+05   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=        4     Ttime=   0.4000000E-02
+
+
+
+     Displacements at time step          4     Time    0.40000000000E-02
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.40000E-04  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step          4     Time    0.40000000000E-02
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step          4     Time    0.40000000000E-02
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.30971E+05   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=        6     Ttime=   0.6000000E-02
+
+
+
+     Displacements at time step          6     Time    0.60000000000E-02
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.60000E-04  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step          6     Time    0.60000000000E-02
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step          6     Time    0.60000000000E-02
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.46407E+05   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=        8     Ttime=   0.8000000E-02
+
+
+
+     Displacements at time step          8     Time    0.80000000000E-02
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.80000E-04  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step          8     Time    0.80000000000E-02
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step          8     Time    0.80000000000E-02
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.61842E+05   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       10     Ttime=   0.1000000E-01
+
+
+
+     Displacements at time step         10     Time    0.10000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         10     Time    0.10000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         10     Time    0.10000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.77278E+05   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       12     Ttime=   0.1200000E-01
+
+
+
+     Displacements at time step         12     Time    0.12000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.12000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         12     Time    0.12000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         12     Time    0.12000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.83974E+05   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       14     Ttime=   0.1400000E-01
+
+
+
+     Displacements at time step         14     Time    0.14000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.14000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         14     Time    0.14000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         14     Time    0.14000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.90671E+05   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       16     Ttime=   0.1600000E-01
+
+
+
+     Displacements at time step         16     Time    0.16000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.16000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         16     Time    0.16000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         16     Time    0.16000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.97367E+05   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       18     Ttime=   0.1800000E-01
+
+
+
+     Displacements at time step         18     Time    0.18000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.18000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         18     Time    0.18000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         18     Time    0.18000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.10406E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       20     Ttime=   0.2000000E-01
+
+
+
+     Displacements at time step         20     Time    0.20000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.20000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         20     Time    0.20000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         20     Time    0.20000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.11076E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       22     Ttime=   0.2200000E-01
+
+
+
+     Displacements at time step         22     Time    0.22000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.22000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         22     Time    0.22000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         22     Time    0.22000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.11484E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       24     Ttime=   0.2400000E-01
+
+
+
+     Displacements at time step         24     Time    0.24000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.24000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         24     Time    0.24000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         24     Time    0.24000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.11892E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       26     Ttime=   0.2600000E-01
+
+
+
+     Displacements at time step         26     Time    0.26000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.26000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         26     Time    0.26000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         26     Time    0.26000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.12301E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       28     Ttime=   0.2800000E-01
+
+
+
+     Displacements at time step         28     Time    0.28000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.28000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         28     Time    0.28000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         28     Time    0.28000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.12709E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       30     Ttime=   0.3000000E-01
+
+
+
+     Displacements at time step         30     Time    0.30000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.30000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         30     Time    0.30000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         30     Time    0.30000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.13117E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       32     Ttime=   0.3200000E-01
+
+
+
+     Displacements at time step         32     Time    0.32000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.32000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         32     Time    0.32000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         32     Time    0.32000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.13399E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       34     Ttime=   0.3400000E-01
+
+
+
+     Displacements at time step         34     Time    0.34000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.34000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         34     Time    0.34000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         34     Time    0.34000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.13681E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       36     Ttime=   0.3600000E-01
+
+
+
+     Displacements at time step         36     Time    0.36000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.36000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         36     Time    0.36000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         36     Time    0.36000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.13964E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       38     Ttime=   0.3800000E-01
+
+
+
+     Displacements at time step         38     Time    0.38000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.38000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         38     Time    0.38000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         38     Time    0.38000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.14246E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       40     Ttime=   0.4000000E-01
+
+
+
+     Displacements at time step         40     Time    0.40000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.40000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         40     Time    0.40000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         40     Time    0.40000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.14528E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       42     Ttime=   0.4200000E-01
+
+
+
+     Displacements at time step         42     Time    0.42000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.42000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         42     Time    0.42000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         42     Time    0.42000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.14757E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       44     Ttime=   0.4400000E-01
+
+
+
+     Displacements at time step         44     Time    0.44000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.44000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         44     Time    0.44000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         44     Time    0.44000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.14986E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       46     Ttime=   0.4600000E-01
+
+
+
+     Displacements at time step         46     Time    0.46000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.46000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         46     Time    0.46000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         46     Time    0.46000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.15214E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       48     Ttime=   0.4800000E-01
+
+
+
+     Displacements at time step         48     Time    0.48000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.48000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         48     Time    0.48000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         48     Time    0.48000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.15443E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       50     Ttime=   0.5000000E-01
+
+
+
+     Displacements at time step         50     Time    0.50000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.50000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         50     Time    0.50000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         50     Time    0.50000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.15672E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       52     Ttime=   0.5200000E-01
+
+
+
+     Displacements at time step         52     Time    0.52000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.52000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         52     Time    0.52000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         52     Time    0.52000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.15862E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       54     Ttime=   0.5400000E-01
+
+
+
+     Displacements at time step         54     Time    0.54000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.54000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         54     Time    0.54000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         54     Time    0.54000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.16052E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       56     Ttime=   0.5600000E-01
+
+
+
+     Displacements at time step         56     Time    0.56000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.56000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         56     Time    0.56000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         56     Time    0.56000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.16242E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       58     Ttime=   0.5800000E-01
+
+
+
+     Displacements at time step         58     Time    0.58000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.58000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         58     Time    0.58000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         58     Time    0.58000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.16432E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       60     Ttime=   0.6000000E-01
+
+
+
+     Displacements at time step         60     Time    0.60000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.60000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         60     Time    0.60000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         60     Time    0.60000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.16622E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       62     Ttime=   0.6200000E-01
+
+
+
+     Displacements at time step         62     Time    0.62000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.62000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         62     Time    0.62000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         62     Time    0.62000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.16786E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       64     Ttime=   0.6400000E-01
+
+
+
+     Displacements at time step         64     Time    0.64000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.64000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         64     Time    0.64000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         64     Time    0.64000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.16950E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       66     Ttime=   0.6600000E-01
+
+
+
+     Displacements at time step         66     Time    0.66000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.66000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         66     Time    0.66000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         66     Time    0.66000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.17114E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       68     Ttime=   0.6800000E-01
+
+
+
+     Displacements at time step         68     Time    0.68000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.68000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         68     Time    0.68000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         68     Time    0.68000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.17278E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       70     Ttime=   0.7000000E-01
+
+
+
+     Displacements at time step         70     Time    0.70000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.70000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         70     Time    0.70000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         70     Time    0.70000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.17442E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       72     Ttime=   0.7200000E-01
+
+
+
+     Displacements at time step         72     Time    0.72000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.72000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         72     Time    0.72000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         72     Time    0.72000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.17587E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       74     Ttime=   0.7400000E-01
+
+
+
+     Displacements at time step         74     Time    0.74000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.74000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         74     Time    0.74000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         74     Time    0.74000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.17732E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       76     Ttime=   0.7600000E-01
+
+
+
+     Displacements at time step         76     Time    0.76000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.76000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         76     Time    0.76000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         76     Time    0.76000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.17877E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       78     Ttime=   0.7800000E-01
+
+
+
+     Displacements at time step         78     Time    0.78000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.78000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         78     Time    0.78000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         78     Time    0.78000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.18022E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       80     Ttime=   0.8000000E-01
+
+
+
+     Displacements at time step         80     Time    0.80000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.80000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         80     Time    0.80000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         80     Time    0.80000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.18167E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       82     Ttime=   0.8200000E-01
+
+
+
+     Displacements at time step         82     Time    0.82000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.82000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         82     Time    0.82000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         82     Time    0.82000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.18298E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       84     Ttime=   0.8400000E-01
+
+
+
+     Displacements at time step         84     Time    0.84000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.84000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         84     Time    0.84000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         84     Time    0.84000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.18428E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       86     Ttime=   0.8600000E-01
+
+
+
+     Displacements at time step         86     Time    0.86000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.86000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         86     Time    0.86000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         86     Time    0.86000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.18559E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       88     Ttime=   0.8800000E-01
+
+
+
+     Displacements at time step         88     Time    0.88000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.88000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         88     Time    0.88000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         88     Time    0.88000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.18689E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       90     Ttime=   0.9000000E-01
+
+
+
+     Displacements at time step         90     Time    0.90000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.90000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         90     Time    0.90000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         90     Time    0.90000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.18820E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       92     Ttime=   0.9200000E-01
+
+
+
+     Displacements at time step         92     Time    0.92000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.92000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         92     Time    0.92000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         92     Time    0.92000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.18940E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       94     Ttime=   0.9400000E-01
+
+
+
+     Displacements at time step         94     Time    0.94000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.94000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         94     Time    0.94000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         94     Time    0.94000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19060E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       96     Ttime=   0.9600000E-01
+
+
+
+     Displacements at time step         96     Time    0.96000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.96000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         96     Time    0.96000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         96     Time    0.96000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19180E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=       98     Ttime=   0.9800000E-01
+
+
+
+     Displacements at time step         98     Time    0.98000000000E-01
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.98000E-03  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step         98     Time    0.98000000000E-01
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step         98     Time    0.98000000000E-01
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19300E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      100     Ttime=   0.1000000E+00
+
+
+
+     Displacements at time step        100     Time    0.10000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        100     Time    0.10000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        100     Time    0.10000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19420E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      102     Ttime=   0.1020000E+00
+
+
+
+     Displacements at time step        102     Time    0.10200000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10200E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        102     Time    0.10200000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        102     Time    0.10200000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19501E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      104     Ttime=   0.1040000E+00
+
+
+
+     Displacements at time step        104     Time    0.10400000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10400E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        104     Time    0.10400000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        104     Time    0.10400000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19582E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      106     Ttime=   0.1060000E+00
+
+
+
+     Displacements at time step        106     Time    0.10600000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10600E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        106     Time    0.10600000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        106     Time    0.10600000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19663E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      108     Ttime=   0.1080000E+00
+
+
+
+     Displacements at time step        108     Time    0.10800000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10800E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        108     Time    0.10800000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        108     Time    0.10800000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19744E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      110     Ttime=   0.1100000E+00
+
+
+
+     Displacements at time step        110     Time    0.11000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.11000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        110     Time    0.11000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        110     Time    0.11000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19825E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      112     Ttime=   0.1120000E+00
+
+
+
+     Displacements at time step        112     Time    0.11200000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.11200E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        112     Time    0.11200000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        112     Time    0.11200000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19906E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      114     Ttime=   0.1140000E+00
+
+
+
+     Displacements at time step        114     Time    0.11400000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.11400E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        114     Time    0.11400000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        114     Time    0.11400000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.19987E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      116     Ttime=   0.1160000E+00
+
+
+
+     Displacements at time step        116     Time    0.11600000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.11600E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        116     Time    0.11600000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        116     Time    0.11600000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20068E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      118     Ttime=   0.1180000E+00
+
+
+
+     Displacements at time step        118     Time    0.11800000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.11800E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        118     Time    0.11800000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        118     Time    0.11800000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20149E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      120     Ttime=   0.1200000E+00
+
+
+
+     Displacements at time step        120     Time    0.12000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.12000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        120     Time    0.12000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        120     Time    0.12000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20230E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      122     Ttime=   0.1220000E+00
+
+
+
+     Displacements at time step        122     Time    0.12200000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.12200E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        122     Time    0.12200000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        122     Time    0.12200000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20310E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      124     Ttime=   0.1240000E+00
+
+
+
+     Displacements at time step        124     Time    0.12400000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.12400E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        124     Time    0.12400000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        124     Time    0.12400000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20391E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      126     Ttime=   0.1260000E+00
+
+
+
+     Displacements at time step        126     Time    0.12600000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.12600E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        126     Time    0.12600000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        126     Time    0.12600000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20472E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      128     Ttime=   0.1280000E+00
+
+
+
+     Displacements at time step        128     Time    0.12800000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.12800E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        128     Time    0.12800000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        128     Time    0.12800000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20553E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      130     Ttime=   0.1300000E+00
+
+
+
+     Displacements at time step        130     Time    0.13000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.13000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        130     Time    0.13000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        130     Time    0.13000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20634E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      132     Ttime=   0.1320000E+00
+
+
+
+     Displacements at time step        132     Time    0.13200000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.13200E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        132     Time    0.13200000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        132     Time    0.13200000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20715E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      134     Ttime=   0.1340000E+00
+
+
+
+     Displacements at time step        134     Time    0.13400000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.13400E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        134     Time    0.13400000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        134     Time    0.13400000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20796E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      136     Ttime=   0.1360000E+00
+
+
+
+     Displacements at time step        136     Time    0.13600000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.13600E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        136     Time    0.13600000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        136     Time    0.13600000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20877E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      138     Ttime=   0.1380000E+00
+
+
+
+     Displacements at time step        138     Time    0.13800000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.13800E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        138     Time    0.13800000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        138     Time    0.13800000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.20958E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      140     Ttime=   0.1400000E+00
+
+
+
+     Displacements at time step        140     Time    0.14000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.14000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        140     Time    0.14000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        140     Time    0.14000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21039E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      142     Ttime=   0.1420000E+00
+
+
+
+     Displacements at time step        142     Time    0.14200000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.14200E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        142     Time    0.14200000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        142     Time    0.14200000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21120E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      144     Ttime=   0.1440000E+00
+
+
+
+     Displacements at time step        144     Time    0.14400000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.14400E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        144     Time    0.14400000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        144     Time    0.14400000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21201E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      146     Ttime=   0.1460000E+00
+
+
+
+     Displacements at time step        146     Time    0.14600000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.14600E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        146     Time    0.14600000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        146     Time    0.14600000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21282E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      148     Ttime=   0.1480000E+00
+
+
+
+     Displacements at time step        148     Time    0.14800000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.14800E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        148     Time    0.14800000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        148     Time    0.14800000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21363E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      150     Ttime=   0.1500000E+00
+
+
+
+     Displacements at time step        150     Time    0.15000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.15000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        150     Time    0.15000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        150     Time    0.15000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21444E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      152     Ttime=   0.1520000E+00
+
+
+
+     Displacements at time step        152     Time    0.15200000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.15200E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        152     Time    0.15200000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        152     Time    0.15200000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21525E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      154     Ttime=   0.1540000E+00
+
+
+
+     Displacements at time step        154     Time    0.15400000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.15400E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        154     Time    0.15400000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        154     Time    0.15400000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21606E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      156     Ttime=   0.1560000E+00
+
+
+
+     Displacements at time step        156     Time    0.15600000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.15600E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        156     Time    0.15600000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        156     Time    0.15600000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21687E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      158     Ttime=   0.1580000E+00
+
+
+
+     Displacements at time step        158     Time    0.15800000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.15800E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        158     Time    0.15800000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        158     Time    0.15800000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21768E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      160     Ttime=   0.1600000E+00
+
+
+
+     Displacements at time step        160     Time    0.16000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.16000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        160     Time    0.16000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        160     Time    0.16000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21849E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      162     Ttime=   0.1620000E+00
+
+
+
+     Displacements at time step        162     Time    0.16200000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.16200E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        162     Time    0.16200000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        162     Time    0.16200000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.21930E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      164     Ttime=   0.1640000E+00
+
+
+
+     Displacements at time step        164     Time    0.16400000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.16400E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        164     Time    0.16400000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        164     Time    0.16400000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22010E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      166     Ttime=   0.1660000E+00
+
+
+
+     Displacements at time step        166     Time    0.16600000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.16600E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        166     Time    0.16600000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        166     Time    0.16600000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22091E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      168     Ttime=   0.1680000E+00
+
+
+
+     Displacements at time step        168     Time    0.16800000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.16800E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        168     Time    0.16800000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        168     Time    0.16800000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22172E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      170     Ttime=   0.1700000E+00
+
+
+
+     Displacements at time step        170     Time    0.17000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.17000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        170     Time    0.17000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        170     Time    0.17000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22253E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      172     Ttime=   0.1720000E+00
+
+
+
+     Displacements at time step        172     Time    0.17200000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.17200E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        172     Time    0.17200000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        172     Time    0.17200000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22334E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      174     Ttime=   0.1740000E+00
+
+
+
+     Displacements at time step        174     Time    0.17400000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.17400E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        174     Time    0.17400000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        174     Time    0.17400000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22415E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      176     Ttime=   0.1760000E+00
+
+
+
+     Displacements at time step        176     Time    0.17600000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.17600E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        176     Time    0.17600000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        176     Time    0.17600000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22496E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      178     Ttime=   0.1780000E+00
+
+
+
+     Displacements at time step        178     Time    0.17800000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.17800E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        178     Time    0.17800000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        178     Time    0.17800000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22577E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      180     Ttime=   0.1800000E+00
+
+
+
+     Displacements at time step        180     Time    0.18000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.18000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        180     Time    0.18000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        180     Time    0.18000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22658E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      182     Ttime=   0.1820000E+00
+
+
+
+     Displacements at time step        182     Time    0.18200000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.18200E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        182     Time    0.18200000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        182     Time    0.18200000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22739E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      184     Ttime=   0.1840000E+00
+
+
+
+     Displacements at time step        184     Time    0.18400000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.18400E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        184     Time    0.18400000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        184     Time    0.18400000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22820E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      186     Ttime=   0.1860000E+00
+
+
+
+     Displacements at time step        186     Time    0.18600000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.18600E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        186     Time    0.18600000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        186     Time    0.18600000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22901E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      188     Ttime=   0.1880000E+00
+
+
+
+     Displacements at time step        188     Time    0.18800000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.18800E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        188     Time    0.18800000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        188     Time    0.18800000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.22982E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      190     Ttime=   0.1900000E+00
+
+
+
+     Displacements at time step        190     Time    0.19000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.19000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        190     Time    0.19000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        190     Time    0.19000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.23063E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      192     Ttime=   0.1920000E+00
+
+
+
+     Displacements at time step        192     Time    0.19200000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.19200E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        192     Time    0.19200000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        192     Time    0.19200000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.23144E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      194     Ttime=   0.1940000E+00
+
+
+
+     Displacements at time step        194     Time    0.19400000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.19400E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        194     Time    0.19400000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        194     Time    0.19400000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.23225E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      196     Ttime=   0.1960000E+00
+
+
+
+     Displacements at time step        196     Time    0.19600000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.19600E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        196     Time    0.19600000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        196     Time    0.19600000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.23306E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      198     Ttime=   0.1980000E+00
+
+
+
+     Displacements at time step        198     Time    0.19800000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.19800E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        198     Time    0.19800000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        198     Time    0.19800000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.23387E+06   M =  0.00000E+00    EPD=  0.0000E+00
+
+
+Results are reported for postprocess at:
+          Istep=      200     Ttime=   0.2000000E+00
+
+
+
+     Displacements at time step        200     Time    0.20000000000E+00
+     Nnode   X-disp      Y-disp      Z-disp
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.20000E-02  0.00000E+00  0.00000E+00
+
+
+  Nodal cartesyan systems (Euler angles in rads) 
+
+      1   0.90000000E+02   0.90000000E+02   0.90000000E+02
+      2   0.90000000E+02   0.90000000E+02   0.90000000E+02
+
+
+     Velocity at time step        200     Time    0.20000000000E+00
+
+     Nnode   X-vel       Y-vel       Z-vel      Omega-1     Omega-2     Omega-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.10000E-01  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+
+     Acceleration at time step        200     Time    0.20000000000E+00
+
+     nnode   X-accel      Y-accel      Z-accel      Alpha-1      Alpha-2      Alpha-3
+
+         1  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+         2  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+
+          Stresses 
+
+     forces for SPOT elements
+
+     element No.    1    N =  0.23468E+06   M =  0.00000E+00    EPD=  0.0000E+00

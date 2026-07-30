@@ -20,6 +20,10 @@
  LOGICAL :: newm,same,masing,point
  TYPE (curve), POINTER :: c_tc, c_rc, c_tcv, c_rcv
  
+ INTEGER :: n_pila, idx
+ INTEGER :: n_pila_max=10 ! WARNING: to change this, modify elmda1.fi (line 94)
+ REAL(8) :: dist_ciclo_prev
+      
  ! some internal variables for POINT elements:
  ! e%gausv(j-1=1)=force f
  ! e%gausv(j+0=2)=moment m
@@ -82,9 +86,9 @@
    IF( nnode == 2 )THEN
      IF( masing )THEN
        IF( point )THEN
-         rpos = size(e%gausv)-7*ndofn        !position of internal variables
+         rpos = size(e%gausv)-(7+(2*n_pila_max+1))*ndofn    !position of internal variables
        ELSE
-         rpos = size(e%gausv)-7              !position of internal variables
+         rpos = size(e%gausv)-(7+(2*n_pila_max+1))          !position of internal variables
        END IF
      END IF
      k = 1
@@ -175,27 +179,108 @@
            IF( tc  > 0 .AND. masing)THEN
              CALL cur_point( tc ,sec%mtbas%chead,c_tc ) !point to curve
              !      first time        or   virgin part
-             IF( e%gausv(j+1) == 0d0 .OR. ABS(e%gausv(j+1)/lx) < 1d0 )THEN !virgin part  d > maximum d value
+             IF( e%gausv(j+1) == 0d0 .OR. ABS(lx) > ABS(e%gausv(j+1)) )THEN !virgin part  d > maximum d value
                stc = inte_cr (c_tc%val,c_tc%np,ABS(lx),k)   !Normal interpolation in p-d curve
                e%gausv(j+1) = lx                       !keep maximum d value
                e%gausv(j+3) = SIGN(1d0,lx)             !loading direction
                stc = stc*e%gausv(j+3)                  ! p value
                e%gausv(j+2) = stc                      !keep maximum p value
+                    ! propuesto por gemini
+                    e%gausv(j+8) = 0d0                     ! Resetear contador de pila en carga virgen
+                    ! fin propuesto por gemini
              ELSE                           !hysteretic part
                dl = lx - e%gausv(j+6)    !increment between steps
                IF( e%gausv(j+3)*dl >= 0d0 )THEN  !increasing or decreasing
                  dl =  lx - e%gausv(j+4)        !increment respect last inversion
+                    ! propuesto por gemini
+                    ! *** NUEVO: VERIFICAR CLAUSURA DE CICLO (REGLA 3) ***
+                    n_pila = INT(e%gausv(j+8))
+                    IF (n_pila > 1) THEN
+                        IF (n_pila<=n_pila_max) THEN 
+                            ! Amplitud del ciclo previo (Distancia entre el origen actual C y el anterior B)
+                            idx = j + 8 + ((n_pila-1) * 2) - 1
+                            dist_ciclo_prev = ABS(e%gausv(j+4) - e%gausv(idx))
+                
+                            IF (ABS(dl) >= dist_ciclo_prev) THEN
+                                ! Cerramos ciclo: recuperamos el punto B de la pila
+                                n_pila = n_pila - 2             ! Reducir pila
+                                e%gausv(j+8) = REAL(n_pila)
+                                idx = j + 8 + (n_pila * 2) - 1
+                                e%gausv(j+4) = e%gausv(idx)     ! u_rev recuperado
+                                e%gausv(j+5) = e%gausv(idx + 1) ! f_rev recuperado
+                                dl = lx - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                            END IF
+                        ELSE
+                            idx = j + 8 + (n_pila_max * 2) - 1 ! aca uso n_pila_max para n_pila que es el maximo que puede tomar. despues de eso no guardo los valores
+                            IF( lx < e%gausv(idx-2) .AND.  lx < e%gausv(idx) )THEN
+                                IF (e%gausv(idx-2) > e%gausv(idx)) THEN
+                                   ! sale por el punto n_pila_max. borro solo el punto n_pila_max	
+                                   e%gausv(j+4) = e%gausv(idx-2)     ! u_rev recuperado es el del punto 9 de la pila 
+                                   e%gausv(j+5) = e%gausv(idx-1) ! f_rev recuperado es el del punto 9 de la pila 
+                                   dl = lx - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                   n_pila = n_pila_max-1
+                                   e%gausv(j+8) = REAL(n_pila)
+	                            ELSE 
+	                               ! sale por el punto 9. borro los ultimos 2 puntos
+	                               e%gausv(j+4) = e%gausv(idx-4)     ! u_rev recuperado es el del punto 8 de la pila 
+                                   e%gausv(j+5) = e%gausv(idx-3) ! f_rev recuperado es el del punto 8 de la pila 
+                                   dl = lx - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                   n_pila = n_pila_max-2
+                                   e%gausv(j+8) = REAL(n_pila)
+	                            END IF	
+                            ELSE IF ( lx > e%gausv(idx-2) .AND.  lx > e%gausv(idx) )THEN
+                                IF (e%gausv(idx-2) < e%gausv(idx)) THEN
+                                   ! sale por el punto n_pila_max. borro solo el punto n_pila_max	
+                                   e%gausv(j+4) = e%gausv(idx-2)     ! u_rev recuperado es el del punto 9 de la pila 
+                                   e%gausv(j+5) = e%gausv(idx-1) ! f_rev recuperado es el del punto 9 de la pila 
+                                   dl = lx - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                   n_pila = n_pila_max-1
+                                   e%gausv(j+8) = REAL(n_pila)
+	                            ELSE 
+	                               ! sale por el punto 9. borro los ultimos 2 puntos
+	                               e%gausv(j+4) = e%gausv(idx-4)     ! u_rev recuperado es el del punto 8 de la pila 
+                                   e%gausv(j+5) = e%gausv(idx-3) ! f_rev recuperado es el del punto 8 de la pila 
+                                   dl = lx - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                   n_pila = n_pila_max-2
+                                   e%gausv(j+8) = REAL(n_pila)
+							 END IF
+                            END IF  
+                        END IF 
+                    END IF
+                    ! fin propuesto por gemini
+            
                ELSE                                   !inversion
+                    ! propuesto por gemini
+                    ! --- REVERSIÓN (REGLA 1) ---
+                    ! Antes de invertir, guardamos el origen que deja de ser activo en la pila
+                    n_pila = INT(e%gausv(j+8))
+                    IF (n_pila < n_pila_max) THEN ! Límite de seguridad de la pila (ej. 5 niveles)
+                        n_pila = n_pila + 1
+                        idx = j + 8 + (n_pila * 2) - 1
+                        e%gausv(idx)   = e%gausv(j+6) ! Guardar u_rev anterior
+                        e%gausv(idx+1) = e%gausv(j+7) ! Guardar f_rev anterior
+                        e%gausv(j+8)   = REAL(n_pila)
+				    ELSE
+                        n_pila = n_pila_max+1
+                        e%gausv(j+8)   = REAL(n_pila)
+                    END IF
+                    ! fin propuesto por gemini
                  e%gausv(j+3)   = -e%gausv(j+3)             !invert direction
                  e%gausv(j+4:j+5) = e%gausv(j+6:j+7)        !modify start position
                END IF
-               stc = inte_cr (c_tc%val,c_tc%np,ABS(dl)/lambd,k)*lambd !interpolate
-               stc = stc*e%gausv(j+3) + e%gausv(j+5)                        !total force
+               IF(n_pila<=n_pila_max)THEN
+                 stc = inte_cr (c_tc%val,c_tc%np,ABS(dl)/lambd,k)*lambd !interpolate
+                 stc = stc*e%gausv(j+3) + e%gausv(j+5)                  !total force
+               ELSE
+                 idx = j + 8 + (n_pila_max * 2) - 1
+                 dl  = lx - e%gausv(idx-2)
+                 stc = dl * ( e%gausv(idx+1) - e%gausv(idx-1) ) / ( e%gausv(idx) - e%gausv(idx-2) ) + e%gausv(idx-1)
+               ENDIF
              END IF
              e%gausv(j+6) = lx                     !keep last d
              e%gausv(j+7) = stc                    !keep last p
              IF( lx /= 0d0 )stc = stc/lx ! secant stiffness for total force determination
-             j = j+7          !update position in GAUSV
+             j = j+(7+(2*n_pila_max+1))          !update position in GAUSV
            ELSE
              IF( tc > 0 )  THEN
                stc = inte_cr (c_tc%val,c_tc%np,ABS(lx),k)
@@ -236,34 +321,117 @@
        e%gausv(1) = facto               !keep present force modulus
        ! local system
        IF( e%rot )THEN                  !rotational stiffness or damping
-         IF( ndime == 2 )THEN             !2-D
+         IF( ndime == 2 )THEN ! 2-D *********************************************************
            al(3) = al(2) - al(1)           !rotation
            rc  = mcur(4*i-2)                  !curve for rotational stiffness
            IF( rc  > 0 .AND. masing) THEN     !Masing and there is a curve
              CALL cur_point( rc ,sec%mtbas%chead,c_rc ) !point to curve
              !      first time        or   virgin part
-             IF( e%gausv(j+1) == 0d0 .OR. ABS(e%gausv(j+1)/al(3)) < 1d0 )THEN !virgin part  d > maximum d value
+             IF( e%gausv(j+1) == 0d0 .OR. ABS(al(3)) > ABS(e%gausv(j+1)) )THEN !virgin part  d > maximum d value
                src = inte_cr (c_rc%val,c_rc%np,ABS(al(3)),k)   !Normal interpolation in p-d curve
                e%gausv(j+1) = al(3)                       !keep maximum d value
                e%gausv(j+3) = SIGN(1d0,al(3))             !loading direction
                src = src*e%gausv(j+3)                     ! M value
                 e%gausv(j+2) = src                        !keep maximum M value
+                e%gausv(j+8) = 0d0                      ! Resetear pila en carga virgen
              ELSE                           !hysteretic part
                dl = al(3) - e%gausv(j+6)    !increment between steps
                IF( (e%gausv(j+3)*dl) >= 0d0 )THEN  !increasing or decreasing
                  dl =  al(3) - e%gausv(j+4)        !increment respect last inversion
-               ELSE                               !inversion
-                 e%gausv(j+3)   = -e%gausv(j+3)             !invert direction
-                 e%gausv(j+4:j+5) = e%gausv(j+6:j+7)        !modify start position
-               END IF
-               src = inte_cr (c_tc%val,c_tc%np,ABS(dl)/lambd,k)*lambd !interpolate
-               src = src*e%gausv(j+3) + e%gausv(j+5)                  !total force
-             END IF
+      
+                 ! lo nuevo 
+				   ! propuesto por gemini
+                     ! *** NUEVO: VERIFICAR CLAUSURA DE CICLO (REGLA 3) ***
+                     n_pila = INT(e%gausv(j+8))
+                     IF (n_pila > 1) THEN
+                         IF (n_pila<=n_pila_max) THEN 
+                             ! Amplitud del ciclo previo (Distancia entre el origen actual C y el anterior B)
+                             idx = j + 8 + ((n_pila-1) * 2) - 1
+                             dist_ciclo_prev = ABS(e%gausv(j+4) - e%gausv(idx))
+ 
+                             IF (ABS(dl) >= dist_ciclo_prev) THEN
+                                 ! Cerramos ciclo: recuperamos el punto B de la pila
+                                 n_pila = n_pila - 2             ! Reducir pila
+                                 e%gausv(j+8) = REAL(n_pila)
+                                 idx = j + 8 + (n_pila * 2) - 1
+                                 e%gausv(j+4) = e%gausv(idx)     ! u_rev recuperado
+                                 e%gausv(j+5) = e%gausv(idx + 1) ! f_rev recuperado
+                                 dl = al(3) - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                             END IF
+                         ELSE
+                             idx = j + 8 + (n_pila_max * 2) - 1 ! aca uso n_pila_max para n_pila que es el maximo que puede tomar. despues de eso no guardo los valores
+                             IF( al(3) < e%gausv(idx-2) .AND.  al(3) < e%gausv(idx) )THEN
+                                 IF (e%gausv(idx-2) > e%gausv(idx)) THEN
+                                    ! sale por el punto n_pila_max. borro solo el punto n_pila_max	
+                                    e%gausv(j+4) = e%gausv(idx-2)     ! u_rev recuperado es el del punto 9 de la pila 
+                                    e%gausv(j+5) = e%gausv(idx-1) ! f_rev recuperado es el del punto 9 de la pila 
+                                    dl = al(3) - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                    n_pila = n_pila_max-1
+                                    e%gausv(j+8) = REAL(n_pila)
+                                 ELSE 
+                                    ! sale por el punto 9. borro los ultimos 2 puntos
+                                    e%gausv(j+4) = e%gausv(idx-4)     ! u_rev recuperado es el del punto 8 de la pila 
+                                    e%gausv(j+5) = e%gausv(idx-3) ! f_rev recuperado es el del punto 8 de la pila 
+                                    dl = al(3) - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                    n_pila = n_pila_max-2
+                                    e%gausv(j+8) = REAL(n_pila)
+                                 END IF	
+                             ELSE IF ( al(3) > e%gausv(idx-2) .AND.  al(3) > e%gausv(idx) )THEN
+                                 IF (e%gausv(idx-2) < e%gausv(idx)) THEN
+                                    ! sale por el punto n_pila_max. borro solo el punto n_pila_max	
+                                    e%gausv(j+4) = e%gausv(idx-2)     ! u_rev recuperado es el del punto 9 de la pila 
+                                    e%gausv(j+5) = e%gausv(idx-1) ! f_rev recuperado es el del punto 9 de la pila 
+                                    dl = al(3) - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                    n_pila = n_pila_max-1
+                                    e%gausv(j+8) = REAL(n_pila)
+                                 ELSE 
+                                    ! sale por el punto 9. borro los ultimos 2 puntos
+                                    e%gausv(j+4) = e%gausv(idx-4)     ! u_rev recuperado es el del punto 8 de la pila 
+                                    e%gausv(j+5) = e%gausv(idx-3) ! f_rev recuperado es el del punto 8 de la pila 
+                                    dl = al(3) - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                    n_pila = n_pila_max-2
+                                    e%gausv(j+8) = REAL(n_pila)
+				                 END IF
+                             END IF  
+                         END IF 
+                     END IF
+                     ! fin propuesto por gemini
+            
+                ELSE                                   !inversion
+                     ! propuesto por gemini
+                     ! --- REVERSIÓN (REGLA 1) ---
+                     ! Antes de invertir, guardamos el origen que deja de ser activo en la pila
+                     n_pila = INT(e%gausv(j+8))
+                     IF (n_pila < n_pila_max) THEN ! Límite de seguridad de la pila (ej. 5 niveles)
+                         n_pila = n_pila + 1
+                         idx = j + 8 + (n_pila * 2) - 1
+                         e%gausv(idx)   = e%gausv(j+6) ! Guardar u_rev anterior
+                         e%gausv(idx+1) = e%gausv(j+7) ! Guardar f_rev anterior
+                         e%gausv(j+8)   = REAL(n_pila)
+	                  ELSE
+                         ! Si se llena la pila, podrías optar por no guardar más 
+                         ! o desplazar la pila (pero lo más seguro es limitar)
+                         n_pila = n_pila_max + 1
+                         e%gausv(j+8)   = REAL(n_pila)
+                     END IF
+                     ! fin propuesto por gemini
+				   e%gausv(j+3)   = -e%gausv(j+3)             !invert direction
+                     e%gausv(j+4:j+5) = e%gausv(j+6:j+7)        !modify start position
+                END IF
+            IF(n_pila<=n_pila_max)THEN
+			  src = inte_cr (c_rc%val,c_rc%np,ABS(dl)/lambd,k)*lambd       !interpolate
+			  src = src*e%gausv(j+3) + e%gausv(j+5)                        !total force
+            ELSE
+              idx = j + 8 + (n_pila_max * 2) - 1
+              dl  = al(3) - e%gausv(idx-2)
+              src = dl * ( e%gausv(idx+1) - e%gausv(idx-1) ) / ( e%gausv(idx) - e%gausv(idx-2) ) + e%gausv(idx-1)
+            ENDIF
+		   END IF
              e%gausv(j+6) = al(3)                     !keep last d
              e%gausv(j+7) = src                    !keep last p
              IF( al(3) /= 0d0 )src = src/al(3)
-             j = j+7          !update position in GAUSV
-           ELSE
+             j = j+(7+(2*n_pila_max+1))          !update position in GAUSV
+		ELSE
              IF( rc >  0 ) THEN
                src = inte_cr (c_rc%val,c_rc%np,ABS(al(3)),k)
              ELSE
@@ -279,7 +447,7 @@
            END IF
            facto = src*al(3) + srcv*v(3,3) !moment modulus
            bts(3) =  facto
-         ELSE                             !3-D
+         ELSE !3-D *********************************************************
            !CALL proma4(lb(1,3),lb,lb(1,2),3,3,3) ! l3 = l1^T * l2
            lb(1:9,3) = RESHAPE(MATMUL(TRANSPOSE(RESHAPE(lb(1:9,1),(/3,3/))),RESHAPE(lb(1:9,2),(/3,3/))),(/9/))
            CALL cuate8(lb(1,3),al(1))                 ! al = rotation vector
@@ -291,28 +459,111 @@
                IF( rc  > 0 .AND. masing) THEN     ! Masing and there is a curve
                  CALL cur_point( rc ,sec%mtbas%chead,c_rc ) !point to curve
                  !      first time        or   virgin part
-                 IF( e%gausv(j+1) == 0d0 .OR. ABS(e%gausv(j+1)/lx) < 1d0 )THEN !virgin part  d > maximum d value
+                 IF( e%gausv(j+1) == 0d0 .OR. ABS(lx) > ABS(e%gausv(j+1)) )THEN !virgin part  d > maximum d value
                    src = inte_cr (c_rc%val,c_rc%np,ABS(lx),k)   !Normal interpolation in p-d curve
                    e%gausv(j+1) = lx                       !keep maximum d value
                    e%gausv(j+3) = SIGN(1d0,lx)             !loading direction
                    src= e%gausv(j+3) * src                 !maximum M value
                    e%gausv(j+2) = src                      !keep maximum M value
+                   e%gausv(j+8) = 0d0                      ! Resetear pila en carga virgen
                  ELSE                           !hysteretic part
                    dl = lx - e%gausv(j+6)    !increment between steps
                    IF( e%gausv(j+3)*dl >= 0d0 )THEN  !increasing or decreasing
                      dl =  lx - e%gausv(j+4)        !increment respect last inversion
-                   ELSE                                   !inversion
-                     e%gausv(j+3)   = -e%gausv(j+3)             !invert direction
+                     
+                     
+                     ! propuesto por gemini
+                     ! *** NUEVO: VERIFICAR CLAUSURA DE CICLO (REGLA 3) ***
+                     n_pila = INT(e%gausv(j+8))
+                     IF (n_pila > 1) THEN
+                         IF (n_pila<=n_pila_max) THEN 
+                             ! Amplitud del ciclo previo (Distancia entre el origen actual C y el anterior B)
+                             idx = j + 8 + ((n_pila-1) * 2) - 1
+                             dist_ciclo_prev = ABS(e%gausv(j+4) - e%gausv(idx))
+ 
+                             IF (ABS(dl) >= dist_ciclo_prev) THEN
+                                 ! Cerramos ciclo: recuperamos el punto B de la pila
+                                 n_pila = n_pila - 2             ! Reducir pila
+                                 e%gausv(j+8) = REAL(n_pila)
+                                 idx = j + 8 + (n_pila * 2) - 1
+                                 e%gausv(j+4) = e%gausv(idx)     ! u_rev recuperado
+                                 e%gausv(j+5) = e%gausv(idx + 1) ! f_rev recuperado
+                                 dl = lx - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                             END IF
+                         ELSE
+                             idx = j + 8 + (n_pila_max * 2) - 1 ! aca uso n_pila_max para n_pila que es el maximo que puede tomar. despues de eso no guardo los valores
+                             IF( lx < e%gausv(idx-2) .AND.  lx < e%gausv(idx) )THEN
+                                 IF (e%gausv(idx-2) > e%gausv(idx)) THEN
+                                    ! sale por el punto n_pila_max. borro solo el punto n_pila_max	
+                                    e%gausv(j+4) = e%gausv(idx-2)     ! u_rev recuperado es el del punto 9 de la pila 
+                                    e%gausv(j+5) = e%gausv(idx-1) ! f_rev recuperado es el del punto 9 de la pila 
+                                    dl = lx - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                    n_pila = n_pila_max-1
+                                    e%gausv(j+8) = REAL(n_pila)
+                                 ELSE 
+                                    ! sale por el punto 9. borro los ultimos 2 puntos
+                                    e%gausv(j+4) = e%gausv(idx-4)     ! u_rev recuperado es el del punto 8 de la pila 
+                                    e%gausv(j+5) = e%gausv(idx-3) ! f_rev recuperado es el del punto 8 de la pila 
+                                    dl = lx - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                    n_pila = n_pila_max-2
+                                    e%gausv(j+8) = REAL(n_pila)
+                                 END IF	
+                             ELSE IF ( lx > e%gausv(idx-2) .AND.  lx > e%gausv(idx) )THEN
+                                 IF (e%gausv(idx-2) < e%gausv(idx)) THEN
+                                    ! sale por el punto n_pila_max. borro solo el punto n_pila_max	
+                                    e%gausv(j+4) = e%gausv(idx-2)     ! u_rev recuperado es el del punto 9 de la pila 
+                                    e%gausv(j+5) = e%gausv(idx-1) ! f_rev recuperado es el del punto 9 de la pila 
+                                    dl = lx - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                    n_pila = n_pila_max-1
+                                    e%gausv(j+8) = REAL(n_pila)
+                                 ELSE 
+                                    ! sale por el punto 9. borro los ultimos 2 puntos
+                                    e%gausv(j+4) = e%gausv(idx-4)     ! u_rev recuperado es el del punto 8 de la pila 
+                                    e%gausv(j+5) = e%gausv(idx-3) ! f_rev recuperado es el del punto 8 de la pila 
+                                    dl = lx - e%gausv(j+4)          ! Recalcular dl respecto al nuevo origen
+                                    n_pila = n_pila_max-2
+                                    e%gausv(j+8) = REAL(n_pila)
+				                 END IF
+                             END IF  
+                         END IF 
+                     END IF
+                     ! fin propuesto por gemini
+            
+                ELSE                                   !inversion
+                     ! propuesto por gemini
+                     ! --- REVERSIÓN (REGLA 1) ---
+                     ! Antes de invertir, guardamos el origen que deja de ser activo en la pila
+                     n_pila = INT(e%gausv(j+8))
+                     IF (n_pila < n_pila_max) THEN ! Límite de seguridad de la pila (ej. 5 niveles)
+                         n_pila = n_pila + 1
+                         idx = j + 8 + (n_pila * 2) - 1
+                         e%gausv(idx)   = e%gausv(j+6) ! Guardar u_rev anterior
+                         e%gausv(idx+1) = e%gausv(j+7) ! Guardar f_rev anterior
+                         e%gausv(j+8)   = REAL(n_pila)
+	                  ELSE
+                         ! Si se llena la pila, podrías optar por no guardar más 
+                         ! o desplazar la pila (pero lo más seguro es limitar)
+                         n_pila = n_pila_max + 1
+                         e%gausv(j+8)   = REAL(n_pila)
+                     END IF
+                     ! fin propuesto por gemini
+	                 e%gausv(j+3)   = -e%gausv(j+3)             !invert direction
                      e%gausv(j+4:j+5) = e%gausv(j+6:j+7)        !modify start position
-                   END IF
-                   src = inte_cr (c_rc%val,c_rc%np,ABS(dl)/lambd,k)*lambd       !interpolate
-                   src = src*e%gausv(j+3) + e%gausv(j+5)                        !total force
+                END IF
+                   IF(n_pila<=n_pila_max)THEN
+			         src = inte_cr (c_rc%val,c_rc%np,ABS(dl)/lambd,k)*lambd       !interpolate
+			         src = src*e%gausv(j+3) + e%gausv(j+5)                        !total force
+                   ELSE
+                     idx = j + 8 + (n_pila_max * 2) - 1
+                     dl  = lx - e%gausv(idx-2)
+                     src = dl * ( e%gausv(idx+1) - e%gausv(idx-1) ) / ( e%gausv(idx) - e%gausv(idx-2) ) + e%gausv(idx-1)
+                   ENDIF
                  END IF
                  e%gausv(j+6) = lx                     !keep last d
                  e%gausv(j+7) = src                    !keep last p
                  IF( lx /= 0d0 )src = src/lx
-                 j = j+7          !update position in GAUSV
-               ELSE
+                 j = j+(7+(2*n_pila_max+1))          !update position in GAUSV
+			ELSE
                  IF( rc > 0 )  THEN
                    src = inte_cr (c_rc%val,c_rc%np,ABS(lx),k)
                  ELSE

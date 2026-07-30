@@ -91,9 +91,9 @@
      END IF                        !      1         2       3      4      5     6     7
      IF( masing ) THEN
        IF (point) THEN
-         nvar2 = 7*ndofn  !maxDist, maxForce, DirMov, Dist0,Force0,Dprev,Fprev
+         nvar2 = (7+21)*ndofn  !maxDist, maxForce, DirMov, Dist0,Force0,Dprev,Fprev
        ELSE
-         nvar2 = 7         !maxDist, maxForce, DirMov, Dist0,Force0,Dprev,Fprev
+         nvar2 = (7+21)        !maxDist, maxForce, DirMov, Dist0,Force0,Dprev,Fprev
        END IF
      END IF
    ELSE
