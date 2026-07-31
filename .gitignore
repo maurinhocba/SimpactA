@@ -1,0 +1,21 @@
+# Ignore Visual Studio caches and user files
+.vs/
+*.suo
+*.user
+
+# Keep solution and project files (.sln, .vfproj) tracked
+# Ignore build outputs and intermediates
+/build/
+/bin/
+
+# Fortran and compiled artifacts
+*.mod
+*.o
+*.obj
+
+# Logs
+*.log
+
+# Other common temporary files
+*.tmp
+*.bak

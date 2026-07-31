@@ -1,0 +1,205 @@
+TITLE: EXAMPLE
+$-------------------------------------------------------------------------------
+CONTROL: /
+         NDIME = 3       NDOFN = 6     NEULR = 1
+TIME:    /
+         ENDTM = 2.400E+00  /
+         DTUSER= 1.000E-03  /  ! 1.000E-03
+         DTSCAL= 0.900      /
+         NCDLT =  10000
+OUTPUT:  /
+         IWRIT= 1           /
+         TOUTD = 0.100E-03  /
+         TOUTP = 0.100E-03  /
+         IENER= 0
+END_CONTROL
+$-------------------------------------------------------------------------------
+GEOMETRY_DEFINITION
+   GENERAL:  GSCALE= 1.00
+   SET ONE
+         1     0.000     0.000   0.000    90.0 90.0 90.0
+         2     0.000     0.000   0.000    90.0 90.0 90.0
+   END_SET
+END_GEOMETRY_DEFINITION
+$-------------------------------------------------------------------------------
+MATERIAL_PROPERTIES
+
+     DEFINITION MATNO = 0  MATYPE = 1
+     YOUNG = 0.5000e+11  POISS = 0.000e-00   DENSI = 6.500e+04
+
+     DEFINITION : MATNO = 2     MATYPE = 20 ELASTIC
+                  YOUNG = 2.000E+11   POISS = 0.3   DENSI = 8.000e+03
+                 CURVE_DATA
+                    DEFINITION = AXIALF     NUMPTS = 28
+               VALUEX =  0.00E+00       VALUEY =    0.00000E+00
+               VALUEX =  1.00E-04       VALUEY =    7.71780E+04
+               VALUEX =  2.00E-04       VALUEY =    1.10660E+05
+               VALUEX =  3.00E-04       VALUEY =    1.31070E+05
+               VALUEX =  4.00E-04       VALUEY =    1.45180E+05
+               VALUEX =  5.00E-04       VALUEY =    1.56620E+05
+               VALUEX =  6.00E-04       VALUEY =    1.66120E+05
+               VALUEX =  7.00E-04       VALUEY =    1.74320E+05
+               VALUEX =  8.00E-04       VALUEY =    1.81570E+05
+               VALUEX =  9.00E-04       VALUEY =    1.88100E+05
+               VALUEX =  1.00E-03       VALUEY =    1.94100E+05
+               VALUEX =  2.00E-03       VALUEY =    2.34576E+05
+               VALUEX =  3.00E-03       VALUEY =    2.70170E+05
+               VALUEX =  4.00E-03       VALUEY =    2.86240E+05
+               VALUEX =  6.00E-03       VALUEY =    3.19360E+05
+               VALUEX =  8.00E-03       VALUEY =    3.35920E+05
+               VALUEX =  1.20E-02       VALUEY =    3.61490E+05
+               VALUEX =  1.60E-02       VALUEY =    3.77730E+05
+               VALUEX =  2.00E-02       VALUEY =    3.90140E+05
+               VALUEX =  2.40E-02       VALUEY =    3.99480E+05
+               VALUEX =  2.80E-02       VALUEY =    4.07290E+05
+               VALUEX =  3.20E-02       VALUEY =    4.13630E+05
+               VALUEX =  3.60E-02       VALUEY =    4.18610E+05
+               VALUEX =  4.00E-02       VALUEY =    4.23120E+05
+               VALUEX =  1.00E-01       VALUEY =    4.23110E+05
+               VALUEX =  2.00E-01       VALUEY =    4.23100E+05
+               VALUEX =  4.00E-01       VALUEY =    4.23120E+05
+               VALUEX =  4.00E+00       VALUEY =    4.23120E+05
+                    DEFINITION = ROTMOM     NUMPTS = 43
+                 VALUEX= 0.0000e+00 VALUEY= 0.0000e+00 
+                 VALUEX= 1.0000e-04 VALUEY= 3.2911e+07 
+                 VALUEX= 2.0000e-04 VALUEY= 5.5848e+07 
+                 VALUEX= 3.0000e-04 VALUEY= 6.1599e+07 
+                 VALUEX= 4.0000e-04 VALUEY= 6.5576e+07 
+                 VALUEX= 5.0000e-04 VALUEY= 6.9057e+07 
+                 VALUEX= 6.0000e-04 VALUEY= 7.2861e+07 
+                 VALUEX= 7.0000e-04 VALUEY= 7.7186e+07 
+                 VALUEX= 8.0000e-04 VALUEY= 8.1777e+07 
+                 VALUEX= 9.0000e-04 VALUEY= 8.6573e+07 
+                 VALUEX= 1.0000e-03 VALUEY= 9.1336e+07 
+                 VALUEX= 2.0000e-03 VALUEY= 1.3293e+08 
+                 VALUEX= 3.0000e-03 VALUEY= 1.6170e+08 
+                 VALUEX= 4.0000e-03 VALUEY= 1.8410e+08 
+                 VALUEX= 5.0000e-03 VALUEY= 2.0388e+08 
+                 VALUEX= 6.0000e-03 VALUEY= 2.2076e+08 
+                 VALUEX= 7.0000e-03 VALUEY= 2.3286e+08 
+                 VALUEX= 8.0000e-03 VALUEY= 2.4536e+08 
+                 VALUEX= 9.0000e-03 VALUEY= 2.5598e+08 
+                 VALUEX= 1.0000e-02 VALUEY= 2.6467e+08 
+                 VALUEX= 2.5000e-02 VALUEY= 3.4030e+08 
+                 VALUEX= 3.0000e-02 VALUEY= 3.5235e+08 
+                 VALUEX= 3.5000e-02 VALUEY= 3.6237e+08 
+                 VALUEX= 4.0000e-02 VALUEY= 3.7033e+08 
+                 VALUEX= 4.5000e-02 VALUEY= 3.7727e+08 
+                 VALUEX= 5.0000e-02 VALUEY= 3.8293e+08 
+                 VALUEX= 5.5000e-02 VALUEY= 3.8854e+08 
+                 VALUEX= 6.0000e-02 VALUEY= 3.9315e+08 
+                 VALUEX= 6.5000e-02 VALUEY= 3.9674e+08 
+                 VALUEX= 7.0000e-02 VALUEY= 4.0018e+08 
+                 VALUEX= 7.5000e-02 VALUEY= 4.0362e+08 
+                 VALUEX= 8.0000e-02 VALUEY= 4.0637e+08 
+                 VALUEX= 8.5000e-02 VALUEY= 4.0758e+08 
+                 VALUEX= 9.0000e-02 VALUEY= 4.0758e+08 
+                 VALUEX= 9.5000e-02 VALUEY= 4.0758e+08 
+                 VALUEX= 1.0000e-01 VALUEY= 4.0758e+08 
+                 VALUEX= 2.0000e-01 VALUEY= 4.0758e+08 
+                 VALUEX= 3.0000e-01 VALUEY= 4.0758e+08 
+                 VALUEX= 4.0000e-01 VALUEY= 4.0758e+08 
+                 VALUEX= 5.0000e-01 VALUEY= 4.0758e+08 
+                 VALUEX= 6.0000e-01 VALUEY= 4.0758e+08 
+                 VALUEX= 7.0000e-01 VALUEY= 4.0758e+08 
+                 VALUEX= 8.0000e-01 VALUEY= 4.0758e+08
+                 END_CURVE_DATA
+
+
+END_MATERIAL_PROPERTIES
+SECTION_DEFINITION
+     DEFINITION : SECNO = 1     SEC_TYPE = TRUSS
+     NUMAT = 0 AREA  = 1.0000e+02 STRAI = 0.000e+00  STYPE = 3
+
+
+     DEFINITION : SECNO = 2     SEC_TYPE = SPOT
+                  NUMAT = 2     POINT /         !XZ
+                  TMASS = 1d4  RMASS = 1d4 /
+                  ASTIF1 = AXIALF ADAMP1 = 1e4   /
+                  ASTIF2 = AXIALF ADAMP2 = 1e4   /
+                  ASTIF3 = AXIALF ADAMP3 = 1e4   /
+                  RSTIF1 = ROTMOM RDAMP1 = 1e4   /
+                  RSTIF2 = ROTMOM RDAMP2 = 1e4   /
+                  RSTIF3 = ROTMOM RDAMP3 = 1e4   /
+                  MASING  HRATIO = 2.0D0 !SYS0
+
+END_SECTION
+$-------------------------------------------------------------------------------
+SET_DEFINITION
+
+  ELS_NAME=RSPOT   ELM_TYPE: SPOT              NELEM = 1
+          NNODE = 2
+         1  2  1 2
+  END_ELEMENT_DEFINITION
+END_SET_DEFINITION
+$-------------------------------------------------------------------------------
+KINEMATIC_CONDITIONS
+$-------------------------------------------------------------------------------
+  BOUNDARY_CONDITIONS
+         1    1 1 1 1 1 1
+  END_BOUNDARY_CONDITIONS
+     PRESCRIBED_VELOCITIES
+     VEL_SET = 1   FACTOR = 1.00
+     CURVE_DEF: 1  LTYPE = 3  NUMPTS = 24
+  TIME = 0.00E+00      VALUE =      0.010
+  TIME = 1.9999E-01    VALUE =      0.010
+  TIME = 2.0001E-01    VALUE =     -0.005
+  TIME = 3.9999E-01    VALUE =     -0.005
+  TIME = 4.0001E-01    VALUE =     +0.004
+  TIME = 5.9999E-01    VALUE =     +0.004
+  TIME = 6.0001E-01    VALUE =     -0.003
+  TIME = 7.9999E-01    VALUE =     -0.003
+  TIME = 8.0001E-01    VALUE =     +0.002
+  TIME = 9.9999E-01    VALUE =     +0.002
+  TIME = 1.00001E+00   VALUE =     -0.001
+  TIME = 1.19999E+00   VALUE =     -0.001
+  TIME = 1.20E+00      VALUE =     +0.0005
+  TIME = 1.39999E+00   VALUE =     +0.0005
+  TIME = 1.40E+00      VALUE =     -0.0005
+  TIME = 1.59999E+00   VALUE =     -0.0005
+  TIME = 1.60E+00      VALUE =     +0.0004
+  TIME = 1.79999E+00   VALUE =     +0.0004
+  TIME = 1.80E+00      VALUE =     -0.0003
+  TIME = 1.99999E+00   VALUE =     -0.0003
+  TIME = 2.00001E+00   VALUE =     +0.0002
+  TIME = 2.19999E+00   VALUE =     +0.0002
+  TIME = 2.20001E+00   VALUE =     -0.01
+  TIME = 2.40001E+00   VALUE =     -0.01
+
+         2 1.00    0.00    0.00     0.00   0.00    0.00
+   END_VEL_SET
+  END_PRESCRIBED_VELOCITIES
+$-------------------------------------------------------------------------------
+END_KINEMATIC_CONDITIONS
+$-------------------------------------------------------------------------------
+HISTORICAL_OUTPUT_DEFINITION
+
+   DISPLACEMENT
+      1 2
+   END_DISPLACEMENT
+   INTERNAL
+      1 2
+   END_INTERNAL
+
+END_HISTORICAL_OUTPUT_DEFINITION
+$-------------------------------------------------------------------------------
+!DAMPING_DATA
+!    DAMP_SET
+!        AMPLI = 2.00d0  FREQ = 0.1
+!      SET ONE
+!    END_DAMP_SET
+!END_DAMPING_DATA
+$-------------------------------------------------------------------------------
+LOAD_DATA
+   ! LOAD_SET =         1
+      ! TITLE : sinusoidal load
+       ! CURVE_DATA   LTYPE = 2   START = 0.00 /
+                         ! CONST = 0.5000E+00   AMPLI= 1.000    /
+                         ! FREQ  = 12.5664
+     ! POINT_LOAD
+          ! 2   2.e7   -2.e7    -2.e7   1.e7 -1.e7  1.e-7
+     ! END_POINT_LOAD
+   ! END_SET
+END_LOAD_DATA
+END_STRATEGY
+END_DATA

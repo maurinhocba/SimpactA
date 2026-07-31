@@ -28,8 +28,8 @@
    newm = isec /= osec
    IF ( newm )THEN
      sec => psecs(isec)%p
-     tmass = sec%rprop(5)/2d0
-     rmass = sec%rprop(6)/2d0
+     tmass = sec%rprop(13)/2d0
+     rmass = sec%rprop(14)/2d0
      osec = isec
    END IF
    DO n=1,2

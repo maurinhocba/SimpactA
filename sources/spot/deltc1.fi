@@ -36,8 +36,8 @@
      IF( nnode == 2)THEN
        stiff = sec%rprop(1)  !initial stiffness
      ELSE
-       stiff = sec%rprop(7)*sec%mtbas%prope(1) ! Area * Young
-       !penal= sec%rprop(7)/dtime**2
+       stiff = sec%rprop(15)*sec%mtbas%prope(1) ! Area * Young
+       !penal= sec%rprop(16)/dtime**2
      END IF
    END IF
    IF( nnode == 2)THEN
