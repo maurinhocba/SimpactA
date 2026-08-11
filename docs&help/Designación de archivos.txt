@@ -194,6 +194,12 @@ AeroFcsOnStruc.dat                                          252
     OPEN( UNIT = 252, FILE='AeroFcsOnStruc.dat '                 , STATUS = 'old'     , POSITION = 'append', ACTION= 'write' )
     OPEN( UNIT = 252, FILE='AeroFcsOnStruc.dat '                 , STATUS = 'new'     , ACTION = 'write' )
     CLOSE( UNIT = 252 )
+
+power.dat                                                   253
+    power, en introut_sr.f90
+    OPEN( UNIT = 253, FILE='power.dat '                          , STATUS = 'old'     , POSITION = 'append', ACTION= 'write' )
+    OPEN( UNIT = 253, FILE='power.dat '                          , STATUS = 'new'     , ACTION = 'write' )
+    CLOSE( UNIT = 253 )
     
 
 

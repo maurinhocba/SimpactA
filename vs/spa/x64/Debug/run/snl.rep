@@ -1,0 +1,117 @@
+                                 S I M P A C T
+
+                                 version: 7.2.0
+                                 date   : 06/12/12
+
+                     EXPLICIT NONLINEAR DYNAMIC ANALYSIS        
+                         BY THE FINITE ELEMENT METHOD           
+              GROUP OF NUMERICAL METHODS IN STRUCTURAL MECHANICS
+                           DEPARTMENT OF STRUCTURES             
+                        NATIONAL UNIVERSITY OF CORDOBA          
+                           (C) G M N M E   CopyRight            
+                              CORDOBA - ARGENTINA               
+
+
+                       Started at  17:05:48  on  11/08/2026
+
+
+*** PLEASE WAIT FOR THE PRELIMINARY CALCULATIONS TO BE COMPLETED ...
+
+
+     ***  BEGIN STAGE 1: str01                                                                                              
+
+ STEP 1250   DT=  0.5747E-04   Time= 0.71778E-01   CPU 0:00:12  CPU to end stage (est.) 0:01:04
+ STEP 2500   DT=  0.5747E-04   Time= 0.14361E+00   CPU 0:00:13  CPU to end stage (est.) 0:01:04
+ STEP 3750   DT=  0.5747E-04   Time= 0.21545E+00   CPU 0:00:25  CPU to end stage (est.) 0:13:52
+ STEP 5000   DT=  0.5747E-04   Time= 0.28728E+00   CPU 0:00:26  CPU to end stage (est.) 0:01:05
+ STEP 6250   DT=  0.5747E-04   Time= 0.35912E+00   CPU 0:00:38  CPU to end stage (est.) 0:13:17
+ STEP 7500   DT=  0.5747E-04   Time= 0.43096E+00   CPU 0:00:39  CPU to end stage (est.) 0:01:00
+ STEP 8750   DT=  0.5747E-04   Time= 0.50279E+00   CPU 0:00:52  CPU to end stage (est.) 0:13:04
+ STEP 10000   DT=  0.5747E-04   Time= 0.57463E+00   CPU 0:00:53  CPU to end stage (est.) 0:00:58
+ STEP 11250   DT=  0.5747E-04   Time= 0.64646E+00   CPU 0:01:05  CPU to end stage (est.) 0:12:38
+ STEP 12500   DT=  0.5747E-04   Time= 0.71830E+00   CPU 0:01:06  CPU to end stage (est.) 0:00:56
+     ***  END OF STAGE 1: str01                                                                                              
+
+
+     ***  BEGIN STAGE 2: str02                                                                                              
+
+     ***  END OF STAGE 2: str02                                                                                              
+
+
+     ***  BEGIN STAGE 3: str03                                                                                              
+
+     ***  END OF STAGE 3: str03                                                                                              
+
+
+     ***  BEGIN STAGE 4: str04                                                                                              
+
+     ***  END OF STAGE 4: str04                                                                                              
+
+
+     ***  BEGIN STAGE 5: str05                                                                                              
+
+     ***  END OF STAGE 5: str05                                                                                              
+
+
+     ***  BEGIN STAGE 6: str06                                                                                              
+
+     ***  END OF STAGE 6: str06                                                                                              
+
+
+     ***  BEGIN STAGE 7: str07                                                                                              
+
+     ***  END OF STAGE 7: str07                                                                                              
+
+
+     ***  BEGIN STAGE 8: str08                                                                                              
+
+     ***  END OF STAGE 8: str08                                                                                              
+
+
+     ***  BEGIN STAGE 9: str09                                                                                              
+
+     ***  END OF STAGE 9: str09                                                                                              
+
+
+     ***  BEGIN STAGE 10: str10                                                                                              
+
+     ***  END OF STAGE 10: str10                                                                                              
+
+
+     ***  BEGIN STAGE 11: str11                                                                                              
+
+     ***  END OF STAGE 11: str11                                                                                              
+
+
+     ***  BEGIN STAGE 12: str12                                                                                              
+
+     ***  END OF STAGE 12: str12                                                                                              
+
+
+     ***  BEGIN STAGE 13: str13                                                                                              
+
+     ***  END OF STAGE 13: str13                                                                                              
+
+
+     ***  BEGIN STAGE 14: str14                                                                                              
+
+     ***  END OF STAGE 14: str14                                                                                              
+
+
+     ***  BEGIN STAGE 15: str15                                                                                              
+
+     ***  END OF STAGE 15: str15                                                                                              
+
+
+     ***  BEGIN STAGE 16: str16                                                                                              
+
+     ***  END OF STAGE 16: str16                                                                                              
+
+
+     ***  BEGIN STAGE 17: str17                                                                                              
+
+     ***  END OF STAGE 17: str17                                                                                              
+
+
+                       *** NORMAL END OF EXECUTION ***
+

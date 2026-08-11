@@ -13,7 +13,7 @@
    USE outp_db, ONLY : toutd,iwrit,cpui    !output asked, frequencies
    USE inter_db,    ONLY:   n, nest, numnest, loa     ! nest and numnest, both set to zero in inter_ini
    USE inter_sr,    ONLY:   inter_kin, inter_loa      ! subroutines
-   USE introut_sr,  ONLY:   introut_mng ! subroutines
+   USE introut_sr,  ONLY:   introut_mng, power ! subroutines
    USE StructuresA, ONLY:   NS
    USE wind_sr,     ONLY: DtCalc
    !USE control_db,  ONLY:   ctrlData
@@ -99,6 +99,9 @@
       !           Nonconservative loading
 
       IF (ifloa > 0) CALL loadfl(ttime+dtime)
+      IF( MOD(istep,500)==0 )THEN
+        IF( aero ) CALL power
+      ENDIF
       IF( aero ) resid = resid - loa
 
       !           Time integration

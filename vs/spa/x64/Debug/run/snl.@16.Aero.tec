@@ -1,0 +1,4 @@
+ TITLE = "Aerodynamic Grid"
+ VARIABLES = "X" "Y" "Z" "n(X)" "n(Y)" "n(Z)" "Cp"
+
+

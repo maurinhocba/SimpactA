@@ -10,7 +10,6 @@ MODULE introut_sr
                             headpair            ! variables
   
   IMPLICIT NONE
-  
     
 CONTAINS ! =============================================
   
@@ -91,7 +90,10 @@ CONTAINS ! =============================================
       INQUIRE(FILE='AeroFcsOnStruc.dat', exist=fExist)
       IF(fExist)THEN
         CALL EXECUTE_COMMAND_LINE('del ' // 'AeroFcsOnStruc.dat')
-        !OPEN(UNIT = 252, FILE='AeroFcsOnStruc.dat', STATUS='old', POSITION='append', ACTION='write')
+      ENDIF
+      INQUIRE(FILE='power.dat', exist=fExist)
+      IF(fExist)THEN
+        CALL EXECUTE_COMMAND_LINE('del ' // 'power.dat')
       ENDIF
       
     CASE('openFiles')
@@ -1055,5 +1057,130 @@ CONTAINS ! =============================================
     700 FORMAT(A,F14.2) ! text and angles
   
   ENDSUBROUTINE inter_reg
+  
+! ---------------------------------------------------------------------------
+! ---------------------------------------------------------------------------
+  
+  ! reordenar esto cuando lo hayamos probado - 2026/ago/11
+  SUBROUTINE power
+        
+    USE ctrl_db,        ONLY:   ttime
+    USE npo_db,         ONLY:   velnp, resid, emass, ifpre, acelr
+    USE inter_db,       ONLY:   loa
+    
+    IMPLICIT NONE
+    
+    ! internal vars
+    TYPE(pair), POINTER     ::  posic
+    LOGICAL                 ::  fExist
+    INTEGER                 ::  i, ns
+    REAL(8)                 ::  paeroi, paero, pelasti, pelast, pkin, pkini
+    REAL(8), DIMENSION(3)   ::  f, m, v, o, mass, iner, av, ao
+    
+    
+    INQUIRE(FILE='power.dat', exist=fExist)
+    IF(fExist)THEN
+      OPEN(UNIT = 253, FILE='power.dat', STATUS='old', POSITION='append', ACTION='write')
+    ELSE
+      OPEN(UNIT = 253, FILE='power.dat', STATUS='new', ACTION='write')
+      ! Heading
+      WRITE( 253 , 400 )
+      WRITE( 253 , * ) 'Power components over structural nodes paired to aero grids'
+      WRITE( 253 , 400 )
+      WRITE( 253 , * ) 'grid/mesh sequence - 3 values per grid/mesh (paero, pelast, pkin)'
+      IF( ASSOCIATED(headpair) )THEN		! Check if a list is empty
+        posic => headpair
+        DO ! Loop over pairs
+          
+          WRITE( 253 , * ) posic%m_aer
+          
+          IF (ASSOCIATED (posic%next)) THEN	! Check if it's not the end of the list
+            posic => posic%next
+          ELSE
+            exit
+          ENDIF
+          
+        ENDDO
+      ENDIF
+      WRITE( 253 , 400 )
+    ENDIF
+    
+    IF( ASSOCIATED(headpair) )THEN		! Check if a list is empty
+      
+      ! write data into file
+      WRITE(253,500,advance='no') ttime
+      
+      posic => headpair
+      DO ! Loop over pairs
+        IF( TRIM(posic%m_aer)=='blade1' .OR. &      ! no forces for non-lifting surfaces
+            TRIM(posic%m_aer)=='blade2' .OR. &
+            TRIM(posic%m_aer)=='blade3'        )THEN
+          
+          paero = 0
+          DO i=1,posic%numbnodes ! loop over structural nodes
+            ns = posic%nodes(i)
+            f = loa(1:3,ns) ! aerodynamic load over struct node
+            m = loa(4:6,ns) ! aerodynamic load over struct node - in local coordinates of node
+            v = velnp(1:3,ns)   ! structural node linear velocity vector
+            o = velnp(4:6,ns)  ! structural node angular velocity vector (rotation matrix axial vector) in local coordinates of node
+            paeroi = DOT_PRODUCT(f,v) + DOT_PRODUCT(m,o)
+            
+            paero = paero + paeroi
+            
+          ENDDO
+        ENDIF
+        
+        pelast = 0
+        DO i=1,posic%numbnodes ! loop over structural nodes
+          ns = posic%nodes(i)
+          f = resid(1:3,ns) ! internal load over struct node
+          m = resid(4:6,ns) ! internal load over struct node - in local coordinates of node
+          v = velnp(1:3,ns) ! structural node linear velocity vector
+          o = velnp(4:6,ns) ! structural node angular velocity vector (rotation matrix axial vector) in local coordinates of node
+          pelasti = DOT_PRODUCT(f,v) + DOT_PRODUCT(m,o)
+          
+          pelast = pelast + pelasti
+        ENDDO
+        
+        ! esto se puede incorporar al loop anterior
+        pkin = 0
+        DO i=1,posic%numbnodes ! loop over structural nodes
+          ns = posic%nodes(i)
+          mass = emass(1:3,ns)
+          iner = emass(4:6,ns)
+          v = velnp(1:3,ns)  ! structural node linear velocity vector
+          o = velnp(4:6,ns)  ! structural node angular velocity vector (rotation matrix axial vector) in local coordinates of node
+          IF (all(ifpre(1:6,ns) > 0)) THEN
+            av = acelr(  ifpre(1:3,ns)  ) ! linear acceleration
+            ao = acelr(  ifpre(4:6,ns)  ) ! angular acceleration
+          ENDIF
+          
+          pkini = SUM(mass*v*av + iner*o*ao)
+          
+          pkin = pkin + pkini
+        ENDDO
+        
+        IF (ASSOCIATED (posic%next)) THEN	! Check if it's not the end of the list
+          ! write data into file
+          WRITE(253,600,advance='no') paero, pelast, pkin
+          posic => posic%next
+        ELSE
+          ! write data into file
+          WRITE(253,600) paero, pelast, pkin
+          exit
+        ENDIF
+        
+      ENDDO
+      
+    ENDIF
+    
+    CLOSE(UNIT = 253)
+    
+    400 FORMAT(/) ! new line
+    500 FORMAT(x,E11.5E2) ! 1 gen real
+    600 FORMAT(3(x,E12.5E2)) ! 3 gen real
+    ! 800 FORMAT(x,I6,   6(x,E12.5E2)) ! 1 int + 6 gen real
+    
+  ENDSUBROUTINE power
   
 ENDMODULE introut_sr
